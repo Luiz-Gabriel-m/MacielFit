@@ -1,6 +1,6 @@
 /**
  * Studio Maciel / Maciel Fit Academia - Main Application Logic
- * Header stickiness, social wall interactions, smooth navigation, WhatsApp linking.
+ * Header stickiness, social wall interactions, smooth navigation, WhatsApp linking, video sound toggle.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Close mobile menu on link click
     document.querySelectorAll('.nav-link').forEach((link) => {
       link.addEventListener('click', () => {
         if (window.innerWidth <= 768) {
@@ -44,9 +43,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Social Wall Likes Interactive Micro-animation
-  const likeButtons = document.querySelectorAll('.social-post-card');
-  likeButtons.forEach((card) => {
+  // 3. Hero Video Sound Toggle
+  const soundBtn = document.getElementById('hero-sound-btn');
+  const heroVideo = document.getElementById('hero-bg-video');
+  const iconMuted = document.getElementById('sound-icon-muted');
+  const iconUnmuted = document.getElementById('sound-icon-unmuted');
+  const soundText = document.getElementById('sound-text');
+
+  if (soundBtn && heroVideo) {
+    soundBtn.addEventListener('click', () => {
+      heroVideo.muted = !heroVideo.muted;
+      if (heroVideo.muted) {
+        if (iconMuted) iconMuted.style.display = 'block';
+        if (iconUnmuted) iconUnmuted.style.display = 'none';
+        if (soundText) soundText.textContent = 'Ativar Som';
+      } else {
+        if (iconMuted) iconMuted.style.display = 'none';
+        if (iconUnmuted) iconUnmuted.style.display = 'block';
+        if (soundText) soundText.textContent = 'Silenciar';
+      }
+    });
+  }
+
+  // 4. Social Wall Likes Interactive Micro-animation
+  const likeCards = document.querySelectorAll('.social-post-card');
+  likeCards.forEach((card) => {
     card.addEventListener('click', () => {
       const likesEl = card.querySelector('.likes-count');
       if (likesEl) {
@@ -61,18 +82,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 4. WhatsApp Prefilled Plan Links
+  // 5. WhatsApp Prefilled Plan Links
   const planButtons = document.querySelectorAll('.btn-plan-select');
   planButtons.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       const planName = btn.getAttribute('data-plan') || 'VIP';
-      const phone = '5535999999999'; // Default WhatsApp line for Studio Maciel
+      const phone = '5535999999999';
       const message = encodeURIComponent(`Olá, Studio Maciel! Gostaria de garantir minha vaga no Plano ${planName}. Como posso realizar minha matrícula?`);
       btn.href = `https://wa.me/${phone}?text=${message}`;
     });
   });
 
-  // 5. Intro Revealed Callback: animate hero text
+  // 6. Intro Revealed Callback
   window.onIntroRevealed = function() {
     const heroContent = document.querySelector('.hero-content');
     if (heroContent) {

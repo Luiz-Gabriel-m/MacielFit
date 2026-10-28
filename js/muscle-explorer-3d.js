@@ -123,16 +123,20 @@ class MuscleExplorer3D {
       }
     };
 
-    this.initThree();
-    this.createAnatomicalModel();
-    this.setupUI();
-    this.selectExercise('bench_press');
-    this.animate();
+    try {
+      this.initThree();
+      this.createAnatomicalModel();
+      this.setupUI();
+      this.selectExercise('bench_press');
+      this.animate();
+    } catch (err) {
+      console.error('Error initializing MuscleExplorer3D:', err);
+    }
   }
 
   initThree() {
-    const width = this.container.clientWidth;
-    const height = this.container.clientHeight;
+    const width = this.container.clientWidth || 540;
+    const height = this.container.clientHeight || 520;
 
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x080c10);
@@ -156,18 +160,18 @@ class MuscleExplorer3D {
     }
 
     // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     this.scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff5e6, 1.2);
+    const keyLight = new THREE.DirectionalLight(0xfff5e6, 1.4);
     keyLight.position.set(5, 8, 5);
     this.scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x0eb0c4, 1.5);
+    const rimLight = new THREE.DirectionalLight(0x0eb0c4, 1.6);
     rimLight.position.set(-5, 4, -4);
     this.scene.add(rimLight);
 
-    const goldFill = new THREE.PointLight(0xd4af37, 1.5, 12);
+    const goldFill = new THREE.PointLight(0xd4af37, 2, 14);
     goldFill.position.set(0, 2, 3);
     this.scene.add(goldFill);
 
@@ -188,6 +192,21 @@ class MuscleExplorer3D {
     ring.rotation.x = Math.PI / 2;
     ring.position.y = -1.2;
     this.scene.add(ring);
+
+    // Resize observer
+    window.addEventListener('resize', () => this.onWindowResize());
+    
+    // Intersection Observer to trigger render & resize when scrolled into view
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            this.onWindowResize();
+          }
+        });
+      }, { threshold: 0.1 });
+      observer.observe(this.container);
+    }
   }
 
   createAnatomicalModel() {
@@ -277,7 +296,7 @@ class MuscleExplorer3D {
     this.mannequinGroup.add(bicepL);
     this.mannequinGroup.add(bicepR);
     this.muscleMeshes['biceps'] = [bicepL, bicepR];
-    this.muscleMeshes['triceps'] = [biceL, bicepR];
+    this.muscleMeshes['triceps'] = [bicepL, bicepR]; // Fixed typo: bicepL instead of biceL
 
     // Forearms
     const foreL = new THREE.Mesh(armGeo, baseMat);
@@ -339,7 +358,8 @@ class MuscleExplorer3D {
   }
 
   updateEquipmentModel(type) {
-    // Clear previous equipment meshes
+    if (!this.equipmentGroup) return;
+
     while (this.equipmentGroup.children.length > 0) {
       this.equipmentGroup.remove(this.equipmentGroup.children[0]);
     }
@@ -361,18 +381,15 @@ class MuscleExplorer3D {
     });
 
     if (type === 'barbell_bench') {
-      // Bench
       const bench = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.4, 2.2), tealMat);
       bench.position.set(0, -0.6, 0);
       this.equipmentGroup.add(bench);
 
-      // Barbell
       const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.4, 16), darkSteelMat);
       bar.rotation.z = Math.PI / 2;
       bar.position.set(0, 0.8, 0);
       this.equipmentGroup.add(bar);
 
-      // Gold Plates on barbell
       [-0.95, 0.95].forEach((x) => {
         const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.1, 24), goldMat);
         plate.rotation.z = Math.PI / 2;
@@ -380,7 +397,6 @@ class MuscleExplorer3D {
         this.equipmentGroup.add(plate);
       });
     } else if (type === 'bike_3d') {
-      // 3D Spinning Bike
       const frame = new THREE.Mesh(new THREE.BoxGeometry(0.5, 1.2, 1.6), darkSteelMat);
       frame.position.set(0, -0.2, 0);
       this.equipmentGroup.add(frame);
@@ -390,7 +406,6 @@ class MuscleExplorer3D {
       wheel.position.set(0, -0.2, 0.6);
       this.equipmentGroup.add(wheel);
     } else if (type === 'dumbbells_pair') {
-      // Pair of Hex Dumbbells
       [-0.4, 0.4].forEach((z) => {
         const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.6, 16), darkSteelMat);
         handle.rotation.z = Math.PI / 2;
@@ -405,7 +420,6 @@ class MuscleExplorer3D {
         });
       });
     } else {
-      // Multi-machine generic rack
       const column1 = new THREE.Mesh(new THREE.BoxGeometry(0.16, 2.8, 0.16), darkSteelMat);
       column1.position.set(-0.6, 0.2, 0);
       const column2 = new THREE.Mesh(new THREE.BoxGeometry(0.16, 2.8, 0.16), darkSteelMat);
@@ -419,7 +433,6 @@ class MuscleExplorer3D {
   }
 
   setupUI() {
-    // Exercise Pill buttons
     const pills = document.querySelectorAll('.exercise-pill-btn');
     pills.forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -428,7 +441,6 @@ class MuscleExplorer3D {
       });
     });
 
-    // View Angle buttons
     const btnFront = document.getElementById('btn-angle-front');
     const btnBack = document.getElementById('btn-angle-back');
     const btnSide = document.getElementById('btn-angle-side');
@@ -486,17 +498,18 @@ class MuscleExplorer3D {
 
     this.activeExerciseId = exerciseId;
 
-    // Highlight pill button
     document.querySelectorAll('.exercise-pill-btn').forEach((btn) => {
       btn.classList.toggle('active', btn.getAttribute('data-exercise') === exerciseId);
     });
 
-    // Reset all muscle materials to default chrome
+    // Reset muscle colors
     Object.values(this.muscleMeshes).forEach((meshList) => {
       meshList.forEach((mesh) => {
-        mesh.material.color.setHex(0x1d262d);
-        mesh.material.emissive.setHex(0x000000);
-        mesh.material.emissiveIntensity = 0;
+        if (mesh && mesh.material) {
+          mesh.material.color.setHex(0x1d262d);
+          mesh.material.emissive.setHex(0x000000);
+          mesh.material.emissiveIntensity = 0;
+        }
       });
     });
 
@@ -505,16 +518,16 @@ class MuscleExplorer3D {
       const meshes = this.muscleMeshes[muscleKey];
       if (meshes) {
         meshes.forEach((mesh) => {
-          if (idx === 0) {
-            // Primary muscle: Gold Glow
-            mesh.material.color.setHex(0xd4af37);
-            mesh.material.emissive.setHex(0xe5c158);
-            mesh.material.emissiveIntensity = 0.9;
-          } else {
-            // Secondary muscle: Teal Glow
-            mesh.material.color.setHex(0x0eb0c4);
-            mesh.material.emissive.setHex(0x076b77);
-            mesh.material.emissiveIntensity = 0.6;
+          if (mesh && mesh.material) {
+            if (idx === 0) {
+              mesh.material.color.setHex(0xd4af37);
+              mesh.material.emissive.setHex(0xe5c158);
+              mesh.material.emissiveIntensity = 0.9;
+            } else {
+              mesh.material.color.setHex(0x0eb0c4);
+              mesh.material.emissive.setHex(0x076b77);
+              mesh.material.emissiveIntensity = 0.6;
+            }
           }
         });
       }
@@ -569,19 +582,29 @@ class MuscleExplorer3D {
     }
   }
 
+  onWindowResize() {
+    if (!this.container || !this.camera || !this.renderer) return;
+    const width = this.container.clientWidth;
+    const height = this.container.clientHeight;
+    if (width > 0 && height > 0) {
+      this.camera.aspect = width / height;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(width, height);
+    }
+  }
+
   animate() {
     requestAnimationFrame(() => this.animate());
 
     const time = performance.now() * 0.002;
 
-    if (this.autoRotate) {
+    if (this.autoRotate && this.mannequinGroup) {
       this.mannequinGroup.rotation.y += 0.012;
       if (this.equipmentGroup) {
         this.equipmentGroup.rotation.y += 0.012;
       }
     }
 
-    // Equipment gentle float
     if (this.equipmentGroup) {
       this.equipmentGroup.position.y = Math.sin(time * 2) * 0.05;
     }
@@ -590,12 +613,14 @@ class MuscleExplorer3D {
       this.controls.update();
     }
 
-    this.renderer.render(this.scene, this.camera);
+    if (this.renderer && this.scene && this.camera) {
+      this.renderer.render(this.scene, this.camera);
+    }
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     window.muscleExplorer = new MuscleExplorer3D();
-  }, 400);
+  }, 300);
 });

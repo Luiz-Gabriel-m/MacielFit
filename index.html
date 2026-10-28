@@ -16,7 +16,7 @@
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
 
-  <!-- Google Fonts: Montserrat & Cinzel for Luxury Gold Aesthetics -->
+  <!-- Google Fonts: Montserrat & Cinzel -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
@@ -31,8 +31,8 @@
 <body>
 
   <!-- ==========================================================================
-       FEATURE 1: INTERACTIVE INTRO SCREEN (PRELOADER & SCROLL/DRAG 3D TOSS)
-       Solid deep teal background (#076b77) matching Assets/inicio-site/modelo.png
+       FEATURE 1: INTERACTIVE INTRO SCREEN (PRELOADER)
+       Deep Teal background (#076b77) • STUDIO [LOGO] MACIEL • TOLEDO - MG
        ========================================================================== -->
   <aside id="intro-screen" aria-label="Tela de Apresentação Studio Maciel">
     <button id="skip-intro-btn" class="skip-intro-btn" aria-label="Pular Introdução">
@@ -40,9 +40,12 @@
     </button>
 
     <div class="intro-content-wrapper">
-      <!-- Minimalist Gold Dumbbell Soundwave Logo & Brand Name -->
-      <div class="intro-logo-container">
-        <div class="intro-dumbbell-icon" aria-hidden="true">
+      <!-- Horizontal Facade Sequence: STUDIO [DUMBBELL LOGO] MACIEL -->
+      <div class="intro-brand-row">
+        <span class="intro-brand-word">STUDIO</span>
+
+        <!-- Pulsing / Blinking Neon Golden Dumbbell Icon -->
+        <div class="intro-dumbbell-icon pulsing-neon" aria-label="Símbolo Studio Maciel">
           <div class="intro-bar outer"></div>
           <div class="intro-bar mid"></div>
           <div class="intro-bar center"></div>
@@ -50,31 +53,23 @@
           <div class="intro-bar mid"></div>
           <div class="intro-bar outer"></div>
         </div>
-        <h1 class="intro-title">STUDIO MACIEL</h1>
-        <p class="intro-subtitle">FITNESS BOUTIQUE • TOLEDO - MG</p>
+
+        <span class="intro-brand-word">MACIEL</span>
       </div>
 
-      <!-- Cute 3D Animated Fitness Character Squat & Lifting Screen -->
-      <div class="intro-mascot-stage">
-        <div class="mascot-image-wrapper">
-          <img 
-            src="public/images/mascot_intro.jpg" 
-            alt="Mascote 3D Fitness Studio Maciel levantando a estrutura com força e determinação" 
-            class="mascot-img"
-          >
-        </div>
-      </div>
+      <!-- City & State -->
+      <p class="intro-location">TOLEDO - MG</p>
 
-      <!-- Interactive Drag & Scroll Trigger Hint -->
+      <!-- Interactive Enter Trigger -->
       <div class="intro-interaction-box">
-        <button id="pull-handle-btn" class="pull-handle-btn" aria-label="Arremessar tela e entrar no site">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M12 5v14M5 12l7-7 7 7"/>
+        <button id="pull-handle-btn" class="pull-handle-btn" aria-label="Entrar no site Studio Maciel">
+          <span>ENTRAR NO STUDIO</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
-          DESLIZE OU PUXE PARA ENTRAR
         </button>
         <div class="intro-scroll-hint">
-          <span>↓ Role para baixo ou arraste para arremessar a tela</span>
+          <span>↓ Role para baixo ou clique para entrar</span>
         </div>
       </div>
     </div>
@@ -105,7 +100,7 @@
       </ul>
 
       <div class="nav-actions">
-        <button id="replay-intro-btn" class="replay-intro-btn" title="Rever animação 3D de abertura">
+        <button id="replay-intro-btn" class="replay-intro-btn" title="Rever apresentação de abertura">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
           </svg>
@@ -122,14 +117,32 @@
   </header>
 
   <!-- ==========================================================================
-       FEATURE 2 (PART 1): HERO SECTION
+       FEATURE 2 (PART 1): HERO SECTION WITH REAL GYM BACKGROUND VIDEO
        ========================================================================== -->
   <main id="main-content">
     <section id="hero" class="hero-section">
+      <!-- Full-bleed Background Video from Assets/videos_hero -->
+      <video id="hero-bg-video" class="hero-bg-video" autoplay loop muted playsinline poster="public/images/hero_gym.jpg">
+        <source src="public/videos/hero_video.mp4" type="video/mp4">
+      </video>
       <div class="hero-bg-overlay"></div>
-      <img src="public/images/hero_gym.jpg" alt="Interior sofisticado Studio Maciel com parede verde neon" class="hero-bg-image">
+
+      <!-- Video Audio Toggle Button -->
+      <button id="hero-sound-btn" class="hero-video-sound-toggle" aria-label="Ativar ou desativar áudio do vídeo">
+        <svg id="sound-icon-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <line x1="23" y1="9" x2="17" y2="15"/>
+          <line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+        <svg id="sound-icon-unmuted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        </svg>
+        <span id="sound-text">Ativar Som</span>
+      </button>
 
       <div class="hero-container">
+        <!-- Hero Grid (Card removed, full video experience) -->
         <div class="hero-grid">
           <div class="hero-content">
             <div class="badge-tag gold">
@@ -159,7 +172,7 @@
               </div>
               <div class="hero-stat-item">
                 <span class="hero-stat-number">Deck VIP</span>
-                <span class="hero-stat-label">Lounge & Área Verde</span>
+                <span class="hero-stat-label">Lounge & Parede Verde</span>
               </div>
             </div>
 
@@ -178,18 +191,6 @@
                 </svg>
                 <span>Explorar Planta 3D</span>
               </a>
-            </div>
-          </div>
-
-          <!-- Hero Showcase Card -->
-          <div class="hero-card-showcase">
-            <img src="public/images/hero_gym.jpg" alt="Interior boutique Studio Maciel Academia" class="showcase-image-main">
-            <div class="showcase-overlay-badge">
-              <div>
-                <h3 class="showcase-badge-title">Studio Maciel / Maciel Fit</h3>
-                <p class="showcase-badge-sub">Estrutura Completa • Toledo, Minas Gerais</p>
-              </div>
-              <span class="badge-tag">Aberto Hoje</span>
             </div>
           </div>
         </div>
@@ -362,7 +363,7 @@
         <!-- 3D Anatomical Mannequin Viewport -->
         <div class="muscle-viewport-area">
           <div class="muscle-canvas-container" id="muscle-canvas-container">
-            <!-- Three.js Canvas injected here -->
+            <!-- Three.js Canvas injected dynamically -->
           </div>
 
           <div class="muscle-controls-bar">
@@ -792,7 +793,7 @@
   >
     <div class="whatsapp-badge-pulse"></div>
     <svg width="34" height="34" viewBox="0 0 24 24" fill="#ffffff">
-      <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.78 14.07c-.24.68-1.4 1.33-1.95 1.42-.51.08-1.18.11-3.37-.8-2.8-1.16-4.6-4.01-4.74-4.2-.14-.19-1.14-1.52-1.14-2.9 0-1.38.72-2.06.98-2.35.26-.29.56-.36.75-.36.19 0 .38 0 .54.01.17.01.4.06.62.53.24.51.8 1.95.87 2.1.07.15.11.33.02.53-.1.19-.15.31-.29.48-.15.17-.31.38-.45.51-.15.15-.31.31-.13.62.18.31.8 1.32 1.72 2.14 1.18 1.05 2.17 1.38 2.48 1.53.31.15.49.13.67-.08.18-.21.78-.91.99-1.22.21-.31.42-.26.7-.15.28.11 1.78.84 2.09.99.31.15.52.23.59.36.07.12.07.7-.17 1.38z"/>
+      <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/>
     </svg>
   </a>
 

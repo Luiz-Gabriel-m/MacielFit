@@ -1,12 +1,11 @@
 /**
- * Studio Maciel - Interactive Intro Screen & 3D Character Toss Animation
- * Handles drag, scroll, touch gestures, and 3D screen toss physics.
+ * Studio Maciel - Interactive Intro Screen (Preloader & Transition)
+ * Pure, luxury entrance animation with smooth upward slide & sound synthesis.
  */
 
 class IntroScreenManager {
   constructor() {
     this.screen = document.getElementById('intro-screen');
-    this.mascotStage = document.querySelector('.mascot-image-wrapper');
     this.pullBtn = document.getElementById('pull-handle-btn');
     this.skipBtn = document.getElementById('skip-intro-btn');
     this.replayBtn = document.getElementById('replay-intro-btn');
@@ -61,7 +60,7 @@ class IntroScreenManager {
 
     window.addEventListener('touchend', () => this.onDragEnd());
 
-    // Keyboard Space or Down Arrow
+    // Keyboard Space, Enter or Down Arrow
     window.addEventListener('keydown', (e) => {
       if (!this.isTossed && (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'Enter')) {
         this.triggerTossAnimation();
@@ -81,19 +80,19 @@ class IntroScreenManager {
       const gain = this.audioCtx.createGain();
 
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(140, this.audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(560, this.audioCtx.currentTime + 0.35);
+      osc.frequency.setValueAtTime(160, this.audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(600, this.audioCtx.currentTime + 0.35);
 
-      gain.gain.setValueAtTime(0.3, this.audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.45);
+      gain.gain.setValueAtTime(0.25, this.audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.4);
 
       osc.connect(gain);
       gain.connect(this.audioCtx.destination);
 
       osc.start();
-      osc.stop(this.audioCtx.currentTime + 0.45);
+      osc.stop(this.audioCtx.currentTime + 0.4);
     } catch (err) {
-      // Audio autoplay policy fallback
+      // Audio autoplay fallback
     }
   }
 
@@ -109,8 +108,7 @@ class IntroScreenManager {
     this.currentY = y;
     const delta = this.currentY - this.startY;
 
-    // If dragged downward or upward beyond threshold
-    if (Math.abs(delta) > 55) {
+    if (Math.abs(delta) > 50) {
       this.isDragging = false;
       this.triggerTossAnimation();
     }
@@ -127,25 +125,22 @@ class IntroScreenManager {
 
     this.playWhooshAudio();
 
-    // Trigger mascot squat & explosive lift animation
-    if (this.mascotStage) {
-      this.mascotStage.classList.add('mascot-squatting');
+    if (this.screen) {
+      this.screen.classList.add('tossed-away');
     }
 
-    // Delay physical toss slightly so the squat load phase is visible
-    setTimeout(() => {
-      if (this.screen) {
-        this.screen.classList.add('tossed-away');
-      }
+    document.body.style.overflow = 'auto';
 
-      // Re-enable document scrolling
-      document.body.style.overflow = 'auto';
+    // Start background video if paused
+    const video = document.querySelector('.hero-bg-video');
+    if (video && video.paused) {
+      video.play().catch(() => {});
+    }
 
-      // Animate Hero Elements into view
-      if (window.onIntroRevealed) {
-        window.onIntroRevealed();
-      }
-    }, 450);
+    // Trigger hero animations
+    if (window.onIntroRevealed) {
+      window.onIntroRevealed();
+    }
   }
 
   instantSkip() {
@@ -154,6 +149,12 @@ class IntroScreenManager {
       this.screen.classList.add('tossed-away');
     }
     document.body.style.overflow = 'auto';
+
+    const video = document.querySelector('.hero-bg-video');
+    if (video && video.paused) {
+      video.play().catch(() => {});
+    }
+
     if (window.onIntroRevealed) {
       window.onIntroRevealed();
     }
@@ -164,9 +165,6 @@ class IntroScreenManager {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (this.screen) {
       this.screen.classList.remove('tossed-away');
-      if (this.mascotStage) {
-        this.mascotStage.classList.remove('mascot-squatting');
-      }
     }
   }
 }
