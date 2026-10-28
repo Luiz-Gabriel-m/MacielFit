@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE082" />
+      <stop offset="50%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#996515" />
+    </linearGradient>
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#D4AF37" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  <rect width="100" height="100" rx="24" fill="#074B54"/>
+  <g transform="translate(18, 22) scale(0.64)" filter="url(#goldGlow)">
+    <!-- Dumbbell Soundwave Bars -->
+    <rect x="0" y="24" width="12" height="40" rx="5" fill="url(#goldGrad)" />
+    <rect x="22" y="8" width="16" height="72" rx="6" fill="url(#goldGrad)" />
+    <rect x="47" y="30" width="10" height="28" rx="4" fill="url(#goldGrad)" />
+    <rect x="65" y="8" width="16" height="72" rx="6" fill="url(#goldGrad)" />
+    <rect x="90" y="24" width="12" height="40" rx="5" fill="url(#goldGrad)" />
+  </g>
+</svg>

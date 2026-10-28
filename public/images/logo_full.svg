@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 130" fill="none">
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF2B2" />
+      <stop offset="35%" stop-color="#E5C158" />
+      <stop offset="70%" stop-color="#B8860B" />
+      <stop offset="100%" stop-color="#D4AF37" />
+    </linearGradient>
+    <linearGradient id="goldShimmer" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.8" />
+      <stop offset="40%" stop-color="#FFE082" />
+      <stop offset="100%" stop-color="#996515" />
+    </linearGradient>
+    <filter id="luxuryShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.6"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#D4AF37" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  
+  <!-- Dumbbell Icon -->
+  <g transform="translate(195, 6) scale(1.1)" filter="url(#luxuryShadow)">
+    <rect x="0" y="16" width="10" height="32" rx="4" fill="url(#goldGradient)" />
+    <rect x="18" y="2" width="14" height="60" rx="5" fill="url(#goldGradient)" />
+    <rect x="40" y="20" width="8" height="24" rx="3" fill="url(#goldGradient)" />
+    <rect x="54" y="20" width="8" height="24" rx="3" fill="url(#goldGradient)" />
+    <rect x="70" y="2" width="14" height="60" rx="5" fill="url(#goldGradient)" />
+    <rect x="92" y="16" width="10" height="32" rx="4" fill="url(#goldGradient)" />
+  </g>
+
+  <!-- Typography -->
+  <g filter="url(#luxuryShadow)">
+    <text x="250" y="112" 
+          font-family="'Cinzel', 'Montserrat', 'Trajan Pro', serif" 
+          font-size="34" 
+          font-weight="800" 
+          letter-spacing="9" 
+          text-anchor="middle" 
+          fill="url(#goldShimmer)">
+      STUDIO MACIEL
+    </text>
+  </g>
+</svg>
