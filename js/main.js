@@ -45,10 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 6. Hero Video Sound Toggle
   setupHeroSound();
 
-  // 7. Floorplan 3D View Switcher & HD Render
-  setupFloorplanControls();
-
-  // 8. 3D Card Tilt Effect on Plan Cards
+  // 7. 3D Card Tilt Effect on Plan Cards
   setupPlanCards3D();
 
   // 9. Biomechanics HUD Toggle (Key 'H' & Button)
@@ -164,37 +161,6 @@ function setupHeroSound() {
         if (iconMuted) iconMuted.style.display = 'none';
         if (iconUnmuted) iconUnmuted.style.display = 'block';
         if (soundText) soundText.textContent = 'Silenciar';
-      }
-    });
-  }
-}
-
-/**
- * Floorplan HD Overlay & Switcher Controls
- */
-function setupFloorplanControls() {
-  const btnViewHd = document.getElementById('btn-view-hd');
-  const btnViewIso = document.getElementById('btn-view-iso');
-  const btnViewTop = document.getElementById('btn-view-top');
-  const btnViewReset = document.getElementById('btn-view-reset');
-  const hdOverlay = document.getElementById('floorplan-hd-overlay');
-  const hintBadge = document.getElementById('floorplan-hint-badge');
-
-  if (btnViewHd && hdOverlay) {
-    btnViewHd.addEventListener('click', () => {
-      hdOverlay.style.display = 'flex';
-      document.querySelectorAll('.floorplan-tool-btn').forEach((b) => b.classList.remove('active'));
-      btnViewHd.classList.add('active');
-      if (hintBadge) hintBadge.style.display = 'none';
-    });
-
-    [btnViewIso, btnViewTop, btnViewReset].forEach((btn) => {
-      if (btn) {
-        btn.addEventListener('click', () => {
-          hdOverlay.style.display = 'none';
-          if (btnViewHd) btnViewHd.classList.remove('active');
-          if (hintBadge) hintBadge.style.display = 'flex';
-        });
       }
     });
   }

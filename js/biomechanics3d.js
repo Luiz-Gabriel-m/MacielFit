@@ -3,7 +3,7 @@
  * Interactive Three.js WebGL simulation with kinetic force vectors,
  * multi-angle 360° inspection, animated lifter, multi-equipment kinematics,
  * and real-time anatomical muscle highlighting.
- * Based on the advanced Deadlift3D architecture.
+ * Supports: Deadlift, Squat, Bench Press, Lat Pulldown, and Spinning STS 02.
  */
 
 class StudioMacielBiomechanics3D {
@@ -20,9 +20,9 @@ class StudioMacielBiomechanics3D {
 
     // Kinematic model pieces
     this.lifterGroup = null;
-    this.equipmentGroup = null;
+    this.staticEquipment = null;
+    this.dynamicMovingBar = null;
     this.vectorGroup = null;
-    this.muscleMeshes = [];
     this.joints = {};
 
     // Current State
@@ -34,12 +34,22 @@ class StudioMacielBiomechanics3D {
     this.autoPlaySpeed = 0.007;
     this.showVectors = true;
 
+    // Materials
+    this.carbonMat = null;
+    this.goldMat = null;
+    this.chromeMat = null;
+    this.tealMat = null;
+    this.activeMuscleMatPrimary = null;
+    this.activeMuscleMatSecondary = null;
+
     // Multi-Exercise Biomechanics Database
     this.exercisesData = {
       deadlift: {
         name: "Levantamento Terra (Deadlift)",
         category: "Cadeia Posterior & Força Bruta",
-        equipmentType: "barbell",
+        equipmentType: "deadlift_bar",
+        camTarget: { x: 0, y: 0.75, z: 0 },
+        camPos: { x: 3.4, y: 1.8, z: 3.8 },
         phases: {
           0.0: {
             title: "Fase 1: Setup & Saída",
@@ -76,7 +86,9 @@ class StudioMacielBiomechanics3D {
       squat: {
         name: "Agachamento Livre (Back Squat)",
         category: "Membros Inferiores & Potência",
-        equipmentType: "squat_bar",
+        equipmentType: "squat_rack",
+        camTarget: { x: 0, y: 0.85, z: 0 },
+        camPos: { x: 3.4, y: 1.9, z: 3.6 },
         phases: {
           0.0: {
             title: "Fase 1: Base & Encaixe (Top)",
@@ -110,9 +122,11 @@ class StudioMacielBiomechanics3D {
         }
       },
       bench_press: {
-        name: "Supino Reto com Barra / Halteres",
+        name: "Supino Reto com Barra",
         category: "Membros Superiores • Empurrar",
-        equipmentType: "bench",
+        equipmentType: "bench_press",
+        camTarget: { x: 0, y: 0.65, z: 0 },
+        camPos: { x: 3.2, y: 2.1, z: 2.8 },
         phases: {
           0.0: {
             title: "Fase 1: Setup & Retração Escapular",
@@ -136,7 +150,7 @@ class StudioMacielBiomechanics3D {
             title: "Fase 3: Impulso e Bloqueio Superior",
             badge: "Pico de Contração Peitoral",
             cues: [
-              { label: "Empurrar em Direção aos Olhos", desc: "Trajetória angular em J invertido até a linha dos ombros." },
+              { label: "Empurrar em Direção aos Olhos", desc: "Trajetória angular até a linha vertical dos ombros." },
               { label: "Manter Escápulas Fechadas", desc: "Não perder a retração escapular no ápice do lockout." }
             ],
             muscles: ["Peitoral Maior", "Tríceps Braquial", "Serrátil Anterior"]
@@ -146,66 +160,74 @@ class StudioMacielBiomechanics3D {
       spinning: {
         name: "Spinning Supertech STS 02",
         category: "Cardio & Alta Cadência",
-        equipmentType: "bike",
+        equipmentType: "spinning_bike",
+        camTarget: { x: 0, y: 0.70, z: 0 },
+        camPos: { x: 3.2, y: 1.6, z: 3.2 },
         phases: {
           0.0: {
-            title: "Fase 1: Ataque da Pedalada (12h às 3h)",
-            badge: "Fase Propulsiva de Potência",
+            title: "Fase 1: Posição de Ataque (Aero)",
+            badge: "Postura e Alinhamento",
             cues: [
-              { label: "Pressão no Pedal", desc: "Extensão concêntrica do quadríceps empurrando o volante de inércia." },
-              { label: "Postura Neutra do Tronco", desc: "Mãos suaves no guidão, ombros longe das orelhas." }
+              { label: "Mãos nas Empunhaduras Superiores", desc: "Pegada relaxada sem sobrecarregar punhos ou antebraços." },
+              { label: "Tronco em 45°", desc: "Coluna alinhada e abdômen ativo para suporte lombar contínuo." }
             ],
-            muscles: ["Quadríceps", "Glúteo Máximo", "Panturrilhas", "Core"]
+            muscles: ["Quadríceps", "Glúteos", "Isquiotibiais", "Panturrilhas"]
           },
           0.5: {
-            title: "Fase 2: Transição Inferior (3h às 6h)",
-            badge: "Tração Contínua",
+            title: "Fase 2: Potência na Descida do Pedal",
+            badge: "Fase de Propulsão (Downstroke)",
             cues: [
-              { label: "Raspar o Chão", desc: "Transição suave de panturrilhas e início de flexão de joelho." },
-              { label: "Cadência Regular", desc: "Resistência magnética constante mantendo torque fluido." }
+              { label: "Empurrar dos 1 às 5 Horas", desc: "Ativação concêntrica potente de quadríceps e glúteos no arco descendente." },
+              { label: "Tornozelo Neutro", desc: "Pé paralelo ao solo sem apontar excessivamente para baixo." }
             ],
-            muscles: ["Gastrocnêmio", "Sóleo", "Isquiotibiais"]
+            muscles: ["Quadríceps", "Glúteo Máximo", "Panturrilhas"]
           },
           1.0: {
-            title: "Fase 3: Puxada Ascendente (6h às 12h)",
-            badge: "Recuperação Ativa & Puxada",
+            title: "Fase 3: Transição e Puxada Superior",
+            badge: "Cadência e Fluidez (Upstroke)",
             cues: [
-              { label: "Puxar o Pedal para Cima", desc: "Uso dos clips sapatilha / firma-pés para ciclo 360° redondo." }
+              { label: "Puxada Ativa com Firma-Pé", desc: "Isquiotibiais e flexores puxam o pedal suavemente de volta ao topo." },
+              { label: "Cadência Constante", desc: "Volante de inércia dourado mantendo ritmo suave sem trancos articulares." }
             ],
-            muscles: ["Isquiotibiais", "Tibial Anterior", "Flexores do Quadril"]
+            muscles: ["Isquiotibiais", "Tibial Anterior", "Core"]
           }
         }
       },
       lat_pulldown: {
-        name: "Puxada Dorsal Alta (Lat Pulldown)",
-        category: "Membros Superiores • Puxar",
-        equipmentType: "pulldown",
+        name: "Puxada Dorsal Alta",
+        category: "Dorsais & Largura das Costas",
+        equipmentType: "lat_pulldown_machine",
+        camTarget: { x: 0, y: 1.1, z: 0 },
+        camPos: { x: 3.2, y: 1.8, z: 3.4 },
         phases: {
           0.0: {
-            title: "Fase 1: Alongamento Overhead (Início)",
-            badge: "Pré-Tensão Dorsal",
+            title: "Fase 1: Setup & Alongamento Superior",
+            badge: "Pré-Tensão e Amplitude",
             cues: [
-              { label: "Alongamento das Fibras", desc: "Braços estendidos, grande dorsal em alongamento total seguro." },
-              { label: "Coxas Travadas nos Rolos", desc: "Estabilidade inferior sem elevar o corpo do assento." }
+              { label: "Pegada Aberta e Pronada", desc: "Mãos firmes na curvatura da barra além da largura dos ombros." },
+              { label: "Alongamento das Fibras", desc: "Escápulas sobem naturalmente permitindo que o grande dorsal se alongue." },
+              { label: "Fixação das Pernas", desc: "Almofadas de apoio travadas firmemente sobre as coxas." }
             ],
-            muscles: ["Latíssimo do Dorso", "Redondo Maior", "Bíceps Braquial"]
+            muscles: ["Grande Dorsal", "Redondo Maior", "Bíceps", "Trapézio Superior"]
           },
           0.5: {
-            title: "Fase 2: Depressão Escapular & Puxada",
-            badge: "Ativação Escapular",
+            title: "Fase 2: Tração Esternal & Condução",
+            badge: "Pico de Força Concêntrica",
             cues: [
-              { label: "Cotovelos para Baixo e para Dentro", desc: "Puxar liderando pelos cotovelos, não pelos punhos." },
-              { label: "Barra até a Fúrcula Clavicular", desc: "Peitoral aberto sem reclinar o tronco exageradamente." }
+              { label: "Cotovelos para Baixo e para Dentro", desc: "Focar em 'puxar com os cotovelos', e não com os antebraços." },
+              { label: "Toque na Clavícula / Alto do Peito", desc: "Barra desce até a altura da fúrcula esternal sem inclinar excessivamente o tronco." },
+              { label: "Abertura Torácica", desc: "Peito alto em direção à barra no ponto mais baixo da repetição." }
             ],
-            muscles: ["Latíssimo do Dorso", "Bíceps Braquial", "Trapézio Médio", "Romboides"]
+            muscles: ["Grande Dorsal", "Trapézio Médio/Inferior", "Romboides", "Bíceps"]
           },
           1.0: {
-            title: "Fase 3: Pico de Contração Dorsal",
-            badge: "Esmagamento das Costas",
+            title: "Fase 3: Retorno Excêntrico Controlado",
+            badge: "Hipertrofia sob Tensão",
             cues: [
-              { label: "Pausa Isométrica de 1s", desc: "Máxima densidade muscular dorsal antes da volta excêntrica." }
+              { label: "Subida em 2 a 3 Segundos", desc: "Resistir à subida do cabo mantendo os dorsais ativos." },
+              { label: "Tronco Estável", desc: "Sem balanços para frente e para trás durante o curso da repetição." }
             ],
-            muscles: ["Latíssimo do Dorso", "Romboides", "Deltoide Posterior"]
+            muscles: ["Grande Dorsal", "Antebraços", "Eretores da Espinha"]
           }
         }
       }
@@ -216,6 +238,7 @@ class StudioMacielBiomechanics3D {
 
   init() {
     try {
+      this.setupMaterials();
       this.setupScene();
       this.setupLighting();
       this.createEnvironment();
@@ -225,13 +248,62 @@ class StudioMacielBiomechanics3D {
       this.setupControls();
       this.setupEventListeners();
       this.setupVisibilityObserver();
-      this.updateKinematics(0);
+      this.switchExercise("deadlift");
       this.render();
-      this.updateFloatingCard(0.0);
     } catch (err) {
-      console.warn("WebGL Biomechanics init note:", err);
+      console.warn("WebGL initialization note:", err);
       this.renderFallback();
     }
+  }
+
+  setupMaterials() {
+    this.carbonMat = new THREE.MeshStandardMaterial({
+      color: 0x182025,
+      roughness: 0.45,
+      metalness: 0.65
+    });
+
+    this.goldMat = new THREE.MeshStandardMaterial({
+      color: 0xffd700,
+      metalness: 0.9,
+      roughness: 0.2
+    });
+
+    this.chromeMat = new THREE.MeshStandardMaterial({
+      color: 0xdde2ea,
+      metalness: 0.95,
+      roughness: 0.15
+    });
+
+    this.darkPlateMat = new THREE.MeshStandardMaterial({
+      color: 0x161c20,
+      metalness: 0.5,
+      roughness: 0.5
+    });
+
+    this.tealMat = new THREE.MeshStandardMaterial({
+      color: 0x076b77,
+      metalness: 0.6,
+      roughness: 0.35
+    });
+
+    // Glowing Prime Target Muscle (Electric Gold)
+    this.activeMuscleMatPrimary = new THREE.MeshStandardMaterial({
+      color: 0xffd700,
+      emissive: 0xd4af37,
+      emissiveIntensity: 0.9,
+      roughness: 0.3,
+      metalness: 0.5
+    });
+
+    // Glowing Stabilizer Muscle (Electric Cyan)
+    this.activeMuscleMatSecondary = new THREE.MeshStandardMaterial({
+      color: 0x00e5ff,
+      emissive: 0x076b77,
+      emissiveIntensity: 0.7,
+      roughness: 0.35,
+      metalness: 0.4
+    });
   }
 
   setupScene() {
@@ -240,14 +312,10 @@ class StudioMacielBiomechanics3D {
     const height = this.container.clientHeight || (isMobile ? 380 : 540);
 
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.FogExp2(0x070709, 0.04);
+    this.scene.fog = new THREE.FogExp2(0x07090b, 0.045);
 
-    this.camera = new THREE.PerspectiveCamera(isMobile ? 50 : 45, width / height, 0.1, 100);
-    if (isMobile) {
-      this.camera.position.set(3.8, 1.9, 4.3);
-    } else {
-      this.camera.position.set(3.4, 1.8, 3.8);
-    }
+    this.camera = new THREE.PerspectiveCamera(isMobile ? 52 : 45, width / height, 0.1, 100);
+    this.camera.position.set(3.4, 1.8, 3.8);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
     this.renderer.setSize(width, height);
@@ -260,23 +328,20 @@ class StudioMacielBiomechanics3D {
   }
 
   setupLighting() {
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     this.scene.add(ambientLight);
 
-    // Studio Maciel Gold Key Light
-    const keyLight = new THREE.DirectionalLight(0xfff5e6, 1.25);
+    const keyLight = new THREE.DirectionalLight(0xfff5e6, 1.3);
     keyLight.position.set(4, 6, 4);
     keyLight.castShadow = true;
     keyLight.shadow.mapSize.width = 1024;
     keyLight.shadow.mapSize.height = 1024;
     this.scene.add(keyLight);
 
-    // Deep Teal & Neon Cyan Rim Light
     const tealRim = new THREE.DirectionalLight(0x00e5ff, 2.2);
     tealRim.position.set(-3, 3, -3);
     this.scene.add(tealRim);
 
-    // Warm Gold Accent Light from front
     const goldFill = new THREE.PointLight(0xffd700, 1.0, 8);
     goldFill.position.set(0, 0.6, 2.6);
     this.scene.add(goldFill);
@@ -295,7 +360,7 @@ class StudioMacielBiomechanics3D {
     platform.receiveShadow = true;
     this.scene.add(platform);
 
-    // Noble Dark Wood Center with Gold Trim
+    // Dark Center with Gold Trim
     const woodCenterGeo = new THREE.BoxGeometry(1.4, 0.085, 2.78);
     const woodCenterMat = new THREE.MeshStandardMaterial({
       color: 0x182025,
@@ -325,126 +390,197 @@ class StudioMacielBiomechanics3D {
   }
 
   createEquipment(type) {
-    if (this.equipmentGroup) {
-      this.scene.remove(this.equipmentGroup);
+    // Remove previous equipment groups cleanly
+    if (this.staticEquipment) {
+      this.scene.remove(this.staticEquipment);
+      this.staticEquipment = null;
     }
-    this.equipmentGroup = new THREE.Group();
+    if (this.dynamicMovingBar) {
+      this.scene.remove(this.dynamicMovingBar);
+      this.dynamicMovingBar = null;
+    }
 
-    const goldMat = new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.9, roughness: 0.2 });
-    const chromeMat = new THREE.MeshStandardMaterial({ color: 0xdde2ea, metalness: 0.95, roughness: 0.15 });
-    const darkPlateMat = new THREE.MeshStandardMaterial({ color: 0x161c20, metalness: 0.5, roughness: 0.5 });
-    const tealMat = new THREE.MeshStandardMaterial({ color: 0x076b77, metalness: 0.6, roughness: 0.35 });
+    this.staticEquipment = new THREE.Group();
+    this.dynamicMovingBar = new THREE.Group();
 
-    if (type === "barbell" || type === "squat_bar") {
-      const barGeo = new THREE.CylinderGeometry(0.015, 0.015, 2.2, 24);
-      const bar = new THREE.Mesh(barGeo, chromeMat);
-      bar.rotation.z = Math.PI / 2;
-      bar.castShadow = true;
-      this.equipmentGroup.add(bar);
+    if (type === "deadlift_bar") {
+      // Olympic Barbell (moves dynamically)
+      this.buildOlympicBarbell(this.dynamicMovingBar);
+      this.dynamicMovingBar.position.set(0, 0.225, 0);
+    } else if (type === "squat_rack") {
+      // Squat Rack Uprights (Stationary)
+      const rackUprightGeo = new THREE.BoxGeometry(0.08, 2.2, 0.08);
+      [-0.75, 0.75].forEach((x) => {
+        const upright = new THREE.Mesh(rackUprightGeo, this.darkPlateMat);
+        upright.position.set(x, 1.1, -0.15);
+        this.staticEquipment.add(upright);
 
-      // Knurling center
-      const knurlGeo = new THREE.CylinderGeometry(0.0152, 0.0152, 0.16, 16);
-      const centerKnurl = new THREE.Mesh(knurlGeo, goldMat);
-      centerKnurl.rotation.z = Math.PI / 2;
-      this.equipmentGroup.add(centerKnurl);
-
-      // Olympic Bumper Plates (Studio Maciel Gold + Dark Carbon)
-      const plateGeo = new THREE.CylinderGeometry(0.225, 0.225, 0.05, 32);
-      [-0.72, 0.72].forEach((x) => {
-        const plate1 = new THREE.Mesh(plateGeo, goldMat);
-        plate1.rotation.z = Math.PI / 2;
-        plate1.position.x = x;
-        plate1.castShadow = true;
-        this.equipmentGroup.add(plate1);
+        // Gold J-Hooks
+        const hook = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.06, 0.14), this.goldMat);
+        hook.position.set(x, 1.35, -0.06);
+        this.staticEquipment.add(hook);
       });
 
-      [-0.78, 0.78].forEach((x) => {
-        const plate2 = new THREE.Mesh(plateGeo, darkPlateMat);
-        plate2.rotation.z = Math.PI / 2;
-        plate2.position.x = x;
-        plate2.castShadow = true;
-        this.equipmentGroup.add(plate2);
-      });
+      // Top crossbar
+      const crossbar = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.06, 0.06), this.goldMat);
+      crossbar.position.set(0, 2.15, -0.15);
+      this.staticEquipment.add(crossbar);
 
-      // Position: Deadlift starts on floor (0.225m), Squat starts on shoulders (1.35m)
-      this.equipmentGroup.position.set(0, type === "squat_bar" ? 1.35 : 0.225, 0);
-    } else if (type === "bench") {
-      // Flat Bench
-      const benchPad = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.1, 2.0), tealMat);
+      // Squat Barbell (moves dynamically)
+      this.buildOlympicBarbell(this.dynamicMovingBar);
+      this.dynamicMovingBar.position.set(0, 1.35, 0);
+    } else if (type === "bench_press") {
+      // Fixed Leather Bench
+      const benchPad = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.1, 1.35), this.tealMat);
       benchPad.position.set(0, 0.38, 0);
-      this.equipmentGroup.add(benchPad);
+      this.staticEquipment.add(benchPad);
 
-      const benchLegs = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.38, 1.8), darkPlateMat);
+      const benchLegs = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.38, 1.2), this.darkPlateMat);
       benchLegs.position.set(0, 0.19, 0);
-      this.equipmentGroup.add(benchLegs);
+      this.staticEquipment.add(benchLegs);
 
-      // Pair of Heavy Hexagon Dumbbells
-      [-0.32, 0.32].forEach((x) => {
-        const dBar = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.45, 12), chromeMat);
-        dBar.rotation.x = Math.PI / 2;
-        dBar.position.set(x, 0.55, 0);
-        this.equipmentGroup.add(dBar);
+      // Bench Rack Uprights (Stationary)
+      [-0.55, 0.55].forEach((x) => {
+        const post = new THREE.Mesh(new THREE.BoxGeometry(0.07, 1.25, 0.07), this.darkPlateMat);
+        post.position.set(x, 0.62, 0.15);
+        this.staticEquipment.add(post);
 
-        [-0.2, 0.2].forEach((z) => {
-          const hex = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.1, 6), goldMat);
-          hex.rotation.x = Math.PI / 2;
-          hex.position.set(x, 0.55, z);
-          this.equipmentGroup.add(hex);
-        });
+        const jHook = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.05, 0.12), this.goldMat);
+        jHook.position.set(x, 1.15, 0.15);
+        this.staticEquipment.add(jHook);
       });
-    } else if (type === "bike") {
-      // Supertech STS 02 Spinning Bike model
-      const frame = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.9, 1.4), darkPlateMat);
-      frame.position.set(0, 0.45, 0);
-      this.equipmentGroup.add(frame);
 
-      const flywheel = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.12, 28), goldMat);
+      // Bench Barbell (moves strictly vertically)
+      this.buildOlympicBarbell(this.dynamicMovingBar);
+      this.dynamicMovingBar.position.set(0, 1.15, 0.15);
+    } else if (type === "spinning_bike") {
+      // Supertech STS 02 Spinning Bike (Stationary Frame)
+      const baseFeet = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.06, 1.3), this.darkPlateMat);
+      baseFeet.position.set(0, 0.03, 0);
+      this.staticEquipment.add(baseFeet);
+
+      const frameBeam = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.65, 0.85), this.tealMat);
+      frameBeam.rotation.x = -0.35;
+      frameBeam.position.set(0, 0.45, 0.05);
+      this.staticEquipment.add(frameBeam);
+
+      const seatPost = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.5, 12), this.chromeMat);
+      seatPost.position.set(0, 0.68, -0.22);
+      this.staticEquipment.add(seatPost);
+
+      const saddle = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.08, 0.32), this.darkPlateMat);
+      saddle.position.set(0, 0.85, -0.22);
+      this.staticEquipment.add(saddle);
+
+      const handlePost = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.55, 12), this.chromeMat);
+      handlePost.position.set(0, 0.78, 0.35);
+      this.staticEquipment.add(handlePost);
+
+      const handlebars = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.05, 0.22), this.goldMat);
+      handlebars.position.set(0, 0.98, 0.35);
+      this.staticEquipment.add(handlebars);
+
+      // Gold Inertia Flywheel (Dynamic rotating mesh)
+      const flywheel = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.08, 32), this.goldMat);
       flywheel.rotation.z = Math.PI / 2;
-      flywheel.position.set(0, 0.35, 0.45);
-      this.equipmentGroup.add(flywheel);
+      flywheel.position.set(0, 0.38, 0.42);
+      this.dynamicMovingBar.add(flywheel);
       this.joints.bikeWheel = flywheel;
 
-      const handlebar = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.05, 0.2), tealMat);
-      handlebar.position.set(0, 0.95, 0.4);
-      this.equipmentGroup.add(handlebar);
-    } else {
-      // Lat Pulldown bar
-      const pBar = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 1.6, 16), goldMat);
-      pBar.rotation.z = Math.PI / 2;
-      pBar.position.set(0, 1.85, 0);
-      this.equipmentGroup.add(pBar);
+      // Crank arms & pedals
+      const crankL = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.18, 0.04), this.chromeMat);
+      crankL.position.set(-0.16, 0.38, 0.05);
+      this.dynamicMovingBar.add(crankL);
+      this.joints.crankL = crankL;
+
+      const crankR = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.18, 0.04), this.chromeMat);
+      crankR.position.set(0.16, 0.38, 0.05);
+      this.dynamicMovingBar.add(crankR);
+      this.joints.crankR = crankR;
+    } else if (type === "lat_pulldown_machine") {
+      // Lat Pulldown Machine Tower (Stationary)
+      const tower = new THREE.Mesh(new THREE.BoxGeometry(0.45, 2.3, 0.55), this.darkPlateMat);
+      tower.position.set(0, 1.15, -0.65);
+      this.staticEquipment.add(tower);
+
+      const topBoom = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, 1.1), this.tealMat);
+      topBoom.position.set(0, 2.25, -0.15);
+      this.staticEquipment.add(topBoom);
+
+      const pulley = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.04, 16), this.goldMat);
+      pulley.rotation.z = Math.PI / 2;
+      pulley.position.set(0, 2.22, 0.08);
+      this.staticEquipment.add(pulley);
+
+      const seatPad = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.08, 0.55), this.tealMat);
+      seatPad.position.set(0, 0.45, -0.1);
+      this.staticEquipment.add(seatPad);
+
+      const thighRollers = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.65, 16), this.darkPlateMat);
+      thighRollers.rotation.z = Math.PI / 2;
+      thighRollers.position.set(0, 0.58, 0.15);
+      this.staticEquipment.add(thighRollers);
+
+      // Lat Pulldown Wide Curved Bar (Dynamic)
+      const latBar = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 1.55, 20), this.goldMat);
+      latBar.rotation.z = Math.PI / 2;
+      this.dynamicMovingBar.add(latBar);
+
+      // Center cable connector
+      const connector = new THREE.Mesh(new THREE.SphereGeometry(0.04, 12, 12), this.chromeMat);
+      this.dynamicMovingBar.add(connector);
+
+      this.dynamicMovingBar.position.set(0, 1.95, 0.08);
     }
 
-    this.scene.add(this.equipmentGroup);
+    this.scene.add(this.staticEquipment);
+    this.scene.add(this.dynamicMovingBar);
+  }
+
+  buildOlympicBarbell(group) {
+    // Steel Shaft (220cm Olympic Bar)
+    const barGeo = new THREE.CylinderGeometry(0.015, 0.015, 2.2, 24);
+    const bar = new THREE.Mesh(barGeo, this.chromeMat);
+    bar.rotation.z = Math.PI / 2;
+    bar.castShadow = true;
+    group.add(bar);
+
+    // Knurling center
+    const knurlGeo = new THREE.CylinderGeometry(0.0152, 0.0152, 0.16, 16);
+    const centerKnurl = new THREE.Mesh(knurlGeo, this.goldMat);
+    centerKnurl.rotation.z = Math.PI / 2;
+    group.add(centerKnurl);
+
+    // Olympic Bumper Plates (Studio Maciel Gold + Dark Carbon)
+    const plateGeo = new THREE.CylinderGeometry(0.225, 0.225, 0.05, 32);
+    [-0.72, 0.72].forEach((x) => {
+      const plate1 = new THREE.Mesh(plateGeo, this.goldMat);
+      plate1.rotation.z = Math.PI / 2;
+      plate1.position.x = x;
+      plate1.castShadow = true;
+      group.add(plate1);
+    });
+
+    [-0.78, 0.78].forEach((x) => {
+      const plate2 = new THREE.Mesh(plateGeo, this.darkPlateMat);
+      plate2.rotation.z = Math.PI / 2;
+      plate2.position.x = x;
+      plate2.castShadow = true;
+      group.add(plate2);
+    });
+
+    // Olympic Collars
+    const collarGeo = new THREE.CylinderGeometry(0.026, 0.026, 0.035, 16);
+    [-0.83, 0.83].forEach((x) => {
+      const collar = new THREE.Mesh(collarGeo, this.chromeMat);
+      collar.rotation.z = Math.PI / 2;
+      collar.position.x = x;
+      group.add(collar);
+    });
   }
 
   createKinematicLifter() {
     this.lifterGroup = new THREE.Group();
-
-    // Dark Carbon Body Material
-    const carbonMat = new THREE.MeshStandardMaterial({
-      color: 0x182025,
-      roughness: 0.45,
-      metalness: 0.65
-    });
-
-    // Glowing Primary Target Active Muscle (Electric Gold)
-    this.activeMuscleMatPrimary = new THREE.MeshStandardMaterial({
-      color: 0xffd700,
-      emissive: 0xd4af37,
-      emissiveIntensity: 0.85,
-      roughness: 0.3,
-      metalness: 0.5
-    });
-
-    // Glowing Stabilizer Muscle (Electric Cyan)
-    this.activeMuscleMatSecondary = new THREE.MeshStandardMaterial({
-      color: 0x00e5ff,
-      emissive: 0x076b77,
-      emissiveIntensity: 0.7,
-      roughness: 0.35,
-      metalness: 0.4
-    });
 
     // 1. Pelvis / Hips (Root of body kinematics)
     const pelvisGeo = new THREE.BoxGeometry(0.32, 0.16, 0.22);
@@ -452,14 +588,13 @@ class StudioMacielBiomechanics3D {
     pelvis.castShadow = true;
     this.joints.pelvis = pelvis;
     this.lifterGroup.add(pelvis);
-    this.muscleMeshes.push(pelvis);
 
     // 2. Spine / Torso
     this.joints.torsoPivot = new THREE.Group();
     pelvis.add(this.joints.torsoPivot);
 
     const torsoGeo = new THREE.BoxGeometry(0.36, 0.48, 0.24);
-    const torso = new THREE.Mesh(torsoGeo, carbonMat);
+    const torso = new THREE.Mesh(torsoGeo, this.carbonMat);
     torso.position.y = 0.32;
     torso.castShadow = true;
     this.joints.torsoPivot.add(torso);
@@ -481,12 +616,12 @@ class StudioMacielBiomechanics3D {
 
     // 3. Head & Neck
     const neckGeo = new THREE.CylinderGeometry(0.06, 0.07, 0.12, 12);
-    const neck = new THREE.Mesh(neckGeo, carbonMat);
+    const neck = new THREE.Mesh(neckGeo, this.carbonMat);
     neck.position.y = 0.62;
     this.joints.torsoPivot.add(neck);
 
     const headGeo = new THREE.SphereGeometry(0.12, 16, 16);
-    const head = new THREE.Mesh(headGeo, carbonMat);
+    const head = new THREE.Mesh(headGeo, this.carbonMat);
     head.position.y = 0.74;
     this.joints.torsoPivot.add(head);
 
@@ -500,6 +635,7 @@ class StudioMacielBiomechanics3D {
     leftArm.position.y = -0.34;
     leftArm.castShadow = true;
     this.joints.leftShoulder.add(leftArm);
+    this.joints.leftArm = leftArm;
 
     this.joints.rightShoulder = new THREE.Group();
     this.joints.rightShoulder.position.set(0.26, 0.5, 0);
@@ -509,14 +645,15 @@ class StudioMacielBiomechanics3D {
     rightArm.position.y = -0.34;
     rightArm.castShadow = true;
     this.joints.rightShoulder.add(rightArm);
+    this.joints.rightArm = rightArm;
 
     // 5. Legs
     const footGeo = new THREE.BoxGeometry(0.12, 0.08, 0.26);
-    this.joints.leftFoot = new THREE.Mesh(footGeo, carbonMat);
+    this.joints.leftFoot = new THREE.Mesh(footGeo, this.carbonMat);
     this.joints.leftFoot.position.set(-0.24, 0.04, 0);
     this.lifterGroup.add(this.joints.leftFoot);
 
-    this.joints.rightFoot = new THREE.Mesh(footGeo, carbonMat);
+    this.joints.rightFoot = new THREE.Mesh(footGeo, this.carbonMat);
     this.joints.rightFoot.position.set(0.24, 0.04, 0);
     this.lifterGroup.add(this.joints.rightFoot);
 
@@ -527,16 +664,16 @@ class StudioMacielBiomechanics3D {
     this.lifterGroup.add(this.joints.rightThigh);
 
     const shinGeo = new THREE.CylinderGeometry(0.05, 0.04, 0.42, 12);
-    this.joints.leftShin = new THREE.Mesh(shinGeo, carbonMat);
-    this.joints.rightShin = new THREE.Mesh(shinGeo, carbonMat);
+    this.joints.leftShin = new THREE.Mesh(shinGeo, this.carbonMat);
+    this.joints.rightShin = new THREE.Mesh(shinGeo, this.carbonMat);
     this.lifterGroup.add(this.joints.leftShin);
     this.lifterGroup.add(this.joints.rightShin);
 
     const kneeGeo = new THREE.SphereGeometry(0.06, 12, 12);
-    this.joints.leftKnee = new THREE.Mesh(kneeGeo, carbonMat);
-    this.joints.rightKnee = new THREE.Mesh(kneeGeo, carbonMat);
+    this.joints.leftKnee = new THREE.Mesh(kneeGeo, this.carbonMat);
+    this.joints.rightKnee = new THREE.Mesh(kneeGeo, this.carbonMat);
     this.lifterGroup.add(this.joints.leftKnee);
-    this.lifterGroup.add(this.joints.rightKnee);
+    this.joints.rightKnee = new THREE.Mesh(kneeGeo, this.carbonMat);
 
     this.scene.add(this.lifterGroup);
   }
@@ -544,7 +681,7 @@ class StudioMacielBiomechanics3D {
   createForceVectors() {
     this.vectorGroup = new THREE.Group();
 
-    // 1. Vertical Ground Reaction Force Vectors (Left & Right Foot)
+    // Vertical Ground Reaction Force Vectors (Left & Right Foot)
     const arrowDir = new THREE.Vector3(0, 1, 0);
     const arrowOriginL = new THREE.Vector3(-0.24, 0.08, 0);
     const arrowOriginR = new THREE.Vector3(0.24, 0.08, 0);
@@ -554,7 +691,7 @@ class StudioMacielBiomechanics3D {
     this.vectorGroup.add(this.arrowL);
     this.vectorGroup.add(this.arrowR);
 
-    // 2. Pure Vertical Bar Path Laser Guideline (Teal/Emerald)
+    // Laser Guideline
     const laserMat = new THREE.LineDashedMaterial({
       color: 0x00e5ff,
       dashSize: 0.05,
@@ -563,19 +700,11 @@ class StudioMacielBiomechanics3D {
     });
     const laserGeo = new THREE.BufferGeometry().setFromPoints([
       new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(0, 1.8, 0)
+      new THREE.Vector3(0, 2.2, 0)
     ]);
-    const laserLine = new THREE.Line(laserGeo, laserMat);
-    laserLine.computeLineDistances();
-    this.vectorGroup.add(laserLine);
-
-    // 3. Dynamic Center of Gravity Ring
-    const cogGeo = new THREE.RingGeometry(0.08, 0.12, 32);
-    const cogMat = new THREE.MeshBasicMaterial({ color: 0xffd700, side: THREE.DoubleSide });
-    const cog = new THREE.Mesh(cogGeo, cogMat);
-    cog.rotation.x = Math.PI / 2;
-    cog.position.set(0, 0.015, 0);
-    this.vectorGroup.add(cog);
+    this.laserLine = new THREE.Line(laserGeo, laserMat);
+    this.laserLine.computeLineDistances();
+    this.vectorGroup.add(this.laserLine);
 
     this.scene.add(this.vectorGroup);
   }
@@ -671,12 +800,67 @@ class StudioMacielBiomechanics3D {
     // Rebuild equipment
     this.createEquipment(ex.equipmentType);
 
-    // Reset progress & card
-    this.setPhase(0.0);
+    // Update muscle highlighting colors according to active exercise target
+    if (exerciseKey === "deadlift") {
+      this.joints.pelvis.material = this.activeMuscleMatPrimary;
+      this.joints.lats.material = this.activeMuscleMatPrimary;
+      this.joints.chest.material = this.activeMuscleMatSecondary;
+      this.joints.leftThigh.material = this.activeMuscleMatSecondary;
+      this.joints.rightThigh.material = this.activeMuscleMatSecondary;
+    } else if (exerciseKey === "squat") {
+      this.joints.pelvis.material = this.activeMuscleMatPrimary;
+      this.joints.lats.material = this.carbonMat;
+      this.joints.chest.material = this.carbonMat;
+      this.joints.leftThigh.material = this.activeMuscleMatPrimary;
+      this.joints.rightThigh.material = this.activeMuscleMatPrimary;
+    } else if (exerciseKey === "bench_press") {
+      this.joints.pelvis.material = this.carbonMat;
+      this.joints.lats.material = this.carbonMat;
+      this.joints.chest.material = this.activeMuscleMatPrimary;
+      this.joints.leftArm.material = this.activeMuscleMatPrimary;
+      this.joints.rightArm.material = this.activeMuscleMatPrimary;
+      this.joints.leftThigh.material = this.carbonMat;
+      this.joints.rightThigh.material = this.carbonMat;
+    } else if (exerciseKey === "spinning") {
+      this.joints.pelvis.material = this.activeMuscleMatSecondary;
+      this.joints.lats.material = this.carbonMat;
+      this.joints.chest.material = this.carbonMat;
+      this.joints.leftThigh.material = this.activeMuscleMatPrimary;
+      this.joints.rightThigh.material = this.activeMuscleMatPrimary;
+      this.joints.leftShin.material = this.activeMuscleMatPrimary;
+      this.joints.rightShin.material = this.activeMuscleMatPrimary;
+    } else if (exerciseKey === "lat_pulldown") {
+      this.joints.pelvis.material = this.carbonMat;
+      this.joints.lats.material = this.activeMuscleMatPrimary;
+      this.joints.chest.material = this.carbonMat;
+      this.joints.leftArm.material = this.activeMuscleMatSecondary;
+      this.joints.rightArm.material = this.activeMuscleMatSecondary;
+      this.joints.leftThigh.material = this.carbonMat;
+      this.joints.rightThigh.material = this.carbonMat;
+    }
 
-    // Update exercise title header if present
-    const exTitleEl = document.getElementById("3d-current-exercise-name");
-    if (exTitleEl) exTitleEl.innerText = ex.name;
+    // Reset progress to 0 and render
+    this.currentProgress = 0.0;
+    this.targetProgress = 0.0;
+    this.setPhase(0.0);
+    this.updateKinematics(0.0);
+
+    // Update Camera Target
+    if (this.controls && ex.camTarget) {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(this.controls.target, {
+          x: ex.camTarget.x,
+          y: ex.camTarget.y,
+          z: ex.camTarget.z,
+          duration: 0.9,
+          ease: "power2.out",
+          onUpdate: () => this.controls.update()
+        });
+      } else {
+        this.controls.target.set(ex.camTarget.x, ex.camTarget.y, ex.camTarget.z);
+        this.controls.update();
+      }
+    }
   }
 
   setCameraPreset(mode) {
@@ -687,8 +871,9 @@ class StudioMacielBiomechanics3D {
       gsap.killTweensOf(this.controls.target);
     }
 
+    const ex = this.exercisesData[this.activeExerciseKey] || {};
+    const lookTarget = ex.camTarget || { x: 0, y: 0.75, z: 0 };
     let targetPos = { x: 3.4, y: 1.8, z: 3.8 };
-    let lookTarget = { x: 0, y: 0.75, z: 0 };
 
     if (mode === "sagittal") {
       targetPos = { x: 4.8, y: 0.85, z: 0.05 };
@@ -799,9 +984,13 @@ class StudioMacielBiomechanics3D {
     const exKey = this.activeExerciseKey;
 
     if (exKey === "deadlift") {
-      // Deadlift Kinematics
+      // 1. DEADLIFT KINEMATICS
+      // Reset feet to default lifting stance
+      this.joints.leftFoot.position.set(-0.24, 0.04, 0);
+      this.joints.rightFoot.position.set(0.24, 0.04, 0);
+
       const barY = 0.225 + (0.88 - 0.225) * p;
-      if (this.equipmentGroup) this.equipmentGroup.position.y = barY;
+      if (this.dynamicMovingBar) this.dynamicMovingBar.position.set(0, barY, 0);
 
       const pelvisY = 0.52 + (0.94 - 0.52) * p;
       const pelvisZ = -0.32 * (1 - p);
@@ -823,25 +1012,33 @@ class StudioMacielBiomechanics3D {
       this.orientSegment(this.joints.rightThigh, new THREE.Vector3(0.24, pelvisY, pelvisZ), this.joints.rightKnee.position);
       this.orientSegment(this.joints.leftShin, this.joints.leftKnee.position, new THREE.Vector3(-0.24, 0.08, 0));
       this.orientSegment(this.joints.rightShin, this.joints.rightKnee.position, new THREE.Vector3(0.24, 0.08, 0));
-    } else if (exKey === "squat") {
-      // Squat Kinematics: 0.0 = top (1.35m), 0.5 = parallel (0.85m), 1.0 = top
-      const squatProgress = p < 0.5 ? p * 2 : (1 - p) * 2;
-      const barY = 1.35 - 0.48 * squatProgress;
-      if (this.equipmentGroup) this.equipmentGroup.position.y = barY;
 
-      const pelvisY = 0.94 - 0.52 * squatProgress;
-      const pelvisZ = -0.28 * squatProgress;
+      if (this.laserLine) this.laserLine.position.set(0, 0, 0);
+
+    } else if (exKey === "squat") {
+      // 2. BACK SQUAT KINEMATICS
+      this.joints.leftFoot.position.set(-0.24, 0.04, 0);
+      this.joints.rightFoot.position.set(0.24, 0.04, 0);
+
+      // Depth follows smooth sine curve (0 = top, 1 = bottom parallel, 0 = lockout)
+      const depth = Math.sin(p * Math.PI);
+
+      const barY = 1.35 - 0.47 * depth;
+      if (this.dynamicMovingBar) this.dynamicMovingBar.position.set(0, barY, -0.05);
+
+      const pelvisY = 0.94 - 0.42 * depth;
+      const pelvisZ = -0.30 * depth;
       this.joints.pelvis.position.set(0, pelvisY, pelvisZ);
 
-      const torsoRotX = 0.42 * squatProgress;
+      const torsoRotX = 0.38 * depth;
       this.joints.torsoPivot.rotation.x = torsoRotX;
 
-      const armAngle = -0.55;
-      this.joints.leftShoulder.rotation.x = armAngle;
-      this.joints.rightShoulder.rotation.x = armAngle;
+      // Arms locked holding the bar behind upper traps
+      this.joints.leftShoulder.rotation.x = -0.65;
+      this.joints.rightShoulder.rotation.x = -0.65;
 
-      const kneeY = 0.48 - 0.12 * squatProgress;
-      const kneeZ = 0.22 * squatProgress;
+      const kneeY = 0.48 - 0.08 * depth;
+      const kneeZ = 0.22 * depth;
       this.joints.leftKnee.position.set(-0.24, kneeY, kneeZ);
       this.joints.rightKnee.position.set(0.24, kneeY, kneeZ);
 
@@ -849,37 +1046,119 @@ class StudioMacielBiomechanics3D {
       this.orientSegment(this.joints.rightThigh, new THREE.Vector3(0.24, pelvisY, pelvisZ), this.joints.rightKnee.position);
       this.orientSegment(this.joints.leftShin, this.joints.leftKnee.position, new THREE.Vector3(-0.24, 0.08, 0));
       this.orientSegment(this.joints.rightShin, this.joints.rightKnee.position, new THREE.Vector3(0.24, 0.08, 0));
+
+      if (this.laserLine) this.laserLine.position.set(0, 0, -0.05);
+
     } else if (exKey === "bench_press") {
-      // Bench Press Kinematics
-      this.joints.pelvis.position.set(0, 0.48, 0);
-      this.joints.torsoPivot.rotation.x = -Math.PI / 2; // Lying flat
+      // 3. BENCH PRESS KINEMATICS
+      // Lifter lies supine on the flat bench
+      this.joints.leftFoot.position.set(-0.36, 0.04, -0.55);
+      this.joints.rightFoot.position.set(0.36, 0.04, -0.55);
 
-      const pressY = 0.55 + 0.55 * p;
-      if (this.equipmentGroup) this.equipmentGroup.position.y = pressY;
+      const pelvisY = 0.44;
+      const pelvisZ = -0.35;
+      this.joints.pelvis.position.set(0, pelvisY, pelvisZ);
+      this.joints.torsoPivot.rotation.x = -Math.PI / 2; // Flat on back
 
-      const armAngle = -0.3 + 0.9 * p;
+      // Press depth follows smooth sine curve (unrack -> chest touch -> lockout)
+      const pressDepth = Math.sin(p * Math.PI);
+      const barY = 1.15 - 0.53 * pressDepth;
+      if (this.dynamicMovingBar) this.dynamicMovingBar.position.set(0, barY, 0.15);
+
+      // Arms move pressing upward
+      const armAngle = -0.15 - 0.85 * (1 - pressDepth);
       this.joints.leftShoulder.rotation.x = armAngle;
       this.joints.rightShoulder.rotation.x = armAngle;
+
+      // Knees bent with feet planted firmly beside bench
+      const kneeY = 0.44;
+      const kneeZ = -0.25;
+      this.joints.leftKnee.position.set(-0.36, kneeY, kneeZ);
+      this.joints.rightKnee.position.set(0.36, kneeY, kneeZ);
+
+      this.orientSegment(this.joints.leftThigh, new THREE.Vector3(-0.16, pelvisY, pelvisZ), this.joints.leftKnee.position);
+      this.orientSegment(this.joints.rightThigh, new THREE.Vector3(0.16, pelvisY, pelvisZ), this.joints.rightKnee.position);
+      this.orientSegment(this.joints.leftShin, this.joints.leftKnee.position, new THREE.Vector3(-0.36, 0.08, -0.55));
+      this.orientSegment(this.joints.rightShin, this.joints.rightKnee.position, new THREE.Vector3(0.36, 0.08, -0.55));
+
+      if (this.laserLine) this.laserLine.position.set(0, 0, 0.15);
+
     } else if (exKey === "spinning") {
-      // Spinning Kinematics
-      this.joints.pelvis.position.set(0, 0.8, -0.2);
-      this.joints.torsoPivot.rotation.x = 0.45;
+      // 4. SPINNING SUPERTECH STS 02 KINEMATICS
+      this.joints.pelvis.position.set(0, 0.85, -0.22);
+      this.joints.torsoPivot.rotation.x = 0.52; // Aero sprint forward lean
 
-      const pedalAngle = p * Math.PI * 4;
+      // Hands on handlebars
+      this.joints.leftShoulder.rotation.x = -0.55;
+      this.joints.rightShoulder.rotation.x = -0.55;
+
+      // Pedaling circle (radius = 0.18m around crank center 0.40, 0.05)
+      const angle = p * Math.PI * 4; // 2 revolutions per scrub cycle
+      const sinA = Math.sin(angle);
+      const cosA = Math.cos(angle);
+
+      const footLY = 0.40 + 0.18 * sinA;
+      const footLZ = 0.05 + 0.18 * cosA;
+      const footRY = 0.40 - 0.18 * sinA;
+      const footRZ = 0.05 - 0.18 * cosA;
+
+      this.joints.leftFoot.position.set(-0.22, footLY, footLZ);
+      this.joints.rightFoot.position.set(0.22, footRY, footRZ);
+
+      // Knees flex and extend continuously
+      const kneeLY = 0.62 + 0.12 * sinA;
+      const kneeLZ = -0.05 + 0.12 * cosA;
+      const kneeRY = 0.62 - 0.12 * sinA;
+      const kneeRZ = -0.05 - 0.12 * cosA;
+
+      this.joints.leftKnee.position.set(-0.22, kneeLY, kneeLZ);
+      this.joints.rightKnee.position.set(0.22, kneeRY, kneeRZ);
+
+      this.orientSegment(this.joints.leftThigh, new THREE.Vector3(-0.16, 0.85, -0.22), this.joints.leftKnee.position);
+      this.orientSegment(this.joints.rightThigh, new THREE.Vector3(0.16, 0.85, -0.22), this.joints.rightKnee.position);
+      this.orientSegment(this.joints.leftShin, this.joints.leftKnee.position, new THREE.Vector3(-0.22, footLY, footLZ));
+      this.orientSegment(this.joints.rightShin, this.joints.rightKnee.position, new THREE.Vector3(0.22, footRY, footRZ));
+
+      // Rotate bike flywheel & crank arms
       if (this.joints.bikeWheel) {
-        this.joints.bikeWheel.rotation.x = pedalAngle;
+        this.joints.bikeWheel.rotation.x = angle * 2.5;
       }
+      if (this.joints.crankL && this.joints.crankR) {
+        this.joints.crankL.rotation.x = angle;
+        this.joints.crankR.rotation.x = angle + Math.PI;
+      }
+
     } else if (exKey === "lat_pulldown") {
-      // Lat Pulldown Kinematics
-      this.joints.pelvis.position.set(0, 0.5, 0);
-      this.joints.torsoPivot.rotation.x = -0.15;
+      // 5. LAT PULLDOWN KINEMATICS
+      // Seated on machine facing tower
+      this.joints.leftFoot.position.set(-0.24, 0.04, 0.25);
+      this.joints.rightFoot.position.set(0.24, 0.04, 0.25);
 
-      const barY = 1.85 - 0.65 * p;
-      if (this.equipmentGroup) this.equipmentGroup.position.y = barY;
+      const pelvisY = 0.50;
+      const pelvisZ = -0.10;
+      this.joints.pelvis.position.set(0, pelvisY, pelvisZ);
+      this.joints.torsoPivot.rotation.x = -0.22; // 15° slight thoracic arch
 
-      const armAngle = -2.2 + 1.2 * p;
-      this.joints.leftShoulder.rotation.x = armAngle;
-      this.joints.rightShoulder.rotation.x = armAngle;
+      // Thighs locked under knee pads
+      this.joints.leftKnee.position.set(-0.24, 0.54, 0.15);
+      this.joints.rightKnee.position.set(0.24, 0.54, 0.15);
+
+      this.orientSegment(this.joints.leftThigh, new THREE.Vector3(-0.16, pelvisY, pelvisZ), this.joints.leftKnee.position);
+      this.orientSegment(this.joints.rightThigh, new THREE.Vector3(0.16, pelvisY, pelvisZ), this.joints.rightKnee.position);
+      this.orientSegment(this.joints.leftShin, this.joints.leftKnee.position, new THREE.Vector3(-0.24, 0.08, 0.25));
+      this.orientSegment(this.joints.rightShin, this.joints.rightKnee.position, new THREE.Vector3(0.24, 0.08, 0.25));
+
+      // Bar pulls from overhead stretch (1.95m) down to clavicle (1.25m)
+      const pullDepth = Math.sin(p * Math.PI);
+      const barY = 1.95 - 0.70 * pullDepth;
+      if (this.dynamicMovingBar) this.dynamicMovingBar.position.set(0, barY, 0.08);
+
+      // Shoulders angle down and elbows drive back
+      const shoulderAngle = -2.15 + 1.35 * pullDepth;
+      this.joints.leftShoulder.rotation.x = shoulderAngle;
+      this.joints.rightShoulder.rotation.x = shoulderAngle;
+
+      if (this.laserLine) this.laserLine.position.set(0, 0, 0.08);
     }
 
     // Dynamic Muscle Glowing Intensities
@@ -901,7 +1180,7 @@ class StudioMacielBiomechanics3D {
     const dir = new THREE.Vector3().subVectors(pointB, pointA);
     const len = dir.length();
     mesh.position.copy(pointA).addScaledVector(dir, 0.5);
-    mesh.scale.set(1, len / 0.44, 1);
+    mesh.scale.set(1, Math.max(0.1, len / 0.44), 1);
 
     const up = new THREE.Vector3(0, 1, 0);
     mesh.quaternion.setFromUnitVectors(up, dir.clone().normalize());
@@ -930,7 +1209,7 @@ class StudioMacielBiomechanics3D {
     const height = this.container.clientHeight || 540;
 
     this.camera.aspect = width / height;
-    this.camera.fov = isMobile ? 50 : 45;
+    this.camera.fov = isMobile ? 52 : 45;
     this.camera.updateProjectionMatrix();
 
     this.renderer.setSize(width, height);
@@ -986,7 +1265,7 @@ class StudioMacielBiomechanics3D {
         <p class="text-sm text-gray-400 max-w-md mb-4">Análise cinética dos 3 momentos de execução biomecânica com ativação muscular precisa.</p>
         <div class="flex gap-2">
           <span class="px-3 py-1 bg-teal-950/80 border border-teal-glow/40 rounded-full text-xs text-teal-300 font-semibold">Fase 1: Setup</span>
-          <span class="px-3 py-1 bg-teal-950/80 border border-teal-glow/40 rounded-full text-xs text-teal-300 font-semibold">Fase 2: Tração</span>
+          <span class="px-3 py-1 bg-teal-950/80 border border-teal-glow/40 rounded-full text-xs text-teal-300 font-semibold">Fase 2: Execução</span>
           <span class="px-3 py-1 bg-teal-950/80 border border-teal-glow/40 rounded-full text-xs text-teal-300 font-semibold">Fase 3: Lockout</span>
         </div>
       </div>

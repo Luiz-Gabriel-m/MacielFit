@@ -108,11 +108,6 @@
       <!-- City & State -->
       <p class="intro-location-static">TOLEDO - MG</p>
 
-      <!-- 3D Athletic Lifter Character performing exercise & tossing screen -->
-      <div id="intro-lifter-container" class="intro-lifter-container" title="Boneco 3D em Movimento">
-        <!-- Three.js 3D character injected here -->
-      </div>
-
       <!-- Interactive Enter Trigger -->
       <div class="intro-interaction-box">
         <button id="pull-handle-btn" class="pull-handle-btn" aria-label="Entrar no site Studio Maciel">
@@ -150,10 +145,6 @@
       <!-- Desktop Navigation Links -->
       <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-gray-300">
         <a href="#inicio" class="hover:text-gold-maciel transition-colors duration-200">Início</a>
-        <a href="#floorplan" class="hover:text-teal-400 transition-colors duration-200 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-teal-400"></span>
-          Planta 3D
-        </a>
         <a href="#deadlift-section" class="hover:text-gold-maciel transition-colors duration-200 flex items-center gap-1.5 text-white font-semibold">
           <span class="w-2 h-2 rounded-full bg-gold-maciel animate-ping"></span>
           Biomecânica 3D
@@ -197,10 +188,6 @@
     <div id="mobile-drawer" class="fixed inset-x-0 top-[65px] sm:top-[75px] bottom-0 bg-[#07090b]/98 backdrop-blur-2xl border-t border-white/10 z-40 flex flex-col justify-between p-6 overflow-y-auto transform transition-all duration-300 translate-x-full opacity-0 pointer-events-none lg:hidden">
       <nav class="flex flex-col gap-2 text-base font-bold uppercase tracking-wider text-gray-200">
         <a href="#inicio" class="mobile-nav-link py-3 px-2 border-b border-white/5 hover:text-gold-maciel transition-colors">Início</a>
-        <a href="#floorplan" class="mobile-nav-link py-3 px-2 border-b border-white/5 hover:text-teal-400 flex items-center justify-between">
-          <span>Planta 3D da Academia</span>
-          <span class="text-[10px] text-teal-300 font-bold px-2 py-0.5 rounded bg-teal-950/80 border border-teal-700/50">Vídeo Imersivo</span>
-        </a>
         <a href="#deadlift-section" class="mobile-nav-link py-3 px-2 border-b border-white/5 hover:text-gold-maciel flex items-center gap-2 text-white">
           <span class="w-2 h-2 rounded-full bg-gold-maciel animate-ping"></span>
           <span>Biomecânica 3D</span>
@@ -250,15 +237,9 @@
         <span id="sound-text">Ativar Som</span>
       </button>
 
-      <div class="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-        <!-- Content Column -->
-        <div class="lg:col-span-8 flex flex-col items-start text-left max-w-2xl w-full">
-          <!-- Authority Badge -->
-          <div class="tech-badge mb-4 sm:mb-5 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-            <span class="w-2 h-2 rounded-full bg-gold-glow animate-pulse"></span>
-            <span>O PADRÃO OURO DO FITNESS EM TOLEDO - MG</span>
-          </div>
-
+      <div class="relative z-10 max-w-7xl mx-auto w-full">
+        <!-- Content Column (Full Width & Clean) -->
+        <div class="flex flex-col items-start text-left max-w-3xl w-full">
           <!-- Main Headline -->
           <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl uppercase leading-[1.1] tracking-tight mb-5">
             <span class="block text-white">O ESPAÇO ONDE A</span>
@@ -267,30 +248,25 @@
           </h1>
 
           <!-- Subheadline -->
-          <p class="text-neutral-300 text-sm sm:text-base font-normal leading-relaxed mb-7 max-w-xl">
+          <p class="text-neutral-300 text-sm sm:text-base font-normal leading-relaxed mb-8 max-w-2xl">
             Treine em um espaço exclusivo com arquitetura moderna, iluminação cênica, equipamentos biomecânicos de última geração, área de spinning Supertech STS e a orientação de treinadores dedicados ao seu resultado.
           </p>
 
           <!-- CTAs -->
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto mb-8">
-            <a href="#planos" class="btn-primary-gold min-h-[48px] px-8 py-3.5 rounded-xl text-center text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2.5">
-              <span>Conhecer Planos VIP</span>
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto mb-10">
+            <a href="#planos" class="btn-primary-gold min-h-[52px] px-9 py-4 rounded-xl text-center text-xs sm:text-sm font-black uppercase tracking-wider flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(212,175,55,0.45)] hover:scale-105 transition-all">
+              <span>Quero Começar a Treinar</span>
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </a>
 
-            <a href="#floorplan" class="btn-outline-teal min-h-[48px] px-7 py-3.5 rounded-xl text-center text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
-              <i data-lucide="layers" class="w-4 h-4 text-teal-400"></i>
-              <span>Explorar Planta 3D</span>
-            </a>
-
-            <a href="#deadlift-section" class="btn-secondary min-h-[48px] px-6 py-3.5 rounded-xl text-center text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 border-gold-maciel/40 text-gold-maciel">
-              <i data-lucide="cpu" class="w-4 h-4"></i>
-              <span>Biomecânica 3D</span>
+            <a href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Quero%20come%C3%A7ar%20a%20treinar%20e%20saber%20mais%20sobre%20os%20planos." target="_blank" rel="noopener noreferrer" class="btn-secondary min-h-[52px] px-8 py-4 rounded-xl text-center text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2.5 border-teal-maciel/50 text-teal-300 hover:text-white hover:border-teal-glow transition-all">
+              <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i>
+              <span>Falar no WhatsApp</span>
             </a>
           </div>
 
           <!-- Highlights Bar -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-5 border-t border-white/15 w-full">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-6 border-t border-white/15 w-full">
             <div class="flex flex-col">
               <span class="font-display font-extrabold text-2xl sm:text-3xl text-gold-maciel">100%</span>
               <span class="text-[10px] sm:text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Climatizado 18°C</span>
@@ -306,18 +282,6 @@
             <div class="flex flex-col">
               <span class="font-display font-extrabold text-2xl sm:text-3xl text-gold-maciel">Deck VIP</span>
               <span class="text-[10px] sm:text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Lounge & Parede Verde</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Official Circular Logo Badge Frame -->
-        <div class="lg:col-span-4 flex flex-col items-center justify-center w-full mt-4 lg:mt-0">
-          <div class="relative w-full max-w-[280px] sm:max-w-xs mx-auto group text-center">
-            <div class="absolute -inset-4 bg-gradient-to-t from-teal-maciel/30 via-gold-maciel/20 to-transparent rounded-full blur-2xl -z-10 pointer-events-none"></div>
-            <div class="p-6 rounded-3xl bg-neutral-950/80 border border-gold-maciel/30 backdrop-blur-xl shadow-2xl flex flex-col items-center">
-              <img src="Assets/logo.png" alt="Selo Oficial Maciel Fit" class="w-32 h-32 sm:w-40 sm:h-40 object-contain filter drop-shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-transform duration-500 group-hover:scale-105">
-              <span class="text-xs uppercase font-extrabold tracking-widest text-gold-maciel mt-4 font-display">Estúdio de Alta Performance</span>
-              <p class="text-[11px] text-gray-400 mt-1">Toledo - Minas Gerais</p>
             </div>
           </div>
         </div>
@@ -341,147 +305,7 @@
       </div>
     </section>
 
-    <!-- ========================================================================
-         FEATURE 3: 3D FLOORPLAN SECTION WITH IMMERSIVE HERO VIDEO
-         ======================================================================== -->
-    <section id="floorplan" class="section-container py-24 px-4 sm:px-6 lg:px-8 relative tech-grid-bg">
-      <div class="section-header flex flex-col items-center text-center mb-12">
-        <div class="tech-badge mb-3 shadow-[0_0_15px_rgba(14,176,196,0.3)]">
-          <i data-lucide="layers" class="w-3.5 h-3.5"></i>
-          <span>Maquete Arquitetônica Interativa</span>
-        </div>
-        <h2 class="font-display font-black text-3xl sm:text-5xl uppercase tracking-tight text-white mb-3">
-          PLANTA 3D <span class="text-gold-gradient text-glow-gold">STUDIO MACIEL</span>
-        </h2>
-        <p class="text-gray-400 text-sm sm:text-base max-w-3xl">
-          Navegue pela nossa infraestrutura em vista aérea superior ou perspectiva isométrica 3D com a transmissão imersiva da atmosfera da academia. Clique nos setores ou marcadores para inspecionar os equipamentos reais.
-        </p>
-      </div>
 
-      <div class="floorplan-wrapper">
-        <!-- 3D Three.js Viewport Container -->
-        <div class="floorplan-viewport-container" id="floorplan-canvas-container">
-          <div class="floorplan-toolbar">
-            <button id="btn-view-top" class="floorplan-tool-btn" title="Ver em Vista Superior (Planta Baixa)">
-              <i data-lucide="grid" class="w-4 h-4"></i>
-              <span>Vista Aérea</span>
-            </button>
-            <button id="btn-view-iso" class="floorplan-tool-btn active" title="Ver em Perspectiva Isométrica">
-              <i data-lucide="box" class="w-4 h-4"></i>
-              <span>Perspectiva 3D</span>
-            </button>
-            <button id="btn-view-hd" class="floorplan-tool-btn" title="Alternar para Maquete Realista em Alta Resolução">
-              <i data-lucide="image" class="w-4 h-4"></i>
-              <span>Render Realista HD</span>
-            </button>
-            <button id="btn-view-reset" class="floorplan-tool-btn" title="Centralizar Câmera">
-              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-              <span>Resetar</span>
-            </button>
-          </div>
-
-          <!-- Realistic 3D Architectural Cutaway Overlay -->
-          <div id="floorplan-hd-overlay" class="floorplan-hd-overlay" style="display: none;">
-            <img src="public/images/gym_floorplan_hd.jpg" alt="Maquete Arquitetônica 3D Studio Maciel" class="floorplan-hd-img">
-            <div class="floorplan-hd-badge">
-              <span>★ Render Arquitetônico 3D Real do Studio Maciel • Toledo MG</span>
-            </div>
-          </div>
-
-          <div class="floorplan-hint-badge" id="floorplan-hint-badge">
-            <i data-lucide="info" class="w-3.5 h-3.5 text-teal-400"></i>
-            <span>Arraste com o mouse para girar 360° • Role para zoom • Clique nos pontos</span>
-          </div>
-        </div>
-
-        <!-- Zones Sidebar -->
-        <div class="floorplan-sidebar">
-          <h3 class="floorplan-sidebar-title">
-            <i data-lucide="layout-grid" class="w-5 h-5 text-gold-maciel"></i>
-            <span>Setores da Academia</span>
-          </h3>
-
-          <div class="floorplan-zone-list">
-            <div class="zone-selector-card active" data-zone="reception">
-              <div class="zone-info-header">
-                <span class="zone-color-indicator" style="color: #D4AF37;"></span>
-                <div>
-                  <div class="zone-name">Recepção & Lounge VIP</div>
-                  <div class="zone-tag">Entrada em Deck • Poltronas Modernas</div>
-                </div>
-              </div>
-              <span class="text-gold-maciel font-bold">➜</span>
-            </div>
-
-            <div class="zone-selector-card" data-zone="moss_wall">
-              <div class="zone-info-header">
-                <span class="zone-color-indicator" style="color: #2cd5eb;"></span>
-                <div>
-                  <div class="zone-name">Parede Verde Biofílica</div>
-                  <div class="zone-tag">Letreiro Neon Dourado • Instagramável</div>
-                </div>
-              </div>
-              <span class="text-teal-400 font-bold">➜</span>
-            </div>
-
-            <div class="zone-selector-card" data-zone="cardio">
-              <div class="zone-info-header">
-                <span class="zone-color-indicator" style="color: #0fb5c7;"></span>
-                <div>
-                  <div class="zone-name">Área Cardio & Spinning</div>
-                  <div class="zone-tag">Bikes Supertech STS 02 • Esteiras Digitais</div>
-                </div>
-              </div>
-              <span class="text-teal-400 font-bold">➜</span>
-            </div>
-
-            <div class="zone-selector-card" data-zone="free_weights">
-              <div class="zone-info-header">
-                <span class="zone-color-indicator" style="color: #e5c158;"></span>
-                <div>
-                  <div class="zone-name">Musculação & Halteres</div>
-                  <div class="zone-tag">Rack Completo • Bancos • Smith Machine</div>
-                </div>
-              </div>
-              <span class="text-gold-maciel font-bold">➜</span>
-            </div>
-
-            <div class="zone-selector-card" data-zone="machines">
-              <div class="zone-info-header">
-                <span class="zone-color-indicator" style="color: #ffaa00;"></span>
-                <div>
-                  <div class="zone-name">Máquinas Biomecânicas</div>
-                  <div class="zone-tag">Guiados • Polias • Leg Press 45°</div>
-                </div>
-              </div>
-              <span class="text-gold-maciel font-bold">➜</span>
-            </div>
-
-            <div class="zone-selector-card" data-zone="functional">
-              <div class="zone-info-header">
-                <span class="zone-color-indicator" style="color: #34d399;"></span>
-                <div>
-                  <div class="zone-name">Espaço Funcional & Pista</div>
-                  <div class="zone-tag">Alongamento • Mobilidade • Kettlebells</div>
-                </div>
-              </div>
-              <span class="text-teal-400 font-bold">➜</span>
-            </div>
-          </div>
-
-          <!-- Active Zone Live Card -->
-          <div class="active-zone-detail-card">
-            <img id="zone-detail-img" src="public/images/gallery/gym_facade.jpg" alt="Foto da Área Selecionada" class="active-zone-img">
-            <span id="zone-detail-category" class="badge-tag gold" style="font-size: 0.7rem; margin-bottom: 6px;">Acolhimento & Check-in</span>
-            <h4 id="zone-detail-title" class="active-zone-title">Recepção & Lounge VIP</h4>
-            <p id="zone-detail-desc" class="active-zone-desc">Entrada moderna com deck de madeira nobre, poltronas confortáveis para espera, balcão de mármore e controle de acesso biométrico inteligente.</p>
-            <div style="margin-top: 10px; font-size: 0.75rem; color: var(--gold-300);">
-              <strong>Destaques:</strong> <span id="zone-detail-equip" style="color: var(--text-muted);">Balcão de Mármore, Poltronas VIP, Climatização 18°C</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- ========================================================================
          FEATURE 4: 3D BIOMECHANICS & EXERCISE LAB (DEADLIFT 3D ARCHITECTURE)
@@ -1169,7 +993,6 @@
 
   <!-- Application Logic Scripts -->
   <script src="js/intro-animation.js"></script>
-  <script src="js/floorplan-3d.js"></script>
   <script src="js/biomechanics3d.js"></script>
   <script src="js/main.js"></script>
 </body>
