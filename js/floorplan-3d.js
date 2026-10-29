@@ -204,10 +204,42 @@ class GymFloorplan3D {
     const wallMatTeal = new THREE.MeshStandardMaterial({ color: 0x076b77, roughness: 0.5, metalness: 0.2 });
     const wallMatDark = new THREE.MeshStandardMaterial({ color: 0x11171c, roughness: 0.7 });
 
-    // Back Wall
+    // Back Wall with Immersive High-Definition Studio Video Screen Texture
     const backWall = new THREE.Mesh(new THREE.BoxGeometry(34, 5.5, 0.8), wallMatTeal);
     backWall.position.set(0, 2.75, -14);
     this.scene.add(backWall);
+
+    try {
+      // Create HTML5 Video Element for Three.js Video Texture
+      const videoEl = document.createElement('video');
+      videoEl.src = 'public/videos/hero_video.mp4';
+      videoEl.crossOrigin = 'anonymous';
+      videoEl.loop = true;
+      videoEl.muted = true;
+      videoEl.playsInline = true;
+      videoEl.autoplay = true;
+      videoEl.play().catch(() => {});
+
+      const videoTexture = new THREE.VideoTexture(videoEl);
+      videoTexture.minFilter = THREE.LinearFilter;
+      videoTexture.magFilter = THREE.LinearFilter;
+      videoTexture.format = THREE.RGBAFormat;
+
+      // Immersive Cinema Screen Displaying Official Gym Footage
+      const videoScreenGeo = new THREE.PlaneGeometry(16, 4.2);
+      const videoScreenMat = new THREE.MeshBasicMaterial({ map: videoTexture });
+      const videoScreen = new THREE.Mesh(videoScreenGeo, videoScreenMat);
+      videoScreen.position.set(0, 2.85, -13.55);
+      this.scene.add(videoScreen);
+
+      // Gold Frame Border around the 3D Video Wall
+      const frameMat = new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.85, roughness: 0.2 });
+      const screenFrame = new THREE.Mesh(new THREE.BoxGeometry(16.4, 4.4, 0.1), frameMat);
+      screenFrame.position.set(0, 2.85, -13.62);
+      this.scene.add(screenFrame);
+    } catch (err) {
+      console.warn('VideoTexture initialization note:', err);
+    }
 
     // Left Wall
     const leftWall = new THREE.Mesh(new THREE.BoxGeometry(0.8, 5.5, 28), wallMatDark);

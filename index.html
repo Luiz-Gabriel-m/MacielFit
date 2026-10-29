@@ -1,52 +1,117 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Studio Maciel | Maciel Fit Academia • Toledo - MG</title>
   
   <!-- SEO & Social Meta Tags -->
-  <meta name="description" content="Studio Maciel / Maciel Fit Academia em Toledo - MG. Treinamento de alta performance, equipamentos biomecânicos modernos, spinning Supertech e acompanhamento personalizado.">
-  <meta name="keywords" content="Studio Maciel, Maciel Fit Academia, academia Toledo MG, musculação, spinning supertech, personal trainer Toledo, treinamento alta performance">
+  <meta name="description" content="Studio Maciel / Maciel Fit Academia em Toledo - MG. Treinamento de alta performance, equipamentos biomecânicos modernos, spinning Supertech STS e acompanhamento personalizado.">
+  <meta name="keywords" content="Studio Maciel, Maciel Fit Academia, academia Toledo MG, musculação, spinning supertech, personal trainer Toledo, treinamento alta performance, biomecânica 3D">
   <meta property="og:title" content="Studio Maciel | Maciel Fit Academia">
   <meta property="og:description" content="Alta performance, saúde e sofisticação no maior estúdio fitness de Toledo - MG. Venha conhecer nosso espaço.">
   <meta property="og:image" content="public/images/hero_gym.jpg">
   <meta property="og:type" content="website">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+  <link rel="icon" type="image/png" href="Assets/logo.png">
 
-  <!-- Google Fonts: Montserrat & Cinzel -->
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            carbon: {
+              950: '#070707',
+              900: '#0c0c0e',
+              850: '#111114',
+              800: '#18181c',
+              700: '#222228'
+            },
+            teal: {
+              maciel: '#076b77',
+              glow: '#00e5ff',
+              dark: '#03363d',
+              muted: 'rgba(7, 107, 119, 0.18)'
+            },
+            gold: {
+              maciel: '#D4AF37',
+              glow: '#FFD700',
+              dark: '#946f1c',
+              muted: 'rgba(212, 175, 55, 0.18)'
+            }
+          },
+          fontFamily: {
+            display: ['Cinzel', 'Montserrat', 'sans-serif'],
+            body: ['Montserrat', 'Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Montserrat, Cinzel & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/styles.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Three.js & OrbitControls for 3D Floorplan & Muscle Explorer -->
+  <!-- GSAP & ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Three.js & OrbitControls for 3D Floorplan & 3D Biomechanics -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-</head>
-<body>
 
-  <!-- ==========================================================================
-       FEATURE 1: INTERACTIVE INTRO SCREEN (PRELOADER)
-       Deep Teal background (#076b77) • EXACT USER LOGO: STUDIO || || MACIEL • TOLEDO - MG
-       ========================================================================== -->
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-[#070707] text-[#FFFFFF] font-body selection:bg-teal-maciel selection:text-white overflow-x-hidden w-full max-w-full pb-16 lg:pb-0">
+
+  <!-- ========================================================================
+       FEATURE 1: INTERACTIVE INTRO SCREEN (PRE-LOADER)
+       Solid Deep Teal (#076b77) • NO rectangular boxes/cards
+       Static STUDIO / MACIEL text • ONLY Central Dumbbell Pulses with Neon Glow
+       Interactive 3D Lifter Character that tosses screen upwards on scroll/drag!
+       ======================================================================== -->
   <aside id="intro-screen" aria-label="Tela de Apresentação Studio Maciel">
     <button id="skip-intro-btn" class="skip-intro-btn" aria-label="Pular Introdução">
       Pular Intro ✕
     </button>
 
     <div class="intro-content-wrapper">
-      <!-- Exact Logo Banner Image provided by user -->
-      <div class="intro-logo-banner-wrapper">
-        <img src="public/images/logo_preloader_exact.png" alt="Studio Maciel" class="intro-exact-logo-img pulsing-neon">
+      <!-- Clean, Isolated Typography without any boxes or cards -->
+      <div class="intro-brand-row">
+        <span class="intro-word-static">STUDIO</span>
+
+        <!-- Isolated Central Dumbbell Symbol - ONLY this pulses & glows with gold/teal neon -->
+        <div class="intro-central-symbol-isolated pulsing-dumbbell-neon" aria-label="Símbolo Haltere Studio Maciel">
+          <div class="intro-dumbbell-ring"></div>
+          <div class="intro-dumbbell-icon">
+            <div class="dumbbell-bar bar-1"></div>
+            <div class="dumbbell-bar bar-2"></div>
+            <div class="dumbbell-bar bar-center"></div>
+            <div class="dumbbell-bar bar-center"></div>
+            <div class="dumbbell-bar bar-2"></div>
+            <div class="dumbbell-bar bar-1"></div>
+          </div>
+        </div>
+
+        <span class="intro-word-static">MACIEL</span>
       </div>
 
       <!-- City & State -->
-      <p class="intro-location">TOLEDO - MG</p>
+      <p class="intro-location-static">TOLEDO - MG</p>
+
+      <!-- 3D Athletic Lifter Character performing exercise & tossing screen -->
+      <div id="intro-lifter-container" class="intro-lifter-container" title="Boneco 3D em Movimento">
+        <!-- Three.js 3D character injected here -->
+      </div>
 
       <!-- Interactive Enter Trigger -->
       <div class="intro-interaction-box">
@@ -57,63 +122,119 @@
           </svg>
         </button>
         <div class="intro-scroll-hint">
-          <span>↓ Role para baixo ou clique para entrar</span>
+          <span>↓ Role para baixo ou arraste para lançar a tela</span>
         </div>
       </div>
     </div>
   </aside>
 
-  <!-- ==========================================================================
-       NAVIGATION BAR & HEADER
-       ========================================================================== -->
-  <header class="site-header" id="navbar">
-    <nav class="navbar" aria-label="Navegação Principal">
-      <a href="#hero" class="brand-logo-link">
-        <div class="brand-symbol-small">
-          <img src="public/favicon.svg" alt="Ícone Studio Maciel">
-        </div>
-        <div class="brand-text-header">
-          <span class="brand-title-header">STUDIO MACIEL</span>
-          <span class="brand-sub-header">TREINAMENTO & ALTA PERFORMANCE</span>
+  <!-- ========================================================================
+       1. FIXED HEADER (GLASSMORPHISM & BRAND LOGO)
+       ======================================================================== -->
+  <header id="main-header" class="site-header fixed top-0 left-0 w-full z-50 transition-all duration-300 py-3 sm:py-4 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+
+      <!-- Official Logo & Branding Link -->
+      <a href="#inicio" class="flex items-center gap-3.5 group focus:outline-none" aria-label="Studio Maciel Início">
+        <img src="Assets/logo.png" alt="Maciel Fit Academia Logo" class="h-10 sm:h-12 w-auto object-contain filter drop-shadow-[0_0_12px_rgba(212,175,55,0.4)] group-hover:scale-105 transition-transform duration-300">
+        <div class="flex flex-col">
+          <span class="font-display font-black text-lg sm:text-xl tracking-wider text-white leading-tight flex items-center gap-1.5">
+            STUDIO <span class="text-gold-maciel text-glow-gold">MACIEL</span>
+          </span>
+          <span class="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase font-bold text-teal-400">
+            Maciel Fit Academia • Toledo - MG
+          </span>
         </div>
       </a>
 
-      <ul class="nav-links">
-        <li><a href="#hero" class="nav-link">Início</a></li>
-        <li><a href="#floorplan" class="nav-link">Planta 3D da Academia</a></li>
-        <li><a href="#muscle-explorer" class="nav-link">Explorador Muscular 3D</a></li>
-        <li><a href="#plans" class="nav-link">Planos & Preços</a></li>
-        <li><a href="#social" class="nav-link">Comunidade & Feed</a></li>
-        <li><a href="#contact" class="nav-link">Localização & Contato</a></li>
-      </ul>
-
-      <div class="nav-actions">
-        <button id="replay-intro-btn" class="replay-intro-btn" title="Rever apresentação de abertura">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
-          </svg>
-          <span>Rever Intro</span>
-        </button>
-        <a href="#contact" class="btn-header-cta">
-          Aula Experimental
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-gray-300">
+        <a href="#inicio" class="hover:text-gold-maciel transition-colors duration-200">Início</a>
+        <a href="#floorplan" class="hover:text-teal-400 transition-colors duration-200 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-teal-400"></span>
+          Planta 3D
         </a>
-        <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Abrir Menu Mobile">
-          ☰
+        <a href="#deadlift-section" class="hover:text-gold-maciel transition-colors duration-200 flex items-center gap-1.5 text-white font-semibold">
+          <span class="w-2 h-2 rounded-full bg-gold-maciel animate-ping"></span>
+          Biomecânica 3D
+        </a>
+        <a href="#planos" class="hover:text-gold-maciel transition-colors duration-200">Planos & Valores</a>
+        <a href="#social" class="hover:text-teal-400 transition-colors duration-200">Comunidade & Feed</a>
+        <a href="#contato" class="hover:text-gold-maciel transition-colors duration-200">Localização</a>
+      </nav>
+
+      <!-- Action Button CTA & Social Quick Links -->
+      <div class="hidden lg:flex items-center gap-3">
+        <!-- Replay Intro Button -->
+        <button id="replay-intro-btn" class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/5 border border-white/10 hover:border-gold-maciel/50 hover:bg-gold-maciel/10 text-neutral-300 hover:text-gold-maciel transition-all duration-300" title="Rever Apresentação Inicial">
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
         </button>
+
+        <!-- Instagram Icon Link -->
+        <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" aria-label="Instagram Studio Maciel" class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/5 border border-white/10 hover:border-gold-maciel/50 hover:bg-gold-maciel/10 text-neutral-300 hover:text-gold-maciel transition-all duration-300">
+          <i data-lucide="instagram" class="w-4 h-4"></i>
+        </a>
+
+        <!-- WhatsApp Icon Link -->
+        <a href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20as%20matr%C3%ADculas%20e%20planos." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Studio Maciel" class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 text-emerald-400 transition-all duration-300">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+        </a>
+
+        <!-- Main CTA Button -->
+        <a href="#contato" class="btn-primary-gold px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+          <span>Aula Experimental</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
       </div>
-    </nav>
+
+      <!-- Mobile Menu Hamburger Button -->
+      <button id="mobile-menu-toggle" aria-label="Abrir Menu" class="lg:hidden text-white p-2.5 rounded-xl bg-neutral-900/80 border border-white/10 hover:border-white/20 transition-all focus:outline-none flex items-center justify-center">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-drawer" class="fixed inset-x-0 top-[65px] sm:top-[75px] bottom-0 bg-[#07090b]/98 backdrop-blur-2xl border-t border-white/10 z-40 flex flex-col justify-between p-6 overflow-y-auto transform transition-all duration-300 translate-x-full opacity-0 pointer-events-none lg:hidden">
+      <nav class="flex flex-col gap-2 text-base font-bold uppercase tracking-wider text-gray-200">
+        <a href="#inicio" class="mobile-nav-link py-3 px-2 border-b border-white/5 hover:text-gold-maciel transition-colors">Início</a>
+        <a href="#floorplan" class="mobile-nav-link py-3 px-2 border-b border-white/5 hover:text-teal-400 flex items-center justify-between">
+          <span>Planta 3D da Academia</span>
+          <span class="text-[10px] text-teal-300 font-bold px-2 py-0.5 rounded bg-teal-950/80 border border-teal-700/50">Vídeo Imersivo</span>
+        </a>
+        <a href="#deadlift-section" class="mobile-nav-link py-3 px-2 border-b border-white/5 hover:text-gold-maciel flex items-center gap-2 text-white">
+          <span class="w-2 h-2 rounded-full bg-gold-maciel animate-ping"></span>
+          <span>Biomecânica 3D</span>
+        </a>
+        <a href="#planos" class="mobile-nav-link py-3 px-2 border-b border-white/5 hover:text-gold-maciel transition-colors">Planos & Preços</a>
+        <a href="#social" class="mobile-nav-link py-3 px-2 border-b border-white/5 hover:text-teal-400 transition-colors">Comunidade & Feed</a>
+        <a href="#contato" class="mobile-nav-link py-3 px-2 border-b border-white/5 hover:text-gold-maciel transition-colors">Localização & Contato</a>
+      </nav>
+      <div class="pt-6 pb-6 border-t border-white/10 mt-4 flex flex-col gap-3">
+        <a href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Gostaria%20de%20agendar%20minha%20aula%20experimental." target="_blank" rel="noopener noreferrer" class="btn-primary-gold w-full py-4 rounded-xl text-center text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-gold-maciel/30 min-h-[48px]">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>Agendar no WhatsApp</span>
+        </a>
+      </div>
+    </div>
   </header>
 
-  <!-- ==========================================================================
-       FEATURE 2 (PART 1): HERO SECTION WITH REAL GYM BACKGROUND VIDEO
-       ========================================================================== -->
+  <!-- ========================================================================
+       2. HERO SECTION WITH OFFICIAL BACKGROUND GYM VIDEO
+       ======================================================================== -->
   <main id="main-content">
-    <section id="hero" class="hero-section">
-      <!-- Full-bleed Background Video from Assets/videos_hero -->
-      <video id="hero-bg-video" class="hero-bg-video" autoplay loop muted playsinline poster="public/images/hero_gym.jpg">
+    <section id="inicio" class="hero-section relative min-h-[95vh] flex items-center justify-center pt-28 pb-16 sm:pb-24 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <!-- Full-bleed Official Gym Video from Assets/videos_hero -->
+      <video id="hero-bg-video" class="hero-bg-video absolute inset-0 w-full h-full object-cover z-0 filter brightness-[0.6] contrast-[1.08]" autoplay loop muted playsinline poster="public/images/hero_gym.jpg">
         <source src="public/videos/hero_video.mp4" type="video/mp4">
       </video>
-      <div class="hero-bg-overlay"></div>
+
+      <!-- Carbon & Deep Teal Gradient Overlays -->
+      <div class="hero-bg-overlay absolute inset-0 bg-gradient-to-t from-[#070707] via-[#070707]/75 to-[#070707]/60 z-1 pointer-events-none"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-[#070707]/90 via-[#070707]/65 to-transparent z-1 pointer-events-none"></div>
+
+      <!-- Ambient Glow Flares -->
+      <div class="absolute top-1/4 -right-24 w-[550px] h-[550px] bg-teal-maciel/20 rounded-full filter blur-[140px] pointer-events-none"></div>
+      <div class="absolute bottom-10 left-10 w-[450px] h-[450px] bg-gold-maciel/10 rounded-full filter blur-[120px] pointer-events-none"></div>
 
       <!-- Video Audio Toggle Button -->
       <button id="hero-sound-btn" class="hero-video-sound-toggle" aria-label="Ativar ou desativar áudio do vídeo">
@@ -129,110 +250,133 @@
         <span id="sound-text">Ativar Som</span>
       </button>
 
-      <div class="hero-container">
-        <!-- Hero Grid (Card removed, full video experience) -->
-        <div class="hero-grid">
-          <div class="hero-content">
-            <div class="badge-tag gold">
-              <span>★</span> O Padrão Ouro do Fitness em Toledo - MG
+      <div class="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+        <!-- Content Column -->
+        <div class="lg:col-span-8 flex flex-col items-start text-left max-w-2xl w-full">
+          <!-- Authority Badge -->
+          <div class="tech-badge mb-4 sm:mb-5 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+            <span class="w-2 h-2 rounded-full bg-gold-glow animate-pulse"></span>
+            <span>O PADRÃO OURO DO FITNESS EM TOLEDO - MG</span>
+          </div>
+
+          <!-- Main Headline -->
+          <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl uppercase leading-[1.1] tracking-tight mb-5">
+            <span class="block text-white">O ESPAÇO ONDE A</span>
+            <span class="block text-gold-gradient text-glow-gold">ALTA PERFORMANCE</span>
+            <span class="block text-white/95 text-2xl sm:text-4xl lg:text-5xl mt-1">ENCONTRA O BEM-ESTAR</span>
+          </h1>
+
+          <!-- Subheadline -->
+          <p class="text-neutral-300 text-sm sm:text-base font-normal leading-relaxed mb-7 max-w-xl">
+            Treine em um espaço exclusivo com arquitetura moderna, iluminação cênica, equipamentos biomecânicos de última geração, área de spinning Supertech STS e a orientação de treinadores dedicados ao seu resultado.
+          </p>
+
+          <!-- CTAs -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto mb-8">
+            <a href="#planos" class="btn-primary-gold min-h-[48px] px-8 py-3.5 rounded-xl text-center text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2.5">
+              <span>Conhecer Planos VIP</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+
+            <a href="#floorplan" class="btn-outline-teal min-h-[48px] px-7 py-3.5 rounded-xl text-center text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
+              <i data-lucide="layers" class="w-4 h-4 text-teal-400"></i>
+              <span>Explorar Planta 3D</span>
+            </a>
+
+            <a href="#deadlift-section" class="btn-secondary min-h-[48px] px-6 py-3.5 rounded-xl text-center text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 border-gold-maciel/40 text-gold-maciel">
+              <i data-lucide="cpu" class="w-4 h-4"></i>
+              <span>Biomecânica 3D</span>
+            </a>
+          </div>
+
+          <!-- Highlights Bar -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-5 border-t border-white/15 w-full">
+            <div class="flex flex-col">
+              <span class="font-display font-extrabold text-2xl sm:text-3xl text-gold-maciel">100%</span>
+              <span class="text-[10px] sm:text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Climatizado 18°C</span>
             </div>
-
-            <h1 class="hero-title">
-              O ESPAÇO ONDE A <span class="text-gold-gradient">ALTA PERFORMANCE</span> ENCONTRA O BEM-ESTAR.
-            </h1>
-
-            <p class="hero-description">
-              Treine em um espaço exclusivo com arquitetura moderna, iluminação cênica, equipamentos biomecânicos de última geração, área de spinning Supertech STS e a orientação de treinadores dedicados ao seu resultado.
-            </p>
-
-            <div class="hero-highlights-row">
-              <div class="hero-stat-item">
-                <span class="hero-stat-number">100%</span>
-                <span class="hero-stat-label">Climatizado 18°C</span>
-              </div>
-              <div class="hero-stat-item">
-                <span class="hero-stat-number">+25</span>
-                <span class="hero-stat-label">Máquinas Biomecânicas</span>
-              </div>
-              <div class="hero-stat-item">
-                <span class="hero-stat-number">1º Lugar</span>
-                <span class="hero-stat-label">Maior Equipe Festival Inverno</span>
-              </div>
-              <div class="hero-stat-item">
-                <span class="hero-stat-number">Deck VIP</span>
-                <span class="hero-stat-label">Lounge & Parede Verde</span>
-              </div>
+            <div class="flex flex-col">
+              <span class="font-display font-extrabold text-2xl sm:text-3xl text-teal-400">+25</span>
+              <span class="text-[10px] sm:text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Máquinas Biomecânicas</span>
             </div>
+            <div class="flex flex-col">
+              <span class="font-display font-extrabold text-2xl sm:text-3xl text-white">1º Lugar</span>
+              <span class="text-[10px] sm:text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Festival de Inverno</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-display font-extrabold text-2xl sm:text-3xl text-gold-maciel">Deck VIP</span>
+              <span class="text-[10px] sm:text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Lounge & Parede Verde</span>
+            </div>
+          </div>
+        </div>
 
-            <div class="hero-cta-group">
-              <a href="#plans" class="btn-primary-gold">
-                <span>Conhecer Planos VIP</span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </a>
-              <a href="#floorplan" class="btn-outline-teal">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                  <polyline points="2 17 12 22 22 17"/>
-                  <polyline points="2 12 12 17 22 12"/>
-                </svg>
-                <span>Explorar Planta 3D</span>
-              </a>
+        <!-- Official Circular Logo Badge Frame -->
+        <div class="lg:col-span-4 flex flex-col items-center justify-center w-full mt-4 lg:mt-0">
+          <div class="relative w-full max-w-[280px] sm:max-w-xs mx-auto group text-center">
+            <div class="absolute -inset-4 bg-gradient-to-t from-teal-maciel/30 via-gold-maciel/20 to-transparent rounded-full blur-2xl -z-10 pointer-events-none"></div>
+            <div class="p-6 rounded-3xl bg-neutral-950/80 border border-gold-maciel/30 backdrop-blur-xl shadow-2xl flex flex-col items-center">
+              <img src="Assets/logo.png" alt="Selo Oficial Maciel Fit" class="w-32 h-32 sm:w-40 sm:h-40 object-contain filter drop-shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-transform duration-500 group-hover:scale-105">
+              <span class="text-xs uppercase font-extrabold tracking-widest text-gold-maciel mt-4 font-display">Estúdio de Alta Performance</span>
+              <p class="text-[11px] text-gray-400 mt-1">Toledo - Minas Gerais</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==========================================================================
-         FEATURE 2 (PART 2): 3D GYM FLOORPLAN (TOP-VIEW & ORBIT INTERACTION)
-         ========================================================================== -->
-    <section id="floorplan" class="section-container">
-      <div class="section-header">
-        <div class="badge-tag">
-          <span>❖</span> Maquete Arquitetônica Interativa
+    <!-- Infinite Marquee Banner -->
+    <section class="py-3.5 bg-gradient-to-r from-teal-950/80 via-teal-900/40 to-neutral-950 border-y border-teal-800/30 overflow-hidden">
+      <div class="animate-marquee flex items-center gap-12 whitespace-nowrap text-xs sm:text-sm font-display font-extrabold uppercase tracking-[0.25em] text-gray-200">
+        <span>• STUDIO MACIEL</span>
+        <span class="text-gold-maciel">• MACIEL FIT ACADEMIA</span>
+        <span>• TOLEDO - MG</span>
+        <span class="text-teal-400">• BIOMECÂNICA 3D</span>
+        <span>• SPINNER SUPERTECH STS 02</span>
+        <span class="text-gold-maciel">• @MACIELFITACADEMIA</span>
+        <span>• ESPAÇO CLIMATIZADO 18°C</span>
+        <span>• STUDIO MACIEL</span>
+        <span class="text-gold-maciel">• MACIEL FIT ACADEMIA</span>
+        <span>• TOLEDO - MG</span>
+        <span class="text-teal-400">• BIOMECÂNICA 3D</span>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         FEATURE 3: 3D FLOORPLAN SECTION WITH IMMERSIVE HERO VIDEO
+         ======================================================================== -->
+    <section id="floorplan" class="section-container py-24 px-4 sm:px-6 lg:px-8 relative tech-grid-bg">
+      <div class="section-header flex flex-col items-center text-center mb-12">
+        <div class="tech-badge mb-3 shadow-[0_0_15px_rgba(14,176,196,0.3)]">
+          <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+          <span>Maquete Arquitetônica Interativa</span>
         </div>
-        <h2 class="section-title">
-          PLANTA 3D <span class="text-gold-gradient">STUDIO MACIEL</span>
+        <h2 class="font-display font-black text-3xl sm:text-5xl uppercase tracking-tight text-white mb-3">
+          PLANTA 3D <span class="text-gold-gradient text-glow-gold">STUDIO MACIEL</span>
         </h2>
-        <p class="section-subtitle">
-          Navegue pela nossa infraestrutura em vista aérea superior ou perspectiva isométrica 3D. Clique nas zonas ou nos marcadores luminosos para inspecionar os equipamentos e ambientes reais.
+        <p class="text-gray-400 text-sm sm:text-base max-w-3xl">
+          Navegue pela nossa infraestrutura em vista aérea superior ou perspectiva isométrica 3D com a transmissão imersiva da atmosfera da academia. Clique nos setores ou marcadores para inspecionar os equipamentos reais.
         </p>
       </div>
 
       <div class="floorplan-wrapper">
-        <!-- 3D Three.js Viewport -->
+        <!-- 3D Three.js Viewport Container -->
         <div class="floorplan-viewport-container" id="floorplan-canvas-container">
           <div class="floorplan-toolbar">
             <button id="btn-view-top" class="floorplan-tool-btn" title="Ver em Vista Superior (Planta Baixa)">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                <path d="M3 9h18M9 21V9"/>
-              </svg>
-              Vista Aérea (Top)
+              <i data-lucide="grid" class="w-4 h-4"></i>
+              <span>Vista Aérea</span>
             </button>
             <button id="btn-view-iso" class="floorplan-tool-btn active" title="Ver em Perspectiva Isométrica">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                <polyline points="2 17 12 22 22 17"/>
-              </svg>
-              Perspectiva 3D
+              <i data-lucide="box" class="w-4 h-4"></i>
+              <span>Perspectiva 3D</span>
             </button>
             <button id="btn-view-hd" class="floorplan-tool-btn" title="Alternar para Maquete Realista em Alta Resolução">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <polyline points="21 15 16 10 5 21"/>
-              </svg>
-              Render Realista HD
+              <i data-lucide="image" class="w-4 h-4"></i>
+              <span>Render Realista HD</span>
             </button>
             <button id="btn-view-reset" class="floorplan-tool-btn" title="Centralizar Câmera">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                <path d="M3 3v5h5"/>
-              </svg>
-              Resetar
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+              <span>Resetar</span>
             </button>
           </div>
 
@@ -245,10 +389,7 @@
           </div>
 
           <div class="floorplan-hint-badge" id="floorplan-hint-badge">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M12 16v-4M12 8h.01"/>
-            </svg>
+            <i data-lucide="info" class="w-3.5 h-3.5 text-teal-400"></i>
             <span>Arraste com o mouse para girar 360° • Role para zoom • Clique nos pontos</span>
           </div>
         </div>
@@ -256,13 +397,8 @@
         <!-- Zones Sidebar -->
         <div class="floorplan-sidebar">
           <h3 class="floorplan-sidebar-title">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="7" height="7"/>
-              <rect x="14" y="3" width="7" height="7"/>
-              <rect x="14" y="14" width="7" height="7"/>
-              <rect x="3" y="14" width="7" height="7"/>
-            </svg>
-            Setores da Academia
+            <i data-lucide="layout-grid" class="w-5 h-5 text-gold-maciel"></i>
+            <span>Setores da Academia</span>
           </h3>
 
           <div class="floorplan-zone-list">
@@ -274,7 +410,7 @@
                   <div class="zone-tag">Entrada em Deck • Poltronas Modernas</div>
                 </div>
               </div>
-              <span class="text-gold">➜</span>
+              <span class="text-gold-maciel font-bold">➜</span>
             </div>
 
             <div class="zone-selector-card" data-zone="moss_wall">
@@ -285,7 +421,7 @@
                   <div class="zone-tag">Letreiro Neon Dourado • Instagramável</div>
                 </div>
               </div>
-              <span class="text-teal">➜</span>
+              <span class="text-teal-400 font-bold">➜</span>
             </div>
 
             <div class="zone-selector-card" data-zone="cardio">
@@ -293,10 +429,10 @@
                 <span class="zone-color-indicator" style="color: #0fb5c7;"></span>
                 <div>
                   <div class="zone-name">Área Cardio & Spinning</div>
-                  <div class="zone-tag">Bikes Supertech STS 02 • Esteiras</div>
+                  <div class="zone-tag">Bikes Supertech STS 02 • Esteiras Digitais</div>
                 </div>
               </div>
-              <span class="text-teal">➜</span>
+              <span class="text-teal-400 font-bold">➜</span>
             </div>
 
             <div class="zone-selector-card" data-zone="free_weights">
@@ -307,7 +443,7 @@
                   <div class="zone-tag">Rack Completo • Bancos • Smith Machine</div>
                 </div>
               </div>
-              <span class="text-gold">➜</span>
+              <span class="text-gold-maciel font-bold">➜</span>
             </div>
 
             <div class="zone-selector-card" data-zone="machines">
@@ -318,18 +454,18 @@
                   <div class="zone-tag">Guiados • Polias • Leg Press 45°</div>
                 </div>
               </div>
-              <span class="text-gold">➜</span>
+              <span class="text-gold-maciel font-bold">➜</span>
             </div>
 
             <div class="zone-selector-card" data-zone="functional">
               <div class="zone-info-header">
                 <span class="zone-color-indicator" style="color: #34d399;"></span>
                 <div>
-                  <div class="zone-name">Espaço Funcional & Core</div>
+                  <div class="zone-name">Espaço Funcional & Pista</div>
                   <div class="zone-tag">Alongamento • Mobilidade • Kettlebells</div>
                 </div>
               </div>
-              <span class="text-teal">➜</span>
+              <span class="text-teal-400 font-bold">➜</span>
             </div>
           </div>
 
@@ -338,615 +474,703 @@
             <img id="zone-detail-img" src="public/images/gallery/gym_facade.jpg" alt="Foto da Área Selecionada" class="active-zone-img">
             <span id="zone-detail-category" class="badge-tag gold" style="font-size: 0.7rem; margin-bottom: 6px;">Acolhimento & Check-in</span>
             <h4 id="zone-detail-title" class="active-zone-title">Recepção & Lounge VIP</h4>
-            <p id="zone-detail-desc" class="active-zone-desc">Entrada moderna em deck de madeira nobre, poltronas confortáveis para espera, balcão de mármore e controle de acesso biométrico inteligente.</p>
+            <p id="zone-detail-desc" class="active-zone-desc">Entrada moderna com deck de madeira nobre, poltronas confortáveis para espera, balcão de mármore e controle de acesso biométrico inteligente.</p>
             <div style="margin-top: 10px; font-size: 0.75rem; color: var(--gold-300);">
-              <strong>Destaques:</strong> <span id="zone-detail-equip" style="color: var(--text-muted);">Balcão de Atendimento, Poltronas VIP, Catraca Digital, Climatização 18°C</span>
+              <strong>Destaques:</strong> <span id="zone-detail-equip" style="color: var(--text-muted);">Balcão de Mármore, Poltronas VIP, Climatização 18°C</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==========================================================================
-         FEATURE 3: INTERACTIVE 3D MUSCLE & EXERCISE EXPLORER
-         ========================================================================== -->
-    <section id="muscle-explorer" class="section-container">
-      <div class="section-header">
-        <div class="badge-tag gold">
-          <span>⚡</span> Biomecânica & Ciência do Treinamento
-        </div>
-        <h2 class="section-title">
-          EXPLORADOR MUSCULAR <span class="text-gold-gradient">3D INTERATIVO</span>
-        </h2>
-        <p class="section-subtitle">
-          Inspecione os aparelhos do Studio Maciel em 3D e visualize em tempo real no modelo anatômico quais grupos musculares são ativados como alvos primários e estabilizadores em cada movimento.
-        </p>
-      </div>
+    <!-- ========================================================================
+         FEATURE 4: 3D BIOMECHANICS & EXERCISE LAB (DEADLIFT 3D ARCHITECTURE)
+         ======================================================================== -->
+    <section id="deadlift-section" class="py-24 px-4 sm:px-8 relative bg-gradient-to-b from-[#070707] via-[#090e12] to-[#070707] border-y border-white/5">
+      <!-- Ambient Glow -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-teal-maciel/15 rounded-full blur-[160px] pointer-events-none"></div>
 
-      <div class="muscle-explorer-wrapper">
-        <!-- 3D Anatomical Mannequin Viewport -->
-        <div class="muscle-viewport-area">
-          <div class="muscle-canvas-container" id="muscle-canvas-container">
-            <!-- Three.js Canvas injected dynamically -->
-          </div>
+      <div class="max-w-7xl mx-auto relative z-10">
+        <!-- Section Header -->
+        <div class="section-reveal flex flex-col items-center text-center mb-12">
+          <span class="tech-badge mb-3 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+            <i data-lucide="cpu" class="w-3.5 h-3.5 text-gold-maciel"></i>
+            Laboratório Biomecânico WebGL
+          </span>
+          <h2 class="font-display font-black text-3xl sm:text-5xl uppercase tracking-tight text-white mb-3">
+            ANÁLISE CINEMÁTICA 3D: <span class="text-gold-gradient text-glow-gold">BIOMECÂNICA DO MOVIMENTO</span>
+          </h2>
+          <p class="text-gray-400 text-sm sm:text-base max-w-3xl">
+            Interaja em 360° com a cinemática precisa dos exercícios executados no Studio Maciel. Inspecione vetores de reação, ativação muscular em tempo real e a trajetória da carga nos 3 momentos críticos do movimento.
+          </p>
 
-          <!-- Anatomical Reference Athlete Artwork Overlay -->
-          <div id="anatomy-ref-overlay" class="anatomy-ref-overlay" style="display: none;">
-            <button id="close-anatomy-ref" class="close-anatomy-ref-btn" aria-label="Fechar Mapa Anatômico">✕ Fechar</button>
-            <img src="public/images/anatomy_athlete.png" alt="Anatomia Muscular do Atleta" class="anatomy-ref-img">
-            <div class="anatomy-ref-caption">
-              <strong>Anatomia Muscular Aplicada ao Movimento</strong>
-              <span>Cadeias musculares primárias em vermelho carmesim & fáscias tendíneas em destaque</span>
-            </div>
-          </div>
-        </div>
-
-          <div class="muscle-controls-bar">
-            <span style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
-              <span style="width: 10px; height: 10px; border-radius: 50%; background: #FFD700; display: inline-block;"></span> Ouro: Alvo Primário
-              <span style="width: 10px; height: 10px; border-radius: 50%; background: #00E5FF; display: inline-block; margin-left: 8px;"></span> Ciano: Estabilizador
-            </span>
-
-            <div class="muscle-view-buttons">
-              <button id="btn-angle-front" class="view-angle-btn active">Frente</button>
-              <button id="btn-angle-back" class="view-angle-btn">Costas</button>
-              <button id="btn-angle-side" class="view-angle-btn">Lateral</button>
-              <button id="btn-angle-spin" class="view-angle-btn">↻ 360°</button>
-              <button id="btn-toggle-anatomy-ref" class="view-angle-btn" style="border-color: var(--gold-400); color: var(--gold-300);" title="Ver Mapa Anatômico do Atleta">🦴 Anatomia</button>
-            </div>
+          <!-- Exercise Switcher Pills -->
+          <div class="flex flex-wrap items-center justify-center gap-2 mt-6">
+            <button data-exercise-switch="deadlift" class="exercise-pill-btn active">
+              🏋️ Levantamento Terra (Deadlift)
+            </button>
+            <button data-exercise-switch="squat" class="exercise-pill-btn">
+              ⚡ Agachamento Livre (Squat)
+            </button>
+            <button data-exercise-switch="bench_press" class="exercise-pill-btn">
+              💪 Supino Reto com Barra
+            </button>
+            <button data-exercise-switch="spinning" class="exercise-pill-btn">
+              🚴 Spinning Supertech STS 02
+            </button>
+            <button data-exercise-switch="lat_pulldown" class="exercise-pill-btn">
+              🎯 Puxada Dorsal Alta
+            </button>
           </div>
         </div>
 
-        <!-- Exercise Details & Biomechanics Coaching -->
-        <div class="exercise-detail-panel">
-          <div>
-            <span style="font-size: 0.8rem; font-weight: 700; color: var(--teal-400); text-transform: uppercase; letter-spacing: 0.1em;">Selecione o Equipamento / Exercício:</span>
-            <div class="exercise-pills-row" style="margin-top: 10px;">
-              <button class="exercise-pill-btn active" data-exercise="bench_press">
-                🏋️ Supino Reto Halteres
+        <!-- Interactive 3D Canvas Box -->
+        <div class="relative glass-panel p-4 sm:p-6 rounded-2xl overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+          <!-- Controls Top Toolbar -->
+          <div class="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-white/10">
+            <!-- Phase Switcher Tabs -->
+            <div class="flex items-center gap-2 bg-neutral-900/90 p-1 rounded-xl border border-white/10 text-xs">
+              <button data-phase-btn="0.0" class="active-phase px-3.5 py-1.5 rounded-lg font-bold uppercase transition-all duration-200 text-carbon-950 bg-gold-maciel shadow-[0_0_15px_rgba(212,175,55,0.5)]">
+                Fase 1: Setup
               </button>
-              <button class="exercise-pill-btn" data-exercise="squat">
-                ⚡ Agachamento Livre / Smith
+              <button data-phase-btn="0.5" class="px-3.5 py-1.5 rounded-lg font-bold uppercase transition-all duration-200 text-gray-400 hover:text-white">
+                Fase 2: Tração
               </button>
-              <button class="exercise-pill-btn" data-exercise="spinning">
-                🚴 Spinning Supertech STS
-              </button>
-              <button class="exercise-pill-btn" data-exercise="lat_pulldown">
-                💪 Puxada Dorsal Alta
-              </button>
-              <button class="exercise-pill-btn" data-exercise="shoulder_press">
-                🎯 Desenvolvimento Ombros
-              </button>
-              <button class="exercise-pill-btn" data-exercise="leg_press">
-                🦵 Leg Press 45°
+              <button data-phase-btn="1.0" class="px-3.5 py-1.5 rounded-lg font-bold uppercase transition-all duration-200 text-gray-400 hover:text-white">
+                Fase 3: Lockout
               </button>
             </div>
-          </div>
 
-          <div class="exercise-info-card">
-            <div class="exercise-info-card-header">
-              <div>
-                <span id="exercise-cat" class="exercise-category-tag">Membros Superiores • Empurrar</span>
-                <h3 id="exercise-title" class="exercise-title-lg">Supino Reto com Halteres / Barra</h3>
+            <!-- Camera Angles & Extras -->
+            <div class="flex items-center gap-2">
+              <!-- Camera Preset Buttons -->
+              <div class="hidden sm:flex items-center gap-1 bg-neutral-900/80 p-1 rounded-xl border border-white/10 text-xs text-gray-400">
+                <button data-cam-preset="perspective" class="active-cam px-2.5 py-1 rounded-md hover:text-white">3D</button>
+                <button data-cam-preset="sagittal" class="px-2.5 py-1 rounded-md hover:text-white">Lateral</button>
+                <button data-cam-preset="front" class="px-2.5 py-1 rounded-md hover:text-white">Frontal</button>
               </div>
+
+              <!-- Vector Toggle -->
+              <button id="deadlift-vector-toggle" class="bg-teal-maciel text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-teal-glow/50 shadow-[0_0_12px_rgba(14,176,196,0.3)]">
+                <i data-lucide="crosshair" class="w-3.5 h-3.5"></i>
+                <span class="hidden sm:inline">Vetores</span>
+              </button>
+
+              <!-- Auto-Play Demonstration -->
+              <button id="deadlift-play-toggle" class="px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-white/15 bg-neutral-800 text-gray-200 hover:bg-neutral-700 transition-colors">
+                <i data-lucide="play" class="w-3.5 h-3.5 text-gold-maciel"></i>
+                <span>Execução Contínua</span>
+              </button>
+
+              <!-- HUD Toggle Button -->
+              <button id="deadlift-hud-toggle" class="px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-white/15 bg-neutral-800 text-gray-300 hover:bg-neutral-700 transition-colors cursor-pointer" title="Alternar HUD Técnico (Atalho: H)" aria-expanded="true">
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                <span>Ocultar Fases</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3D Canvas Viewport + Technical Overlay Cards -->
+          <div class="relative w-full">
+            <!-- WebGL Three.js Container -->
+            <div id="deadlift-canvas-container" class="cursor-grab active:cursor-grabbing w-full h-[380px] sm:h-[480px] md:h-[540px] relative overflow-hidden rounded-xl">
             </div>
 
-            <!-- Recruitment Progress Bars -->
-            <div class="muscles-targeted-breakdown">
-              <span style="font-size: 0.82rem; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.05em;">Recrutamento Muscular Estimado:</span>
-              <div id="muscle-bars-container">
+            <!-- Floating Biomechanical Diagnostic HUD Card -->
+            <div id="deadlift-hud-card" class="absolute top-3 left-3 sm:top-4 sm:left-4 max-w-[calc(100%-24px)] sm:max-w-xs p-3 sm:p-4 rounded-xl bg-neutral-950/85 backdrop-blur-md border border-gold-maciel/30 shadow-2xl transition-all duration-300 ease-in-out opacity-100 translate-y-0">
+              <div class="flex items-center justify-between mb-2">
+                <span id="3d-card-badge" class="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-gold-300 px-2 py-0.5 rounded-md bg-gold-maciel/20 border border-gold-maciel/40">
+                  Fundação Biomecânica
+                </span>
+                <span class="text-[9px] sm:text-[10px] text-gray-400 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Tempo Real
+                </span>
+              </div>
+
+              <h4 id="3d-card-title" class="text-sm sm:text-base font-bold text-white uppercase font-display mb-2 sm:mb-3">
+                Fase 1: Setup & Saída
+              </h4>
+
+              <!-- Active Muscles Badges -->
+              <div class="mb-2 sm:mb-3">
+                <span class="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-wider block mb-1 font-semibold">
+                  Músculos Alvo & Ativação:
+                </span>
+                <div id="3d-card-muscles" class="flex flex-wrap gap-1">
+                  <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-300">Isquiotibiais</span>
+                  <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-teal-950/80 border border-teal-500/40 text-teal-300">Grande Dorsal</span>
+                  <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-teal-950/80 border border-teal-500/40 text-teal-300">Core</span>
+                </div>
+              </div>
+
+              <!-- Technical Cues List -->
+              <div id="3d-card-cues" class="space-y-1.5 border-t border-white/10 pt-2 text-xs">
                 <!-- Dynamically populated by JS -->
               </div>
             </div>
 
-            <!-- Biomechanics Pro Tips -->
-            <div class="biomechanics-tips-box">
-              <div class="biomechanics-tips-title">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                </svg>
-                Dicas Biomecânicas dos Nossos Treinadores:
-              </div>
-              <p id="exercise-tips" class="biomechanics-tips-text">
-                Mantenha a retração e depressão escapular durante todo o movimento. Desça a barra ou halteres controladamente até a linha do esterno e empurre com foco na contração peitoral.
-              </p>
+            <!-- Bottom User Drag Hint -->
+            <div class="absolute bottom-3 right-3 pointer-events-none flex items-center gap-1.5 text-[10px] sm:text-xs text-gray-400 bg-neutral-950/75 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-white/10">
+              <i data-lucide="rotate-3d" class="w-3.5 h-3.5 text-gold-maciel"></i>
+              <span>360° Interativo • Arraste com o mouse</span>
             </div>
+          </div>
 
-            <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px;">
-              <div><strong style="color: #ff6b6b;">⚠️ Erro Comum a Evitar:</strong> <span id="exercise-mistakes">Tirar as escápulas do banco ou afastar cotovelos a 90°.</span></div>
-              <div><strong style="color: var(--gold-400);">📊 Séries & Repetições Recomendadas:</strong> <span id="exercise-sets">3 a 4 séries de 8 a 12 repetições • 90s de descanso</span></div>
-            </div>
+          <!-- Scrubber Range Control for manual frame-by-frame scrub -->
+          <div class="mt-4 pt-4 border-t border-white/10 flex items-center gap-4">
+            <span class="text-xs font-semibold uppercase tracking-wider text-gray-400 shrink-0">Saída (0%)</span>
+            <input type="range" id="deadlift-scrubber" min="0.0" max="1.0" step="0.01" value="0.0" aria-label="Controle de Fase do Exercício" class="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-gold-maciel">
+            <span class="text-xs font-semibold uppercase tracking-wider text-gray-400 shrink-0">Lockout (100%)</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==========================================================================
-         FEATURE 4: PLANS & PRICING SECTION
-         ========================================================================== -->
-    <section id="plans" class="section-container">
-      <div class="section-header">
-        <div class="badge-tag gold">
-          <span>★</span> Planos & Investimento
-        </div>
-        <h2 class="section-title">
-          ESCOLHA SEU <span class="text-gold-gradient">PLANO DE TREINO</span>
-        </h2>
-        <p class="section-subtitle">
-          Condições transparentes sem taxas ocultas. Escolha o plano que melhor se adapta à sua rotina e inicie sua transformação no Studio Maciel com suporte completo.
-        </p>
-      </div>
-
-      <div class="pricing-grid">
-        <!-- Plan 1: Mensal Ouro -->
-        <div class="pricing-card">
-          <div class="pricing-header">
-            <span class="badge-tag" style="align-self: flex-start; font-size: 0.72rem;">Flexibilidade Total</span>
-            <h3 class="plan-tier-name">Mensal Ouro</h3>
-            <p class="plan-tier-desc">Ideal para quem busca treinar sem fidelidade de longo prazo com acesso completo.</p>
-          </div>
-
-          <div class="plan-price-box">
-            <span class="plan-currency">R$</span>
-            <span class="plan-amount">129</span>
-            <span class="plan-period">/mês</span>
-          </div>
-
-          <ul class="plan-benefits-list">
-            <li class="benefit-item">
-              <span class="benefit-icon">✓</span>
-              <span>Acesso livre à musculação e pesos livres</span>
-            </li>
-            <li class="benefit-item">
-              <span class="benefit-icon">✓</span>
-              <span>Aulas de Spinning Supertech inclusas</span>
-            </li>
-            <li class="benefit-item">
-              <span class="benefit-icon">✓</span>
-              <span>Acompanhamento dos instrutores em pista</span>
-            </li>
-            <li class="benefit-item">
-              <span class="benefit-icon">✓</span>
-              <span>Sem taxa de matrícula promocional</span>
-            </li>
-          </ul>
-
-          <a href="#contact" class="btn-plan-select outline" data-plan="Mensal Ouro">
-            Matricular no Mensal
-          </a>
+    <!-- ========================================================================
+         FEATURE 5: PLANS & PRICING (BRONZE, SILVER & GOLD VIP COM 3D TILT)
+         ======================================================================== -->
+    <section id="planos" class="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 relative tech-grid-bg">
+      <div class="max-w-7xl mx-auto">
+        <!-- Section Header -->
+        <div class="section-reveal flex flex-col items-center text-center mb-12 sm:mb-16">
+          <span class="tech-badge mb-3 shadow-[0_0_15px_rgba(212,175,55,0.3)]">Vagas Limitadas • Treinamento de Alta Performance</span>
+          <h2 class="font-display font-black text-3xl sm:text-5xl uppercase tracking-tight text-white mb-4">
+            ESCOLHA SEU PLANO <span class="text-gold-gradient text-glow-gold">NO STUDIO MACIEL</span>
+          </h2>
+          <p class="text-gray-400 text-sm sm:text-base max-w-2xl leading-relaxed">
+            Condições transparentes sem taxas ocultas. Escolha o plano sob medida para sua rotina e inicie sua transformação no Studio Maciel com suporte completo dos treinadores.
+          </p>
         </div>
 
-        <!-- Plan 2: Anual VIP Maciel (Featured) -->
-        <div class="pricing-card featured">
-          <div class="featured-ribbon">MAIS ESCOLHIDO • VIP</div>
-          <div class="pricing-header">
-            <span class="badge-tag gold" style="align-self: flex-start; font-size: 0.72rem;">Melhor Custo-Benefício</span>
-            <h3 class="plan-tier-name text-gold-gradient">Anual VIP Maciel</h3>
-            <p class="plan-tier-desc">A experiência definitiva de alta performance para quem quer resultados consistentes.</p>
-          </div>
-
-          <div class="plan-price-box">
-            <span class="plan-currency">R$</span>
-            <span class="plan-amount text-gold">89</span>
-            <span class="plan-period">/mês (12x)</span>
-          </div>
-
-          <ul class="plan-benefits-list">
-            <li class="benefit-item">
-              <span class="benefit-icon">★</span>
-              <span><strong>Acesso Total e Ilimitado</strong> todos os dias</span>
-            </li>
-            <li class="benefit-item">
-              <span class="benefit-icon">★</span>
-              <span><strong>Spinning Supertech STS 02</strong> com reserva VIP</span>
-            </li>
-            <li class="benefit-item">
-              <span class="benefit-icon">★</span>
-              <span><strong>Avaliação Física Bioimpedância</strong> periódica</span>
-            </li>
-            <li class="benefit-item">
-              <span class="benefit-icon">★</span>
-              <span><strong>App de Treino Personalizado</strong> com fichas digitais</span>
-            </li>
-            <li class="benefit-item">
-              <span class="benefit-icon">★</span>
-              <span>Acesso prioritário a eventos e corridas</span>
-            </li>
-          </ul>
-
-          <a href="#contact" class="btn-plan-select solid-gold" data-plan="Anual VIP Maciel">
-            Garantir Vaga Anual VIP
-          </a>
-        </div>
-
-        <!-- Plan 3: Trimestral Black -->
-        <div class="pricing-card">
-          <div class="pricing-header">
-            <span class="badge-tag" style="align-self: flex-start; font-size: 0.72rem;">Foco Trimestral</span>
-            <h3 class="plan-tier-name">Trimestral Black</h3>
-            <p class="plan-tier-desc">Perfeito para metas de 90 dias com desconto especial em relação ao mensal.</p>
-          </div>
-
-          <div class="plan-price-box">
-            <span class="plan-currency">R$</span>
-            <span class="plan-amount">109</span>
-            <span class="plan-period">/mês</span>
-          </div>
-
-          <ul class="plan-benefits-list">
-            <li class="benefit-item">
-              <span class="benefit-icon">✓</span>
-              <span>Acesso a todos os setores e aparelhos</span>
-            </li>
-            <li class="benefit-item">
-              <span class="benefit-icon">✓</span>
-              <span>Bikes e esteiras de alta performance</span>
-            </li>
-            <li class="benefit-item">
-              <span class="benefit-icon">✓</span>
-              <span>Montagem de treino individualizada</span>
-            </li>
-            <li class="benefit-item">
-              <span class="benefit-icon">✓</span>
-              <span>Acesso ao Lounge VIP e rede Wi-Fi 5G</span>
-            </li>
-          </ul>
-
-          <a href="#contact" class="btn-plan-select outline" data-plan="Trimestral Black">
-            Matricular no Trimestral
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         FEATURE 5: INSTAGRAM FEED & SOCIAL WALL
-         Real community photos from Assets
-         ========================================================================== -->
-    <section id="social" class="section-container">
-      <div class="section-header">
-        <div class="badge-tag">
-          <span>📷</span> Comunidade & Conexão
-        </div>
-        <h2 class="section-title">
-          FEED & <span class="text-gold-gradient">SOCIAL WALL</span>
-        </h2>
-        <p class="section-subtitle">
-          Veja a energia, as conquistas e o dia a dia da família Studio Maciel / Maciel Fit Academia em Toledo - MG.
-        </p>
-      </div>
-
-      <div class="instagram-wall-wrapper">
-        <!-- Instagram Profile Banner Header -->
-        <div class="instagram-banner-header">
-          <div class="instagram-user-badge">
-            <div class="instagram-avatar-border">
-              <img src="public/images/logo_macielfit.jpg" alt="Logo Maciel Fit Instagram" class="instagram-avatar-img">
-            </div>
+        <!-- Pricing Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch pt-4 sm:pt-6">
+          <!-- PLANO 1: MENSAL OURO -->
+          <div class="plan-card-3d glass-panel p-6 sm:p-8 pt-9 sm:pt-10 rounded-2xl h-full flex flex-col justify-between border border-white/10 hover:border-teal-500/50 transition-all duration-300 relative group">
+            <div class="plan-card-glare"></div>
             <div>
-              <div class="instagram-handle-title">
-                <span>@macielfitacademia</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="#0eb0c4">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full bg-neutral-900 text-gray-300 border border-white/15">
+                  Flexibilidade Total
+                </span>
+                <span class="text-xs text-gray-400 font-semibold">Mensal</span>
               </div>
-              <div class="instagram-handle-subtitle">
-                Studio Maciel • Toledo - MG • @studiomaciel1
-              </div>
-            </div>
-          </div>
 
-          <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="btn-primary-gold" style="padding: 12px 24px; font-size: 0.88rem;">
-            <span>Seguir no Instagram</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-            </svg>
-          </a>
-        </div>
-
-        <!-- Social Grid Posts with Fresh Generated Assets & Instagram Badges -->
-        <div class="social-feed-grid">
-          <!-- Post 1: Trophy / Festival Inverno -->
-          <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="social-post-card">
-            <img src="public/images/gallery/award_trophy.jpg" alt="Troféu Maior Equipe Corrida do Festival de Inverno" class="social-post-img">
-            <div class="social-post-overlay">
-              <div class="social-post-insta-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                </svg>
-              </div>
-              <p class="social-post-caption">🏆 Troféu Maior Equipe na 1ª Corrida do Festival de Inverno! Orgulho imenso dos nossos alunos e atletas.</p>
-              <div class="social-post-meta">
-                <span class="likes-count" data-likes="342">❤️ 342 curtidas</span>
-                <span>Toledo - MG</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Post 2: Community & Parede Verde -->
-          <a href="https://instagram.com/studiomaciel1" target="_blank" rel="noopener noreferrer" class="social-post-card">
-            <img src="public/images/gallery/insta_community.jpg" alt="Alunos e treinadores na parede verde Studio Maciel" class="social-post-img">
-            <div class="social-post-overlay">
-              <div class="social-post-insta-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                </svg>
-              </div>
-              <p class="social-post-caption">🔥 Treinão de sábado com a família Studio Maciel! Energia máxima e superação na nossa parede biofílica neon.</p>
-              <div class="social-post-meta">
-                <span class="likes-count" data-likes="318">❤️ 318 curtidas</span>
-                <span>@studiomaciel1</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Post 3: Supertech STS Spinning -->
-          <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="social-post-card">
-            <img src="public/images/gallery/insta_spinning.jpg" alt="Sala de Spinning Supertech STS Studio Maciel" class="social-post-img">
-            <div class="social-post-overlay">
-              <div class="social-post-insta-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                </svg>
-              </div>
-              <p class="social-post-caption">🚴 Aulas eletrizantes de Spinning Supertech STS 02! Iluminação cênica e alta queima calórica.</p>
-              <div class="social-post-meta">
-                <span class="likes-count" data-likes="275">❤️ 275 curtidas</span>
-                <span>Área Cardio STS</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Post 4: Heavy Strength & Musculação -->
-          <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="social-post-card">
-            <img src="public/images/gallery/insta_strength.jpg" alt="Musculação Pesada e Biomecânica de Elite" class="social-post-img">
-            <div class="social-post-overlay">
-              <div class="social-post-insta-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                </svg>
-              </div>
-              <p class="social-post-caption">💪 Cada repetição conta! Equipamentos biomecânicos de precisão e halteres sextavados para sua melhor performance.</p>
-              <div class="social-post-meta">
-                <span class="likes-count" data-likes="364">❤️ 364 curtidas</span>
-                <span>Musculação de Elite</span>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         FEATURE 6: CONTACT & LOCATION SECTION
-         ========================================================================== -->
-    <section id="contact" class="section-container">
-      <div class="section-header">
-        <div class="badge-tag gold">
-          <span>📍</span> Venha Nos Visitar
-        </div>
-        <h2 class="section-title">
-          LOCALIZAÇÃO & <span class="text-gold-gradient">CONTATO DIRETO</span>
-        </h2>
-        <p class="section-subtitle">
-          Estamos prontos para te receber. Agende uma aula experimental sem compromisso e venha sentir a energia do Studio Maciel em Toledo - MG.
-        </p>
-      </div>
-
-      <div class="contact-layout-grid">
-        <!-- Contact Information Panel -->
-        <div class="contact-info-panel">
-          <div>
-            <span class="badge-tag" style="margin-bottom: 16px;">Atendimento Exclusivo</span>
-            <h3 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 8px;">Studio Maciel / Maciel Fit</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">Espaço climatizado, recepção acolhedora, vestiários completos e estacionamento.</p>
-          </div>
-
-          <div class="contact-items-list">
-            <!-- Google Maps Item with direct link -->
-            <div class="contact-item-row">
-              <div class="contact-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-              </div>
-              <div>
-                <h4 class="contact-item-title">Endereço & Localização</h4>
-                <p class="contact-item-desc">Toledo, Minas Gerais - MG • Brasil<br>Região Central • Fácil Acesso e Estacionamento</p>
-                <a 
-                  href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  class="maps-direct-link"
-                  style="display: inline-flex; align-items: center; gap: 6px; color: var(--gold-400); font-size: 0.86rem; font-weight: 700; margin-top: 6px; text-decoration: none;"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                    <polyline points="15 3 21 3 21 9"/>
-                    <line x1="10" y1="14" x2="21" y2="3"/>
-                  </svg>
-                  <span>Abrir no Google Maps (Traçar Rota) ↗</span>
-                </a>
-              </div>
-            </div>
-
-            <div class="contact-item-row">
-              <div class="contact-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <polyline points="12 6 12 12 16 14"/>
-                </svg>
-              </div>
-              <div>
-                <h4 class="contact-item-title">Horário de Funcionamento</h4>
-                <p class="contact-item-desc">
-                  <strong>Segunda a Sexta:</strong> 06:00 às 22:00 (Ininterrupto)<br>
-                  <strong>Sábados:</strong> 08:00 às 14:00<br>
-                  <strong>Domingos e Feriados:</strong> Horários especiais de treino coletivo
+              <div class="mb-5">
+                <h3 class="text-2xl font-black text-white uppercase font-display tracking-wide">
+                  Mensal Ouro
+                </h3>
+                <p class="text-xs sm:text-sm text-gray-300 mt-2 leading-relaxed">
+                  Ideal para quem busca treinar sem fidelidade de longo prazo com acesso livre a todos os equipamentos e acompanhamento diário.
                 </p>
               </div>
+
+              <!-- Price Box -->
+              <div class="p-4 rounded-xl bg-neutral-900/80 border border-white/10 mb-6">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">
+                  Investimento Mensal
+                </div>
+                <div class="flex items-baseline gap-1">
+                  <span class="text-xs text-gold-maciel font-bold uppercase">R$</span>
+                  <span class="text-3xl sm:text-4xl font-black text-white font-display">129</span>
+                  <span class="text-xs text-gray-400 font-medium">/mês</span>
+                </div>
+                <p class="text-xs text-gray-300 mt-2 font-medium flex items-center gap-1.5">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-teal-400 shrink-0"></i>
+                  <span>Sem taxa de matrícula promocional</span>
+                </p>
+              </div>
+
+              <!-- Checklist -->
+              <ul class="space-y-3 text-xs sm:text-sm text-gray-300 mb-8">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-teal-400 shrink-0 mt-0.5"></i>
+                  <span>Acesso livre à musculação e pesos livres</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-teal-400 shrink-0 mt-0.5"></i>
+                  <span>Aulas de Spinning Supertech inclusas</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-teal-400 shrink-0 mt-0.5"></i>
+                  <span>Acompanhamento dos instrutores em pista</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-teal-400 shrink-0 mt-0.5"></i>
+                  <span>Espaço climatizado e vestiários completos</span>
+                </li>
+              </ul>
             </div>
 
-            <div class="contact-item-row">
-              <div class="contact-icon-box" style="background: rgba(37, 211, 102, 0.15); border-color: rgba(37, 211, 102, 0.4);">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#25D366">
-                  <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/>
-                </svg>
-              </div>
-              <div>
-                <h4 class="contact-item-title">WhatsApp & Atendimento Direto</h4>
-                <p class="contact-item-desc">Tire dúvidas sobre planos ou agende sua aula experimental gratuita.</p>
-              </div>
-            </div>
+            <a href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Gostaria%20de%20me%20matricular%20no%20Plano%20Mensal%20Ouro." target="_blank" rel="noopener noreferrer" class="btn-secondary w-full py-4 rounded-xl text-center text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[48px] hover:border-teal-500/50 hover:text-white transition-all">
+              <span>Matricular no Mensal</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
-            <a 
-              href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Gostaria%20de%20agendar%20uma%20aula%20experimental%20e%20conhecer%20os%20planos." 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              class="btn-primary-gold" 
-              style="width: 100%; justify-content: center; gap: 10px;"
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/>
-              </svg>
-              <span>Falar no WhatsApp com o Studio</span>
-            </a>
+          <!-- PLANO 2: TRIMESTRAL BLACK (MAIS POPULAR) -->
+          <div class="plan-card-3d glass-panel p-6 sm:p-8 pt-9 sm:pt-10 rounded-2xl h-full flex flex-col justify-between border-2 border-teal-500/60 hover:border-teal-400 transition-all duration-300 relative group shadow-[0_0_25px_rgba(7,107,119,0.3)]">
+            <div class="plan-card-glare"></div>
+            <!-- Popular Ribbon -->
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-teal-600 to-teal-800 text-white text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full shadow-[0_0_20px_rgba(7,107,119,0.6)] flex items-center gap-1.5 border border-white/20 whitespace-nowrap z-30">
+              <i data-lucide="flame" class="w-3.5 h-3.5 text-white"></i>
+              <span>MAIS POPULAR • FOCO 90 DIAS</span>
+            </div>
 
-            <a 
-              href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              class="btn-outline-teal"
-              style="width: 100%; justify-content: center; gap: 8px; text-decoration: none;"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-              <span>Ver Localização no Google Maps</span>
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-teal-950/80 text-teal-300 border border-teal-600/40">
+                  Trimestral • 3 Meses
+                </span>
+                <span class="text-xs text-teal-400 font-bold uppercase">Resultado Real</span>
+              </div>
+
+              <div class="mb-5">
+                <h3 class="text-2xl font-black text-white uppercase font-display tracking-wide">
+                  Trimestral Black
+                </h3>
+                <p class="text-xs sm:text-sm text-gray-300 mt-2 leading-relaxed">
+                  Perfeito para metas de 90 dias com desconto especial em relação ao mensal e montagem de treino individualizada.
+                </p>
+              </div>
+
+              <!-- Price Box -->
+              <div class="p-4 rounded-xl bg-teal-950/30 border border-teal-600/30 mb-6">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">
+                  Investimento Mensal
+                </div>
+                <div class="flex items-baseline gap-1">
+                  <span class="text-xs text-teal-400 font-bold uppercase">R$</span>
+                  <span class="text-3xl sm:text-4xl font-black text-white font-display">109</span>
+                  <span class="text-xs text-gray-400 font-medium">/mês (3x)</span>
+                </div>
+                <p class="text-xs text-teal-300 mt-2 font-medium flex items-center gap-1.5">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-teal-400 shrink-0"></i>
+                  <span>Avaliação física inicial inclusa</span>
+                </p>
+              </div>
+
+              <!-- Checklist -->
+              <ul class="space-y-3 text-xs sm:text-sm text-gray-300 mb-8">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-teal-400 shrink-0 mt-0.5"></i>
+                  <span>Acesso a todos os setores e aparelhos</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-teal-400 shrink-0 mt-0.5"></i>
+                  <span>Bikes Supertech STS e esteiras de alta performance</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-teal-400 shrink-0 mt-0.5"></i>
+                  <span>Montagem de treino individualizada para metas</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-teal-400 shrink-0 mt-0.5"></i>
+                  <span>Acesso ao Lounge VIP e rede Wi-Fi 5G</span>
+                </li>
+              </ul>
+            </div>
+
+            <a href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Gostaria%20de%20garantir%20minha%20vaga%20no%20Plano%20Trimestral%20Black." target="_blank" rel="noopener noreferrer" class="btn-primary-gold w-full py-4 rounded-xl text-center text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 min-h-[48px] shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+              <span>Garantir Vaga Trimestral</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+
+          <!-- PLANO 3: ANUAL VIP MACIEL (MELHOR CUSTO-BENEFÍCIO • VIP) -->
+          <div class="plan-card-3d glass-panel p-6 sm:p-8 pt-9 sm:pt-10 rounded-2xl h-full flex flex-col justify-between border-2 border-gold-maciel hover:border-amber-300 transition-all duration-300 relative group bg-gradient-to-b from-[#14181a] via-[#0e1315] to-[#07090a] shadow-[0_0_35px_rgba(212,175,55,0.35)]">
+            <div class="plan-card-glare"></div>
+            <!-- VIP Ribbon -->
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 via-gold-maciel to-amber-600 text-carbon-950 text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full shadow-[0_0_25px_rgba(212,175,55,0.6)] flex items-center gap-1.5 border border-amber-300/60 whitespace-nowrap z-30">
+              <i data-lucide="crown" class="w-3.5 h-3.5 text-carbon-950"></i>
+              <span>MELHOR CUSTO-BENEFÍCIO • VIP</span>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-gradient-to-r from-gold-maciel/25 to-teal-maciel/25 text-gold-300 border border-gold-maciel/50 flex items-center gap-1.5">
+                  <i data-lucide="award" class="w-3.5 h-3.5 text-gold-maciel"></i>
+                  <span>EXPERIÊNCIA VIP COMPLETA</span>
+                </span>
+                <span class="text-xs text-gold-maciel font-bold uppercase">12 Meses</span>
+              </div>
+
+              <div class="mb-5">
+                <h3 class="text-2xl sm:text-3xl font-black text-white uppercase font-display tracking-wide flex items-center gap-2">
+                  <span>Anual VIP Maciel</span>
+                </h3>
+                <p class="text-xs sm:text-sm text-gray-200 mt-2 leading-relaxed">
+                  A experiência definitiva de alta performance. Treine com tarifa exclusiva, app digital personalizado e reserva prioritária de bikes.
+                </p>
+              </div>
+
+              <!-- Price Box -->
+              <div class="p-4 rounded-xl bg-gradient-to-r from-gold-maciel/20 to-teal-maciel/15 border border-gold-maciel/40 mb-6">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-gold-300 mb-1">
+                  Investimento Mensal (Menor Parcela)
+                </div>
+                <div class="flex items-baseline gap-1">
+                  <span class="text-xs text-gold-maciel font-bold uppercase">R$</span>
+                  <span class="text-3xl sm:text-4xl font-black text-gold-maciel font-display text-glow-gold">89</span>
+                  <span class="text-xs text-gold-200 font-medium">/mês (12x)</span>
+                </div>
+                <p class="text-xs text-gray-200 mt-2 font-medium flex items-center gap-1.5">
+                  <i data-lucide="credit-card" class="w-3.5 h-3.5 text-gold-maciel shrink-0"></i>
+                  <span>Parcelado em até 12x no cartão</span>
+                </p>
+              </div>
+
+              <!-- Checklist -->
+              <ul class="space-y-3 text-xs sm:text-sm text-gray-200 mb-8">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-gold-maciel shrink-0 mt-0.5"></i>
+                  <span><strong>Acesso Total e Ilimitado</strong> todos os dias</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-gold-maciel shrink-0 mt-0.5"></i>
+                  <span><strong>Spinning Supertech STS 02</strong> com reserva VIP</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-gold-maciel shrink-0 mt-0.5"></i>
+                  <span><strong>Bioimpedância & Avaliação Física</strong> periódica</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-gold-maciel shrink-0 mt-0.5"></i>
+                  <span><strong>App de Treino Personalizado</strong> com fichas digitais</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-gold-maciel shrink-0 mt-0.5"></i>
+                  <span>Prioridade nos eventos e corridas de rua</span>
+                </li>
+              </ul>
+            </div>
+
+            <a href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Quero%20garantir%20minha%20vaga%20no%20Plano%20Anual%20VIP%20Maciel." target="_blank" rel="noopener noreferrer" class="w-full py-4 rounded-xl text-center text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 min-h-[48px] bg-gradient-to-r from-amber-400 via-gold-maciel to-amber-500 hover:from-amber-300 hover:to-gold-maciel text-carbon-950 shadow-[0_0_25px_rgba(212,175,55,0.45)] transition-all duration-300">
+              <span>Garantir Vaga Anual VIP</span>
+              <i data-lucide="crown" class="w-4 h-4 text-carbon-950"></i>
             </a>
           </div>
         </div>
+      </div>
+    </section>
 
-        <!-- Google Maps Embed Panel -->
-        <div class="contact-map-panel">
-          <iframe 
-            class="map-iframe"
-            title="Localização do Studio Maciel em Toledo MG"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14872.222384666572!2d-46.382298!3d-22.740150!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c979d39e80adcf%3A0xb30fbef06f654b0!2sToledo%20-%20MG!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr" 
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
-          <div class="map-overlay-button-container">
-            <a href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" target="_blank" rel="noopener noreferrer" class="map-floating-pill">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-              </svg>
-              <span>Como Chegar ao Studio Maciel ↗</span>
+    <!-- ========================================================================
+         FEATURE 6: INSTAGRAM & COMMUNITY SOCIAL WALL
+         ======================================================================== -->
+    <section id="social" class="section-container py-24 px-4 sm:px-8 relative bg-gradient-to-b from-[#070707] via-[#0a0f12] to-[#070707]">
+      <div class="max-w-7xl mx-auto">
+        <div class="section-reveal flex flex-col items-center text-center mb-12">
+          <span class="tech-badge mb-3">
+            <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+            Comunidade & Conexão
+          </span>
+          <h2 class="font-display font-black text-3xl sm:text-5xl uppercase tracking-tight text-white mb-3">
+            FEED & <span class="text-gold-gradient text-glow-gold">SOCIAL WALL</span>
+          </h2>
+          <p class="text-gray-400 text-sm sm:text-base max-w-2xl leading-relaxed">
+            Acompanhe a energia, as vitórias e os bastidores dos treinos diários da família Studio Maciel / Maciel Fit Academia em Toledo - MG.
+          </p>
+        </div>
+
+        <div class="instagram-wall-wrapper">
+          <!-- Banner Header -->
+          <div class="instagram-banner-header">
+            <div class="instagram-user-badge">
+              <div class="instagram-avatar-border">
+                <img src="Assets/logo.png" alt="Logo Maciel Fit Instagram" class="instagram-avatar-img">
+              </div>
+              <div>
+                <div class="instagram-handle-title">
+                  <span>@macielfitacademia</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#0eb0c4">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </div>
+                <div class="instagram-handle-subtitle">
+                  Studio Maciel • Toledo - MG • @studiomaciel1
+                </div>
+              </div>
+            </div>
+
+            <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="btn-primary-gold" style="padding: 12px 24px; font-size: 0.88rem;">
+              <i data-lucide="instagram" class="w-4 h-4"></i>
+              <span>Seguir no Instagram</span>
             </a>
+          </div>
+
+          <!-- Social Grid Posts with Real Photos -->
+          <div class="social-feed-grid">
+            <!-- Post 1: Trophy / Festival Inverno -->
+            <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="social-post-card group">
+              <img src="public/images/gallery/award_trophy.jpg" alt="Troféu Maior Equipe Corrida do Festival de Inverno" class="social-post-img">
+              <div class="social-post-overlay">
+                <div class="social-post-insta-icon">
+                  <i data-lucide="instagram" class="w-4 h-4 text-gold-maciel"></i>
+                </div>
+                <p class="social-post-caption">🏆 Troféu Maior Equipe na 1ª Corrida do Festival de Inverno! Orgulho imenso dos nossos atletas e alunos.</p>
+                <div class="social-post-meta">
+                  <span class="likes-count" data-likes="342">❤️ 342 curtidas</span>
+                  <span>Toledo - MG</span>
+                </div>
+              </div>
+            </a>
+
+            <!-- Post 2: Community & Parede Verde -->
+            <a href="https://instagram.com/studiomaciel1" target="_blank" rel="noopener noreferrer" class="social-post-card group">
+              <img src="public/images/gallery/insta_community.jpg" alt="Alunos e treinadores na parede verde Studio Maciel" class="social-post-img">
+              <div class="social-post-overlay">
+                <div class="social-post-insta-icon">
+                  <i data-lucide="instagram" class="w-4 h-4 text-gold-maciel"></i>
+                </div>
+                <p class="social-post-caption">🔥 Treinão de sábado com a família Studio Maciel! Energia máxima e superação na nossa parede biofílica neon.</p>
+                <div class="social-post-meta">
+                  <span class="likes-count" data-likes="318">❤️ 318 curtidas</span>
+                  <span>@studiomaciel1</span>
+                </div>
+              </div>
+            </a>
+
+            <!-- Post 3: Supertech STS Spinning -->
+            <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="social-post-card group">
+              <img src="public/images/gallery/insta_spinning.jpg" alt="Sala de Spinning Supertech STS Studio Maciel" class="social-post-img">
+              <div class="social-post-overlay">
+                <div class="social-post-insta-icon">
+                  <i data-lucide="instagram" class="w-4 h-4 text-gold-maciel"></i>
+                </div>
+                <p class="social-post-caption">🚴 Aulas eletrizantes de Spinning Supertech STS 02! Iluminação cênica e alta queima calórica.</p>
+                <div class="social-post-meta">
+                  <span class="likes-count" data-likes="275">❤️ 275 curtidas</span>
+                  <span>Área Cardio STS</span>
+                </div>
+              </div>
+            </a>
+
+            <!-- Post 4: Heavy Strength & Musculação -->
+            <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="social-post-card group">
+              <img src="public/images/gallery/insta_strength.jpg" alt="Musculação Pesada e Biomecânica de Elite" class="social-post-img">
+              <div class="social-post-overlay">
+                <div class="social-post-insta-icon">
+                  <i data-lucide="instagram" class="w-4 h-4 text-gold-maciel"></i>
+                </div>
+                <p class="social-post-caption">💪 Cada repetição conta! Equipamentos biomecânicos de precisão e halteres sextavados para sua melhor performance.</p>
+                <div class="social-post-meta">
+                  <span class="likes-count" data-likes="364">❤️ 364 curtidas</span>
+                  <span>Musculação de Elite</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         FEATURE 7: LOCATION & CONTACT (WITH GOOGLE MAPS LINK)
+         ======================================================================== -->
+    <section id="contato" class="section-container py-24 px-4 sm:px-6 lg:px-8 relative tech-grid-bg">
+      <div class="max-w-7xl mx-auto">
+        <div class="section-header flex flex-col items-center text-center mb-12">
+          <div class="tech-badge mb-3 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-gold-maciel"></i>
+            <span>Venha Nos Visitar</span>
+          </div>
+          <h2 class="font-display font-black text-3xl sm:text-5xl uppercase tracking-tight text-white mb-3">
+            LOCALIZAÇÃO & <span class="text-gold-gradient text-glow-gold">CONTATO DIRETO</span>
+          </h2>
+          <p class="text-gray-400 text-sm sm:text-base max-w-2xl leading-relaxed">
+            Estamos prontos para te receber. Agende uma aula experimental sem compromisso e venha sentir a energia do Studio Maciel em Toledo - MG.
+          </p>
+        </div>
+
+        <div class="contact-layout-grid">
+          <!-- Information Panel -->
+          <div class="contact-info-panel">
+            <div>
+              <span class="badge-tag gold mb-3">Atendimento Exclusivo</span>
+              <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">Studio Maciel / Maciel Fit</h3>
+              <p class="text-gray-400 text-sm">Espaço 100% climatizado, recepção acolhedora, vestiários completos e estacionamento facilitado.</p>
+            </div>
+
+            <div class="contact-items-list">
+              <!-- Address Item -->
+              <div class="contact-item-row">
+                <div class="contact-icon-box">
+                  <i data-lucide="map-pin" class="w-6 h-6 text-gold-maciel"></i>
+                </div>
+                <div>
+                  <h4 class="contact-item-title">Endereço & Localização</h4>
+                  <p class="contact-item-desc">Toledo, Minas Gerais - MG • Brasil<br>Região Central • Fácil Acesso e Estacionamento</p>
+                  <a href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" target="_blank" rel="noopener noreferrer" class="maps-direct-link" style="display: inline-flex; align-items: center; gap: 6px; color: var(--gold-400); font-size: 0.86rem; font-weight: 700; margin-top: 6px; text-decoration: none;">
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                    <span>Abrir no Google Maps (Traçar Rota) ↗</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Hours Item -->
+              <div class="contact-item-row">
+                <div class="contact-icon-box">
+                  <i data-lucide="clock" class="w-6 h-6 text-teal-400"></i>
+                </div>
+                <div>
+                  <h4 class="contact-item-title">Horário de Funcionamento</h4>
+                  <p class="contact-item-desc">
+                    <strong>Segunda a Sexta:</strong> 06:00 às 22:00 (Ininterrupto)<br>
+                    <strong>Sábados:</strong> 08:00 às 14:00<br>
+                    <strong>Domingos e Feriados:</strong> Horários especiais de treino
+                  </p>
+                </div>
+              </div>
+
+              <!-- WhatsApp Item -->
+              <div class="contact-item-row">
+                <div class="contact-icon-box" style="background: rgba(37, 211, 102, 0.15); border-color: rgba(37, 211, 102, 0.4);">
+                  <i data-lucide="message-circle" class="w-6 h-6 text-[#25D366]"></i>
+                </div>
+                <div>
+                  <h4 class="contact-item-title">WhatsApp & Atendimento Direto</h4>
+                  <p class="contact-item-desc">Tire dúvidas sobre planos ou agende sua aula experimental gratuita.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col gap-3 mt-2">
+              <a href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Gostaria%20de%20agendar%20uma%20aula%20experimental%20e%20conhecer%20os%20planos." target="_blank" rel="noopener noreferrer" class="btn-primary-gold w-full justify-center gap-2.5 py-4">
+                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                <span>Falar no WhatsApp com o Studio</span>
+              </a>
+
+              <a href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" target="_blank" rel="noopener noreferrer" class="btn-outline-teal w-full justify-center gap-2 py-3.5">
+                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                <span>Ver Localização no Google Maps</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Google Maps Embed Panel -->
+          <div class="contact-map-panel relative rounded-2xl overflow-hidden border border-white/10">
+            <iframe class="map-iframe w-full h-[450px]" title="Localização do Studio Maciel em Toledo MG" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14872.222384666572!2d-46.382298!3d-22.740150!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c979d39e80adcf%3A0xb30fbef06f654b0!2sToledo%20-%20MG!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+            <div class="map-overlay-button-container absolute bottom-4 right-4 z-5">
+              <a href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" target="_blank" rel="noopener noreferrer" class="map-floating-pill">
+                <i data-lucide="navigation" class="w-4 h-4 text-gold-maciel"></i>
+                <span>Como Chegar ao Studio Maciel ↗</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- ==========================================================================
-       FLOATING WHATSAPP BUTTON WITH GOLD NOTIFICATION BADGE
-       ========================================================================== -->
-  <a 
-    href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20os%20treinos%20e%20planos." 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    class="floating-whatsapp-btn" 
-    aria-label="Fale conosco no WhatsApp"
-  >
+  <!-- ========================================================================
+       8. FOOTER WITH LOGO, WHATSAPP, INSTAGRAM & GOOGLE MAPS
+       ======================================================================== -->
+  <footer class="site-footer pt-16 pb-12 px-4 sm:px-8 bg-neutral-950 border-t border-white/10 relative overflow-hidden">
+    <!-- Top Flare -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-gold-maciel to-transparent"></div>
+
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+        <!-- Brand Info -->
+        <div class="md:col-span-6 flex flex-col items-start">
+          <a href="#inicio" class="flex items-center gap-3.5 mb-4 group focus:outline-none" aria-label="Studio Maciel Início">
+            <img src="Assets/logo.png" alt="Logo Maciel Fit" class="h-10 sm:h-12 w-auto object-contain filter drop-shadow-[0_0_12px_rgba(212,175,55,0.3)] group-hover:scale-105 transition-transform duration-300">
+            <div>
+              <span class="font-display font-black text-xl tracking-wider text-white">STUDIO MACIEL</span>
+              <span class="block text-[10px] tracking-[0.2em] uppercase font-bold text-teal-400">Maciel Fit Academia • Toledo - MG</span>
+            </div>
+          </a>
+          <p class="text-sm text-gray-400 max-w-sm leading-relaxed mb-6">
+            O espaço onde a alta performance encontra a saúde e a estética. Equipamentos biomecânicos de ponta, Spinning Supertech e acompanhamento qualificado.
+          </p>
+          <div class="flex items-center gap-3">
+            <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" aria-label="Instagram Maciel Fit" class="group inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:border-gold-maciel/50 hover:bg-gold-maciel/10 text-neutral-400 hover:text-gold-maciel transition-all duration-300">
+              <i data-lucide="instagram" class="w-5 h-5"></i>
+            </a>
+            <a href="https://wa.me/5535999999999" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Studio Maciel" class="group inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-500/50 hover:bg-emerald-500/10 text-neutral-400 hover:text-emerald-400 transition-all duration-300">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+            </a>
+            <a href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" target="_blank" rel="noopener noreferrer" aria-label="Google Maps Studio Maciel" class="group inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:border-red-500/50 hover:bg-red-500/10 text-neutral-400 hover:text-red-400 transition-all duration-300">
+              <i data-lucide="map-pin" class="w-5 h-5"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="md:col-span-3">
+          <h4 class="text-xs uppercase font-bold tracking-widest text-white mb-4">Navegação</h4>
+          <ul class="space-y-2.5 text-sm text-gray-400">
+            <li><a href="#inicio" class="hover:text-gold-maciel transition-colors">Início</a></li>
+            <li><a href="#floorplan" class="hover:text-teal-400 transition-colors">Planta 3D Interativa</a></li>
+            <li><a href="#deadlift-section" class="hover:text-gold-maciel transition-colors">Biomecânica 3D</a></li>
+            <li><a href="#planos" class="hover:text-gold-maciel transition-colors">Planos & Matrículas</a></li>
+            <li><a href="#social" class="hover:text-teal-400 transition-colors">Comunidade & Feed</a></li>
+            <li><a href="#contato" class="hover:text-gold-maciel transition-colors">Localização</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact & Location -->
+        <div class="md:col-span-3">
+          <h4 class="text-xs uppercase font-bold tracking-widest text-white mb-4">Localização & Contato</h4>
+          <ul class="space-y-2.5 text-sm text-gray-400">
+            <li class="flex items-center gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-gold-maciel"></i>
+              <span>Toledo, Minas Gerais - MG</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="instagram" class="w-4 h-4 text-teal-400"></i>
+              <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="hover:text-teal-400 transition-colors">
+                @macielfitacademia
+              </a>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="instagram" class="w-4 h-4 text-gold-maciel"></i>
+              <a href="https://instagram.com/studiomaciel1" target="_blank" rel="noopener noreferrer" class="hover:text-gold-maciel transition-colors">
+                @studiomaciel1
+              </a>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="navigation" class="w-4 h-4 text-red-400"></i>
+              <a href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" target="_blank" rel="noopener noreferrer" class="hover:text-gold-maciel transition-colors">
+                Traçar Rota no Maps ↗
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+        <p>© 2026 Studio Maciel / Maciel Fit Academia. Todos os direitos reservados. Toledo, Minas Gerais.</p>
+        <a href="#inicio" class="hover:text-white flex items-center gap-1 transition-colors">
+          <span>Voltar ao Topo</span>
+          <i data-lucide="arrow-up" class="w-4 h-4 text-gold-maciel"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Quick WhatsApp Button -->
+  <a href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20os%20treinos%20e%20planos." target="_blank" rel="noopener noreferrer" class="floating-whatsapp-btn" aria-label="Fale conosco no WhatsApp">
     <div class="whatsapp-badge-pulse"></div>
     <svg width="34" height="34" viewBox="0 0 24 24" fill="#ffffff">
       <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/>
     </svg>
   </a>
 
-  <!-- ==========================================================================
-       FOOTER WITH WHATSAPP, INSTAGRAM & GOOGLE MAPS ICONS
-       ========================================================================== -->
-  <footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-top-row">
-        <div style="display: flex; align-items: center; gap: 14px;">
-          <div class="brand-symbol-small">
-            <img src="public/favicon.svg" alt="Studio Maciel">
-          </div>
-          <div>
-            <div class="brand-title-header" style="font-size: 1.4rem;">STUDIO MACIEL</div>
-            <div class="brand-sub-header" style="font-size: 0.75rem;">MACIEL FIT ACADEMIA • TOLEDO - MG</div>
-          </div>
-        </div>
-
-        <div class="footer-social-links" style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-          <!-- Instagram 1 -->
-          <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="footer-social-item" style="display: inline-flex; align-items: center; gap: 8px; color: var(--gold-400); text-decoration: none; font-size: 0.9rem; font-weight: 700;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-            </svg>
-            <span>@macielfitacademia</span>
-          </a>
-
-          <!-- Instagram 2 -->
-          <a href="https://instagram.com/studiomaciel1" target="_blank" rel="noopener noreferrer" class="footer-social-item" style="display: inline-flex; align-items: center; gap: 8px; color: var(--teal-400); text-decoration: none; font-size: 0.9rem; font-weight: 700;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-            </svg>
-            <span>@studiomaciel1</span>
-          </a>
-
-          <!-- WhatsApp Icon Link -->
-          <a href="https://wa.me/5535999999999" target="_blank" rel="noopener noreferrer" class="footer-social-item" style="display: inline-flex; align-items: center; gap: 8px; color: #25D366; text-decoration: none; font-size: 0.9rem; font-weight: 700;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/>
-            </svg>
-            <span>WhatsApp</span>
-          </a>
-
-          <!-- Google Maps Link -->
-          <a href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" target="_blank" rel="noopener noreferrer" class="footer-social-item" style="display: inline-flex; align-items: center; gap: 8px; color: #ff6b6b; text-decoration: none; font-size: 0.9rem; font-weight: 700;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-            <span>Google Maps</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="footer-bottom-row">
-        <p>© 2026 Studio Maciel / Maciel Fit Academia. Todos os direitos reservados. Toledo, Minas Gerais.</p>
-        <p>Desenvolvido com tecnologia de ponta HTML5, CSS3 & Three.js 3D.</p>
-      </div>
-    </div>
-  </footer>
+  <!-- Mobile Sticky Bottom Call-to-Action Bar -->
+  <div class="fixed bottom-0 inset-x-0 p-3 bg-neutral-950/90 backdrop-blur-md border-t border-white/10 z-40 flex items-center gap-2 lg:hidden shadow-[0_-4px_25px_rgba(0,0,0,0.85)]">
+    <a href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Gostaria%20de%20agendar%20minha%20aula%20experimental." target="_blank" rel="noopener noreferrer" class="btn-primary-gold w-full py-3.5 px-4 rounded-xl text-center text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-gold-maciel/40 min-h-[48px]">
+      <i data-lucide="message-circle" class="w-4 h-4 text-carbon-950"></i>
+      <span>Agendar no WhatsApp</span>
+    </a>
+  </div>
 
   <!-- Application Logic Scripts -->
   <script src="js/intro-animation.js"></script>
   <script src="js/floorplan-3d.js"></script>
-  <script src="js/muscle-explorer-3d.js"></script>
+  <script src="js/biomechanics3d.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
