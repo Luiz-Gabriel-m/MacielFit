@@ -1,6 +1,8 @@
 /**
  * Studio Maciel - Interactive 3D Gym Floorplan (Three.js)
- * High-performance architectural 3D top-down & isometric view with interactive zones.
+ * High-detail architectural 3D gym scene with realistic equipment models:
+ * treadmills with consoles, spinning bikes with flywheels, multi-tier dumbbell racks,
+ * smith machine, cable stations, reception desk with marble finish, lounge, and neon moss wall.
  */
 
 class GymFloorplan3D {
@@ -12,7 +14,7 @@ class GymFloorplan3D {
     this.camera = null;
     this.renderer = null;
     this.controls = null;
-    this.zones = [];
+    this.markerMeshes = [];
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
     this.activeZoneId = 'reception';
@@ -26,35 +28,35 @@ class GymFloorplan3D {
         name: 'Recepção & Lounge VIP',
         category: 'Acolhimento & Check-in',
         color: '#D4AF37',
-        pos: { x: -8, y: 1.5, z: 10 },
-        cam: { x: -8, y: 14, z: 18 },
-        look: { x: -8, y: 0, z: 10 },
+        pos: { x: -8, y: 1.8, z: 10 },
+        cam: { x: -8, y: 12, z: 18 },
+        look: { x: -8, y: 1, z: 10 },
         image: 'public/images/gallery/gym_facade.jpg',
-        description: 'Entrada moderna em deck de madeira nobre, poltronas confortáveis para espera, balcão de mármore e controle de acesso biométrico inteligente.',
-        equipment: 'Balcão de Atendimento, Poltronas VIP, Catraca Digital, Climatização 18°C'
+        description: 'Entrada moderna com deck de madeira nobre, poltronas confortáveis para espera, balcão de mármore e controle de acesso biométrico inteligente.',
+        equipment: 'Balcão de Atendimento em Mármore, Poltronas VIP, Catraca Digital, Climatização 18°C'
       },
       moss_wall: {
         id: 'moss_wall',
         name: 'Parede Verde Biofílica Instagramável',
         category: 'Ambiente & Identidade',
         color: '#2cd5eb',
-        pos: { x: -14, y: 3.5, z: 2 },
-        cam: { x: -8, y: 8, z: 8 },
-        look: { x: -14, y: 3, z: 2 },
+        pos: { x: -14, y: 3.5, z: 0 },
+        cam: { x: -6, y: 7, z: 6 },
+        look: { x: -14, y: 3.2, z: 0 },
         image: 'public/images/gallery/gym_neon_moss.jpg',
         description: 'Nossa icônica parede de musgo verde natural com o letreiro neon dourado Studio Maciel. O ponto de encontro oficial para selfies, fotos pós-treino e registros da comunidade.',
-        equipment: 'Vertical Moss Garden, Letreiro Neon Dourado Studio Maciel, Iluminação Fotográfica'
+        equipment: 'Vertical Moss Garden, Letreiro Neon Dourado Studio Maciel, Iluminação Cênica'
       },
       cardio: {
         id: 'cardio',
         name: 'Área Cardio & Spinning Supertech',
         category: 'Resistência & Queima Calórica',
         color: '#0fb5c7',
-        pos: { x: -8, y: 1.5, z: -4 },
-        cam: { x: -8, y: 16, z: 4 },
-        look: { x: -8, y: 0, z: -4 },
+        pos: { x: -9, y: 1.8, z: -5 },
+        cam: { x: -9, y: 14, z: 4 },
+        look: { x: -9, y: 0.5, z: -5 },
         image: 'public/images/gallery/gym_bikes.jpg',
-        description: 'Bicicletas de alta performance Supertech STS 02 para treinos intervalados e esteiras com amortecimento de impacto articulado e monitores de frequência cardíaca.',
+        description: 'Bicicletas de alta performance Supertech STS 02 para treinos intervalados e esteiras com amortecimento articulado e monitores digitais.',
         equipment: 'Bicicletas Supertech STS 02, Esteiras Ergométricas Digitais, Monitores Cardíacos'
       },
       free_weights: {
@@ -62,61 +64,62 @@ class GymFloorplan3D {
         name: 'Musculação Pesada & Halteres',
         category: 'Hipertrofia & Força Pura',
         color: '#e5c158',
-        pos: { x: 8, y: 1.5, z: -4 },
-        cam: { x: 8, y: 16, z: 4 },
-        look: { x: 8, y: 0, z: -4 },
+        pos: { x: 7, y: 1.8, z: -4 },
+        cam: { x: 7, y: 14, z: 5 },
+        look: { x: 7, y: 0.5, z: -4 },
         image: 'public/images/gallery/gym_dumbbells_rack.jpg',
         description: 'Piso emborrachado com absorção de impacto, rack com pares completos de halteres sextavados emborrachados, bancos articulados e barras olímpicas.',
-        equipment: 'Halteres de 2kg a 40kg, Bancos Declináveis e Inclináveis, Smith Machine, Barras Olímpicas'
+        equipment: 'Halteres de 2kg a 40kg, Bancos Inclináveis, Smith Machine, Barras Olímpicas'
       },
       machines: {
         id: 'machines',
         name: 'Parque de Máquinas Biomecânicas',
         category: 'Isolamento & Biomecânica',
         color: '#ffaa00',
-        pos: { x: 8, y: 1.5, z: 8 },
-        cam: { x: 8, y: 15, z: 15 },
-        look: { x: 8, y: 0, z: 8 },
+        pos: { x: 8, y: 1.8, z: 7 },
+        cam: { x: 8, y: 13, z: 14 },
+        look: { x: 8, y: 0.5, z: 7 },
         image: 'public/images/gallery/gym_machines_collage.jpg',
         description: 'Equipamentos guiados modernos com polias de alta fluidez para movimentos seguros, controle articular e hipertrofia com proteção musculoesquelética.',
-        equipment: 'Crossover Angular, Puxada Alta, Leg Press 45°, Cadeira Extensora, Mesa Flexora'
+        equipment: 'Crossover Angular com Torre Dupla, Puxada Alta, Leg Press 45°, Cadeira Extensora'
       },
       functional: {
         id: 'functional',
-        name: 'Espaço Funcional & Mobilidade',
+        name: 'Espaço Funcional & Pista de Agilidade',
         category: 'Core, Agilidade & Alongamento',
         color: '#34d399',
-        pos: { x: 0, y: 1.5, z: 0 },
-        cam: { x: 0, y: 18, z: 6 },
-        look: { x: 0, y: 0, z: 0 },
+        pos: { x: 0, y: 1.8, z: 0 },
+        cam: { x: 0, y: 16, z: 7 },
+        look: { x: 0, y: 0.5, z: 0 },
         image: 'public/images/gallery/team_community.jpg',
-        description: 'Área livre para aquecimento, trabalho proprioceptivo, mobilidade articular, exercícios de calistenia e treino supervisionado.',
-        equipment: 'Kettlebells, Colchonetes Densidade Alta, Elásticos Superband, Bosu, Caixas de Salto'
+        description: 'Pista de grama sintética de alta densidade para aquecimento, trabalho proprioceptivo, mobilidade articular e treinos supervisionados.',
+        equipment: 'Grama Sintética Funcional, Kettlebells, Colchonetes Densidade Alta, Elásticos Superband'
       }
     };
 
-    this.initThree();
-    this.createGymArchitecture();
-    this.setupEventListeners();
-    this.setupUIControls();
-    this.selectZone('reception');
-    this.animate();
+    try {
+      this.initThree();
+      this.createDetailedGymArchitecture();
+      this.setupEventListeners();
+      this.setupUIControls();
+      this.selectZone('reception');
+      this.animate();
+    } catch (e) {
+      console.error('Error initializing GymFloorplan3D:', e);
+    }
   }
 
   initThree() {
-    const width = this.container.clientWidth;
-    const height = this.container.clientHeight;
+    const width = this.container.clientWidth || 700;
+    const height = this.container.clientHeight || 580;
 
-    // Scene
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x0a0f13);
-    this.scene.fog = new THREE.FogExp2(0x0a0f13, 0.015);
+    this.scene.fog = new THREE.FogExp2(0x0a0f13, 0.012);
 
-    // Camera
     this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    this.camera.position.set(0, 34, 28);
+    this.camera.position.set(0, 32, 26);
 
-    // Renderer
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -124,224 +127,303 @@ class GymFloorplan3D {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.container.appendChild(this.renderer.domElement);
 
-    // Orbit Controls
     if (typeof THREE.OrbitControls !== 'undefined') {
       this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
       this.controls.enableDamping = true;
       this.controls.dampingFactor = 0.05;
-      this.controls.maxPolarAngle = Math.PI / 2.05; // Prevent seeing below floor
-      this.controls.minDistance = 8;
+      this.controls.maxPolarAngle = Math.PI / 2.05;
+      this.controls.minDistance = 6;
       this.controls.maxDistance = 55;
       this.controls.target.set(0, 0, 2);
     }
 
     // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
     this.scene.add(ambientLight);
 
-    const mainLight = new THREE.DirectionalLight(0xfff3d6, 1.2);
-    mainLight.position.set(20, 40, 20);
+    const mainLight = new THREE.DirectionalLight(0xfff3d6, 1.3);
+    mainLight.position.set(18, 38, 18);
     mainLight.castShadow = true;
     mainLight.shadow.mapSize.width = 2048;
     mainLight.shadow.mapSize.height = 2048;
-    mainLight.shadow.camera.near = 0.5;
-    mainLight.shadow.camera.far = 100;
-    const d = 25;
-    mainLight.shadow.camera.left = -d;
-    mainLight.shadow.camera.right = d;
-    mainLight.shadow.camera.top = d;
-    mainLight.shadow.camera.bottom = -d;
     this.scene.add(mainLight);
 
-    // Neon Accent Lights (Teal & Gold)
-    const tealPoint = new THREE.PointLight(0x0eb0c4, 2, 25);
-    tealPoint.position.set(-14, 6, 2);
+    // Neon Accent Lights
+    const tealPoint = new THREE.PointLight(0x0eb0c4, 2.2, 30);
+    tealPoint.position.set(-14, 5, 0);
     this.scene.add(tealPoint);
 
-    const goldPoint = new THREE.PointLight(0xd4af37, 2, 25);
-    goldPoint.position.set(0, 8, 10);
+    const goldPoint = new THREE.PointLight(0xd4af37, 2.5, 30);
+    goldPoint.position.set(0, 7, 8);
     this.scene.add(goldPoint);
   }
 
-  createGymArchitecture() {
-    // 1. Gym Main Floor (Charcoal Rubber + Perimeter Grid)
-    const floorGeo = new THREE.BoxGeometry(34, 0.6, 30);
+  createDetailedGymArchitecture() {
+    // 1. Gym Main Floor (Dark Charcoal Rubber)
+    const floorGeo = new THREE.BoxGeometry(34, 0.6, 28);
     const floorMat = new THREE.MeshStandardMaterial({
       color: 0x161d22,
-      roughness: 0.8,
-      metalness: 0.2
+      roughness: 0.75,
+      metalness: 0.25
     });
     const floor = new THREE.Mesh(floorGeo, floorMat);
     floor.position.y = -0.3;
     floor.receiveShadow = true;
     this.scene.add(floor);
 
-    // Subtle Grid on floor
-    const gridHelper = new THREE.GridHelper(34, 34, 0x076b77, 0x1d2931);
-    gridHelper.position.y = 0.01;
-    this.scene.add(gridHelper);
+    // Floor perimeter border
+    const borderMat = new THREE.MeshStandardMaterial({ color: 0x076b77, metalness: 0.6, roughness: 0.3 });
+    const border = new THREE.Mesh(new THREE.BoxGeometry(34.4, 0.2, 28.4), borderMat);
+    border.position.y = -0.35;
+    this.scene.add(border);
 
     // 2. Entrance Wood Deck Floor (Reception & Lounge)
     const deckGeo = new THREE.BoxGeometry(16, 0.64, 10);
     const deckMat = new THREE.MeshStandardMaterial({
-      color: 0x6e4324, // Warm natural wood
-      roughness: 0.6,
+      color: 0x6e4324, // Warm hardwood
+      roughness: 0.5,
       metalness: 0.1
     });
     const deck = new THREE.Mesh(deckGeo, deckMat);
-    deck.position.set(-8, -0.28, 10);
+    deck.position.set(-8, -0.28, 9);
     deck.receiveShadow = true;
     this.scene.add(deck);
 
-    // 3. Walls (Deep Teal & Architectural Glass)
-    const wallMatTeal = new THREE.MeshStandardMaterial({
-      color: 0x076b77,
-      roughness: 0.5,
-      metalness: 0.2
+    // 3. Functional Turf Green Strip (Middle)
+    const turfGeo = new THREE.BoxGeometry(4, 0.05, 18);
+    const turfMat = new THREE.MeshStandardMaterial({
+      color: 0x227733,
+      roughness: 0.9,
+      metalness: 0.05
     });
-    const wallMatDark = new THREE.MeshStandardMaterial({
-      color: 0x11171c,
-      roughness: 0.7
-    });
+    const turf = new THREE.Mesh(turfGeo, turfMat);
+    turf.position.set(0, 0.03, -1);
+    this.scene.add(turf);
+
+    // 4. Walls
+    const wallMatTeal = new THREE.MeshStandardMaterial({ color: 0x076b77, roughness: 0.5, metalness: 0.2 });
+    const wallMatDark = new THREE.MeshStandardMaterial({ color: 0x11171c, roughness: 0.7 });
 
     // Back Wall
-    const backWall = new THREE.Mesh(new THREE.BoxGeometry(34, 6, 0.8), wallMatTeal);
-    backWall.position.set(0, 3, -15);
-    backWall.receiveShadow = true;
+    const backWall = new THREE.Mesh(new THREE.BoxGeometry(34, 5.5, 0.8), wallMatTeal);
+    backWall.position.set(0, 2.75, -14);
     this.scene.add(backWall);
 
-    // Left Wall (Features the Green Wall)
-    const leftWall = new THREE.Mesh(new THREE.BoxGeometry(0.8, 6, 30), wallMatDark);
-    leftWall.position.set(-17, 3, 0);
-    leftWall.receiveShadow = true;
+    // Left Wall
+    const leftWall = new THREE.Mesh(new THREE.BoxGeometry(0.8, 5.5, 28), wallMatDark);
+    leftWall.position.set(-17, 2.75, 0);
     this.scene.add(leftWall);
 
-    // Right Wall with Mirror accents
-    const rightWall = new THREE.Mesh(new THREE.BoxGeometry(0.8, 6, 30), wallMatTeal);
-    rightWall.position.set(17, 3, 0);
+    // Right Glass Wall & Mirrors
+    const rightWall = new THREE.Mesh(new THREE.BoxGeometry(0.8, 5.5, 28), wallMatTeal);
+    rightWall.position.set(17, 2.75, 0);
     this.scene.add(rightWall);
 
-    // 4. Biofilic Green Moss Wall (Left interior wall)
-    const mossWallGeo = new THREE.BoxGeometry(0.4, 5, 12);
+    // 5. Biofilic Green Moss Wall (Left Wall Interior)
+    const mossWallGeo = new THREE.BoxGeometry(0.4, 4.8, 12);
     const mossWallMat = new THREE.MeshStandardMaterial({
-      color: 0x1d5427,
+      color: 0x1f5e2b,
       roughness: 0.9,
       metalness: 0.05
     });
     const mossWall = new THREE.Mesh(mossWallGeo, mossWallMat);
-    mossWall.position.set(-16.4, 2.8, 2);
+    mossWall.position.set(-16.4, 2.6, 0);
     this.scene.add(mossWall);
 
-    // Glowing Neon Sign Bar on moss wall
-    const neonBarGeo = new THREE.BoxGeometry(0.2, 0.8, 6);
+    // Glowing Neon Sign "STUDIO MACIEL" on Moss Wall
+    const neonBarGeo = new THREE.BoxGeometry(0.2, 0.9, 7);
     const neonBarMat = new THREE.MeshStandardMaterial({
-      color: 0xffe082,
+      color: 0xffe680,
       emissive: 0xd4af37,
-      emissiveIntensity: 1.5,
+      emissiveIntensity: 2.0,
       roughness: 0.1
     });
     const neonSign = new THREE.Mesh(neonBarGeo, neonBarMat);
-    neonSign.position.set(-16.1, 3.4, 2);
+    neonSign.position.set(-16.1, 3.2, 0);
     this.scene.add(neonSign);
 
-    // 5. Reception Desk & Waiting Chairs
-    const deskGeo = new THREE.BoxGeometry(4.5, 1.8, 1.2);
-    const deskMat = new THREE.MeshStandardMaterial({
-      color: 0xf5f5f5, // White marble look
-      roughness: 0.3,
-      metalness: 0.3
-    });
-    const desk = new THREE.Mesh(deskGeo, deskMat);
-    desk.position.set(-10, 0.9, 12);
-    desk.castShadow = true;
-    this.scene.add(desk);
+    // 6. DETAILED RECEPTION & LOUNGE
+    // Marble Desk with wooden slats
+    const deskBase = new THREE.Mesh(new THREE.BoxGeometry(4.8, 1.8, 1.4), new THREE.MeshStandardMaterial({ color: 0xf5f5f5, roughness: 0.25, metalness: 0.3 }));
+    deskBase.position.set(-10, 0.9, 11);
+    this.scene.add(deskBase);
 
-    // Chairs in Lounge
-    const chairMat = new THREE.MeshStandardMaterial({ color: 0x1c242b });
-    [-13, -6].forEach((x) => {
-      const chair = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.2, 1.6), chairMat);
-      chair.position.set(x, 0.6, 9.5);
-      chair.castShadow = true;
-      this.scene.add(chair);
-    });
+    const deskTop = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.15, 1.6), new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.8, roughness: 0.2 }));
+    deskTop.position.set(-10, 1.85, 11);
+    this.scene.add(deskTop);
 
-    // 6. Cardio Machines: Spinning Bikes & Treadmills
-    const bikeMat = new THREE.MeshStandardMaterial({ color: 0x181818, metalness: 0.6, roughness: 0.4 });
-    const bikeGreenMat = new THREE.MeshStandardMaterial({ color: 0x00e676 }); // Supertech green highlight
-    [-12, -9, -6].forEach((x) => {
-      // Bike Base
-      const bikeGroup = new THREE.Group();
-      const bikeBody = new THREE.Mesh(new THREE.BoxGeometry(0.8, 1.4, 1.8), bikeMat);
-      bikeBody.position.y = 0.7;
-      bikeGroup.add(bikeBody);
-
-      const flyWheel = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.2, 16), bikeGreenMat);
-      flyWheel.rotation.z = Math.PI / 2;
-      flyWheel.position.set(0, 0.6, 0.5);
-      bikeGroup.add(flyWheel);
-
-      bikeGroup.position.set(x, 0, -4);
-      bikeGroup.castShadow = true;
-      this.scene.add(bikeGroup);
+    // Lounge Armchairs
+    const chairMat = new THREE.MeshStandardMaterial({ color: 0x1f2830, roughness: 0.6 });
+    [-13.5, -6.5].forEach((x) => {
+      const seat = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.8, 1.6), chairMat);
+      seat.position.set(x, 0.4, 8);
+      const back = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.2, 0.4), chairMat);
+      back.position.set(x, 1.0, 7.2);
+      this.scene.add(seat);
+      this.scene.add(back);
     });
 
-    // Treadmills
-    const treadMat = new THREE.MeshStandardMaterial({ color: 0x222a30, metalness: 0.4 });
-    [-12, -9, -6].forEach((x) => {
+    // Coffee table
+    const table = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.5, 16), new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.7 }));
+    table.position.set(-10, 0.25, 8);
+    this.scene.add(table);
+
+    // 7. DETAILED CARDIO MACHINES
+    // Row of 4 Detailed Treadmills
+    [-14, -11.5, -9, -6.5].forEach((x) => {
       const treadGroup = new THREE.Group();
-      const base = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.4, 2.6), treadMat);
-      base.position.y = 0.2;
-      treadGroup.add(base);
+      // Deck Base
+      const deckMesh = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.25, 3.0), new THREE.MeshStandardMaterial({ color: 0x151b1f }));
+      deckMesh.position.y = 0.12;
+      treadGroup.add(deckMesh);
 
-      const screen = new THREE.Mesh(new THREE.BoxGeometry(1.0, 1.5, 0.2), treadMat);
-      screen.position.set(0, 1.0, -1.0);
-      treadGroup.add(screen);
+      // Running Belt
+      const belt = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.05, 2.6), new THREE.MeshStandardMaterial({ color: 0x090c0e, roughness: 0.9 }));
+      belt.position.set(0, 0.25, -0.1);
+      treadGroup.add(belt);
 
-      treadGroup.position.set(x, 0, -10);
+      // Side Posts
+      const postMat = new THREE.MeshStandardMaterial({ color: 0x076b77, metalness: 0.6 });
+      [-0.6, 0.6].forEach((px) => {
+        const post = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1.6, 12), postMat);
+        post.position.set(px, 0.9, -1.2);
+        treadGroup.add(post);
+      });
+
+      // Console Screen
+      const consoleScreen = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.6, 0.1), new THREE.MeshStandardMaterial({ color: 0x00e676, emissive: 0x00e676, emissiveIntensity: 0.4 }));
+      consoleScreen.position.set(0, 1.7, -1.2);
+      consoleScreen.rotation.x = -0.3;
+      treadGroup.add(consoleScreen);
+
+      treadGroup.position.set(x, 0, -10.5);
       this.scene.add(treadGroup);
     });
 
-    // 7. Free Weights Rack & Benches
-    const rackGeo = new THREE.BoxGeometry(12, 1.2, 1.4);
-    const rackMat = new THREE.MeshStandardMaterial({ color: 0x121416, metalness: 0.8, roughness: 0.3 });
-    const rack = new THREE.Mesh(rackGeo, rackMat);
-    rack.position.set(8, 0.6, -13.5);
-    rack.castShadow = true;
-    this.scene.add(rack);
+    // Row of 4 Detailed Spinning Bikes (Supertech STS 02)
+    [-13, -10.5, -8, -5.5].forEach((x) => {
+      const bikeGroup = new THREE.Group();
+      const bikeSteel = new THREE.MeshStandardMaterial({ color: 0x1b2228, metalness: 0.7, roughness: 0.3 });
+      const bikeGreen = new THREE.MeshStandardMaterial({ color: 0x00e676, emissive: 0x00e676, emissiveIntensity: 0.6 });
 
-    // Adjustable Benches
-    const benchMat = new THREE.MeshStandardMaterial({ color: 0x076b77, roughness: 0.5 });
-    [4, 8, 12].forEach((x) => {
-      const bench = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.7, 2.2), benchMat);
-      bench.position.set(x, 0.35, -5);
-      bench.castShadow = true;
-      this.scene.add(bench);
+      // Frame
+      const mainTube = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 1.6, 12), bikeSteel);
+      mainTube.rotation.z = 0.5;
+      mainTube.position.set(-0.2, 0.8, 0);
+      bikeGroup.add(mainTube);
+
+      // Flywheel
+      const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.12, 24), bikeGreen);
+      wheel.rotation.z = Math.PI / 2;
+      wheel.position.set(0.4, 0.55, 0);
+      bikeGroup.add(wheel);
+
+      // Saddle
+      const seat = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.1, 0.5), new THREE.MeshStandardMaterial({ color: 0x0a0a0a }));
+      seat.position.set(-0.5, 1.25, 0);
+      bikeGroup.add(seat);
+
+      // Handlebars
+      const bar = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.08, 0.3), bikeSteel);
+      bar.position.set(0.4, 1.35, 0);
+      bikeGroup.add(bar);
+
+      bikeGroup.position.set(x, 0, -4.5);
+      this.scene.add(bikeGroup);
     });
 
-    // Smith Machine
+    // 8. DETAILED STRENGTH & FREE WEIGHTS
+    // Double-Tier Hexagonal Dumbbell Rack
+    const rackGroup = new THREE.Group();
+    const rackFrame = new THREE.Mesh(new THREE.BoxGeometry(11, 1.2, 1.4), new THREE.MeshStandardMaterial({ color: 0x161a1d, metalness: 0.8 }));
+    rackFrame.position.set(7, 0.6, -12.5);
+    this.scene.add(rackFrame);
+
+    // Rows of Hexagonal Dumbbells on rack
+    for (let i = 0; i < 8; i++) {
+      const dx = 2.5 + i * 1.1;
+      const dbGroup = new THREE.Group();
+      const hexMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.8, roughness: 0.2 });
+      const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.5, 12), new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.9 }));
+      handle.rotation.z = Math.PI / 2;
+      dbGroup.add(handle);
+
+      [-0.2, 0.2].forEach((hx) => {
+        const hex = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.1, 6), hexMat);
+        hex.rotation.z = Math.PI / 2;
+        hex.position.x = hx;
+        dbGroup.add(hex);
+      });
+      dbGroup.position.set(dx, 1.25, -12.5);
+      this.scene.add(dbGroup);
+    }
+
+    // 3 Adjustable Incline Benches
+    [3.5, 7.5, 11.5].forEach((x) => {
+      const benchGroup = new THREE.Group();
+      const benchMat = new THREE.MeshStandardMaterial({ color: 0x076b77, roughness: 0.4 });
+      const pad1 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.2, 1.4), benchMat);
+      pad1.position.set(0, 0.45, -0.2);
+      const pad2 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.2, 0.6), benchMat);
+      pad2.position.set(0, 0.45, 0.9);
+      benchGroup.add(pad1);
+      benchGroup.add(pad2);
+
+      benchGroup.position.set(x, 0, -4.5);
+      this.scene.add(benchGroup);
+    });
+
+    // Smith Machine with Olympic Bar & Weight Plates
     const smithGroup = new THREE.Group();
-    const frameGeo = new THREE.BoxGeometry(0.3, 3.8, 0.3);
-    const frameMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.7, roughness: 0.3 });
-    const post1 = new THREE.Mesh(frameGeo, frameMat);
-    post1.position.set(-1.4, 1.9, 0);
-    const post2 = new THREE.Mesh(frameGeo, frameMat);
-    post2.position.set(1.4, 1.9, 0);
-    const topBar = new THREE.Mesh(new THREE.BoxGeometry(3.1, 0.3, 0.3), frameMat);
-    topBar.position.set(0, 3.8, 0);
-    smithGroup.add(post1);
-    smithGroup.add(post2);
-    smithGroup.add(topBar);
-    smithGroup.position.set(12, 0, 0);
+    const goldColumnMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.85, roughness: 0.2 });
+    [-1.5, 1.5].forEach((sx) => {
+      const post = new THREE.Mesh(new THREE.BoxGeometry(0.2, 4.0, 0.2), goldColumnMat);
+      post.position.set(sx, 2.0, 0);
+      smithGroup.add(post);
+    });
+    const headerBar = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.2, 0.2), goldColumnMat);
+    headerBar.position.set(0, 4.0, 0);
+    smithGroup.add(headerBar);
+
+    // Olympic Bar with Plates
+    const smithBar = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 3.4, 16), new THREE.MeshStandardMaterial({ color: 0xeeeeee, metalness: 0.9 }));
+    smithBar.rotation.z = Math.PI / 2;
+    smithBar.position.set(0, 1.8, 0);
+    smithGroup.add(smithBar);
+
+    [-1.2, 1.2].forEach((px) => {
+      const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.12, 24), new THREE.MeshStandardMaterial({ color: 0x111111 }));
+      plate.rotation.z = Math.PI / 2;
+      plate.position.set(px, 1.8, 0);
+      smithGroup.add(plate);
+    });
+
+    smithGroup.position.set(13, 0, 1.5);
     this.scene.add(smithGroup);
 
-    // 8. 3D Zone Interactive Markers (Pulsating Rings & Floating Icons)
+    // Dual Pulley Cable Crossover
+    const cableGroup = new THREE.Group();
+    const towerMat = new THREE.MeshStandardMaterial({ color: 0x1f272e, metalness: 0.7 });
+    [-2.2, 2.2].forEach((tx) => {
+      const tower = new THREE.Mesh(new THREE.BoxGeometry(0.8, 3.8, 0.8), towerMat);
+      tower.position.set(tx, 1.9, 0);
+      cableGroup.add(tower);
+    });
+    const arch = new THREE.Mesh(new THREE.BoxGeometry(4.8, 0.15, 0.2), goldColumnMat);
+    arch.position.set(0, 3.7, 0);
+    cableGroup.add(arch);
+
+    cableGroup.position.set(7, 0, 8);
+    this.scene.add(cableGroup);
+
+    // 9. Floating 3D Zone Interactive Markers
     this.markerMeshes = [];
     Object.values(this.zoneData).forEach((zone) => {
       const markerGroup = new THREE.Group();
       markerGroup.position.set(zone.pos.x, zone.pos.y, zone.pos.z);
       markerGroup.userData = { zoneId: zone.id };
 
-      // Inner glowing diamond
+      // Inner glowing octahedron
       const diamondGeo = new THREE.OctahedronGeometry(0.55);
       const diamondMat = new THREE.MeshStandardMaterial({
         color: zone.color,
@@ -353,13 +435,13 @@ class GymFloorplan3D {
       const diamond = new THREE.Mesh(diamondGeo, diamondMat);
       markerGroup.add(diamond);
 
-      // Pulsing Ring below
+      // Pulsing ring
       const ringGeo = new THREE.RingGeometry(0.7, 0.9, 24);
       const ringMat = new THREE.MeshBasicMaterial({
         color: zone.color,
         side: THREE.DoubleSide,
         transparent: true,
-        opacity: 0.6
+        opacity: 0.7
       });
       const ring = new THREE.Mesh(ringGeo, ringMat);
       ring.rotation.x = Math.PI / 2;
@@ -374,7 +456,6 @@ class GymFloorplan3D {
   setupEventListeners() {
     window.addEventListener('resize', () => this.onWindowResize());
 
-    // Raycast click on canvas
     this.renderer.domElement.addEventListener('click', (e) => {
       const rect = this.renderer.domElement.getBoundingClientRect();
       this.mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -393,10 +474,20 @@ class GymFloorplan3D {
         }
       }
     });
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            this.onWindowResize();
+          }
+        });
+      }, { threshold: 0.1 });
+      observer.observe(this.container);
+    }
   }
 
   setupUIControls() {
-    // Zone cards click
     const zoneCards = document.querySelectorAll('.zone-selector-card');
     zoneCards.forEach((card) => {
       card.addEventListener('click', () => {
@@ -405,10 +496,10 @@ class GymFloorplan3D {
       });
     });
 
-    // View Toolbar Buttons
     const btnTop = document.getElementById('btn-view-top');
     const btnIso = document.getElementById('btn-view-iso');
     const btnReset = document.getElementById('btn-view-reset');
+    const btnRenderToggle = document.getElementById('btn-view-render-hd');
 
     if (btnTop) {
       btnTop.addEventListener('click', () => {
@@ -419,7 +510,7 @@ class GymFloorplan3D {
 
     if (btnIso) {
       btnIso.addEventListener('click', () => {
-        this.animateCameraTo({ x: 20, y: 24, z: 24 }, { x: 0, y: 0, z: 0 });
+        this.animateCameraTo({ x: 18, y: 22, z: 22 }, { x: 0, y: 0, z: 0 });
         this.setActiveToolbarBtn(btnIso);
       });
     }
@@ -428,6 +519,17 @@ class GymFloorplan3D {
       btnReset.addEventListener('click', () => {
         this.animateCameraTo({ x: 0, y: 32, z: 26 }, { x: 0, y: 0, z: 2 });
         this.setActiveToolbarBtn(btnReset);
+      });
+    }
+
+    if (btnRenderToggle) {
+      btnRenderToggle.addEventListener('click', () => {
+        const hdOverlay = document.getElementById('floorplan-hd-overlay');
+        if (hdOverlay) {
+          const isHidden = hdOverlay.style.display === 'none' || !hdOverlay.style.display;
+          hdOverlay.style.display = isHidden ? 'flex' : 'none';
+          btnRenderToggle.classList.toggle('active', isHidden);
+        }
       });
     }
   }
@@ -443,12 +545,10 @@ class GymFloorplan3D {
 
     this.activeZoneId = zoneId;
 
-    // Highlight zone list in sidebar
     document.querySelectorAll('.zone-selector-card').forEach((c) => {
       c.classList.toggle('active', c.getAttribute('data-zone') === zoneId);
     });
 
-    // Update Zone Detail card in sidebar
     const detailTitle = document.getElementById('zone-detail-title');
     const detailCat = document.getElementById('zone-detail-category');
     const detailDesc = document.getElementById('zone-detail-desc');
@@ -461,7 +561,6 @@ class GymFloorplan3D {
     if (detailEquip) detailEquip.textContent = data.equipment;
     if (detailImg) detailImg.src = data.image;
 
-    // Smoothly animate camera to look at selected zone
     this.animateCameraTo(data.cam, data.look);
   }
 
@@ -475,9 +574,11 @@ class GymFloorplan3D {
     if (!this.container || !this.camera || !this.renderer) return;
     const width = this.container.clientWidth;
     const height = this.container.clientHeight;
-    this.camera.aspect = width / height;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(width, height);
+    if (width > 0 && height > 0) {
+      this.camera.aspect = width / height;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(width, height);
+    }
   }
 
   animate() {
@@ -485,18 +586,15 @@ class GymFloorplan3D {
 
     const time = performance.now() * 0.002;
 
-    // Animate 3D floating markers
     if (this.markerMeshes) {
       this.markerMeshes.forEach((marker, idx) => {
         marker.children[0].rotation.y = time + idx;
         marker.children[0].position.y = Math.sin(time * 2 + idx) * 0.15;
-        // Ring pulsing scale
         const scale = 1 + Math.sin(time * 3 + idx) * 0.15;
         marker.children[1].scale.set(scale, scale, 1);
       });
     }
 
-    // Camera animation interpolation
     if (this.animatingCamera && this.targetCameraPos && this.targetLookAt) {
       this.camera.position.lerp(this.targetCameraPos, 0.06);
       if (this.controls) {
@@ -516,8 +614,7 @@ class GymFloorplan3D {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize floorplan after slight delay or when section is near
   setTimeout(() => {
     window.gymFloorplan = new GymFloorplan3D();
-  }, 300);
+  }, 250);
 });

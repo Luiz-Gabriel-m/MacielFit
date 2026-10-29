@@ -6,8 +6,8 @@
   <title>Studio Maciel | Maciel Fit Academia • Toledo - MG</title>
   
   <!-- SEO & Social Meta Tags -->
-  <meta name="description" content="Studio Maciel / Maciel Fit Academia em Toledo - MG. Experiência fitness boutique de alta performance, equipamentos biomecânicos modernos, spinning Supertech e acompanhamento personalizado.">
-  <meta name="keywords" content="Studio Maciel, Maciel Fit Academia, academia Toledo MG, musculação, spinning supertech, personal trainer Toledo, fitness boutique">
+  <meta name="description" content="Studio Maciel / Maciel Fit Academia em Toledo - MG. Treinamento de alta performance, equipamentos biomecânicos modernos, spinning Supertech e acompanhamento personalizado.">
+  <meta name="keywords" content="Studio Maciel, Maciel Fit Academia, academia Toledo MG, musculação, spinning supertech, personal trainer Toledo, treinamento alta performance">
   <meta property="og:title" content="Studio Maciel | Maciel Fit Academia">
   <meta property="og:description" content="Alta performance, saúde e sofisticação no maior estúdio fitness de Toledo - MG. Venha conhecer nosso espaço.">
   <meta property="og:image" content="public/images/hero_gym.jpg">
@@ -32,7 +32,7 @@
 
   <!-- ==========================================================================
        FEATURE 1: INTERACTIVE INTRO SCREEN (PRELOADER)
-       Deep Teal background (#076b77) • STUDIO [LOGO] MACIEL • TOLEDO - MG
+       Deep Teal background (#076b77) • EXACT USER LOGO: STUDIO || || MACIEL • TOLEDO - MG
        ========================================================================== -->
   <aside id="intro-screen" aria-label="Tela de Apresentação Studio Maciel">
     <button id="skip-intro-btn" class="skip-intro-btn" aria-label="Pular Introdução">
@@ -40,21 +40,9 @@
     </button>
 
     <div class="intro-content-wrapper">
-      <!-- Horizontal Facade Sequence: STUDIO [DUMBBELL LOGO] MACIEL -->
-      <div class="intro-brand-row">
-        <span class="intro-brand-word">STUDIO</span>
-
-        <!-- Pulsing / Blinking Neon Golden Dumbbell Icon -->
-        <div class="intro-dumbbell-icon pulsing-neon" aria-label="Símbolo Studio Maciel">
-          <div class="intro-bar outer"></div>
-          <div class="intro-bar mid"></div>
-          <div class="intro-bar center"></div>
-          <div class="intro-bar center"></div>
-          <div class="intro-bar mid"></div>
-          <div class="intro-bar outer"></div>
-        </div>
-
-        <span class="intro-brand-word">MACIEL</span>
+      <!-- Exact Logo Banner Image provided by user -->
+      <div class="intro-logo-banner-wrapper">
+        <img src="public/images/logo_preloader_exact.png" alt="Studio Maciel" class="intro-exact-logo-img pulsing-neon">
       </div>
 
       <!-- City & State -->
@@ -86,7 +74,7 @@
         </div>
         <div class="brand-text-header">
           <span class="brand-title-header">STUDIO MACIEL</span>
-          <span class="brand-sub-header">ACADEMIA BOUTIQUE</span>
+          <span class="brand-sub-header">TREINAMENTO & ALTA PERFORMANCE</span>
         </div>
       </a>
 
@@ -154,7 +142,7 @@
             </h1>
 
             <p class="hero-description">
-              Treine em um ambiente boutique exclusivo com arquitetura moderna, iluminação cênica, equipamentos biomecânicos de última geração, área de spinning Supertech STS e a orientação de treinadores dedicados ao seu resultado.
+              Treine em um espaço exclusivo com arquitetura moderna, iluminação cênica, equipamentos biomecânicos de última geração, área de spinning Supertech STS e a orientação de treinadores dedicados ao seu resultado.
             </p>
 
             <div class="hero-highlights-row">
@@ -231,6 +219,14 @@
               </svg>
               Perspectiva 3D
             </button>
+            <button id="btn-view-hd" class="floorplan-tool-btn" title="Alternar para Maquete Realista em Alta Resolução">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              Render Realista HD
+            </button>
             <button id="btn-view-reset" class="floorplan-tool-btn" title="Centralizar Câmera">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
@@ -240,12 +236,20 @@
             </button>
           </div>
 
-          <div class="floorplan-hint-badge">
+          <!-- Realistic 3D Architectural Cutaway Overlay -->
+          <div id="floorplan-hd-overlay" class="floorplan-hd-overlay" style="display: none;">
+            <img src="public/images/gym_floorplan_hd.jpg" alt="Maquete Arquitetônica 3D Studio Maciel" class="floorplan-hd-img">
+            <div class="floorplan-hd-badge">
+              <span>★ Render Arquitetônico 3D Real do Studio Maciel • Toledo MG</span>
+            </div>
+          </div>
+
+          <div class="floorplan-hint-badge" id="floorplan-hint-badge">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"/>
               <path d="M12 16v-4M12 8h.01"/>
             </svg>
-            <span>Arraste com o mouse para girar 360° • Role para zoom</span>
+            <span>Arraste com o mouse para girar 360° • Role para zoom • Clique nos pontos</span>
           </div>
         </div>
 
@@ -366,10 +370,21 @@
             <!-- Three.js Canvas injected dynamically -->
           </div>
 
+          <!-- Anatomical Reference Athlete Artwork Overlay -->
+          <div id="anatomy-ref-overlay" class="anatomy-ref-overlay" style="display: none;">
+            <button id="close-anatomy-ref" class="close-anatomy-ref-btn" aria-label="Fechar Mapa Anatômico">✕ Fechar</button>
+            <img src="public/images/anatomy_athlete.png" alt="Anatomia Muscular do Atleta" class="anatomy-ref-img">
+            <div class="anatomy-ref-caption">
+              <strong>Anatomia Muscular Aplicada ao Movimento</strong>
+              <span>Cadeias musculares primárias em vermelho carmesim & fáscias tendíneas em destaque</span>
+            </div>
+          </div>
+        </div>
+
           <div class="muscle-controls-bar">
             <span style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
-              <span style="width: 10px; height: 10px; border-radius: 50%; background: #D4AF37; display: inline-block;"></span> Ouro: Alvo Primário
-              <span style="width: 10px; height: 10px; border-radius: 50%; background: #0eb0c4; display: inline-block; margin-left: 8px;"></span> Azul: Estabilizador
+              <span style="width: 10px; height: 10px; border-radius: 50%; background: #FFD700; display: inline-block;"></span> Ouro: Alvo Primário
+              <span style="width: 10px; height: 10px; border-radius: 50%; background: #00E5FF; display: inline-block; margin-left: 8px;"></span> Ciano: Estabilizador
             </span>
 
             <div class="muscle-view-buttons">
@@ -377,6 +392,7 @@
               <button id="btn-angle-back" class="view-angle-btn">Costas</button>
               <button id="btn-angle-side" class="view-angle-btn">Lateral</button>
               <button id="btn-angle-spin" class="view-angle-btn">↻ 360°</button>
+              <button id="btn-toggle-anatomy-ref" class="view-angle-btn" style="border-color: var(--gold-400); color: var(--gold-300);" title="Ver Mapa Anatômico do Atleta">🦴 Anatomia</button>
             </div>
           </div>
         </div>
@@ -630,55 +646,83 @@
           </a>
         </div>
 
-        <!-- Social Grid Posts -->
+        <!-- Social Grid Posts with Fresh Generated Assets & Instagram Badges -->
         <div class="social-feed-grid">
           <!-- Post 1: Trophy / Festival Inverno -->
-          <div class="social-post-card">
+          <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="social-post-card">
             <img src="public/images/gallery/award_trophy.jpg" alt="Troféu Maior Equipe Corrida do Festival de Inverno" class="social-post-img">
             <div class="social-post-overlay">
+              <div class="social-post-insta-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+              </div>
               <p class="social-post-caption">🏆 Troféu Maior Equipe na 1ª Corrida do Festival de Inverno! Orgulho imenso dos nossos alunos e atletas.</p>
               <div class="social-post-meta">
-                <span class="likes-count" data-likes="342">❤️ 342</span>
+                <span class="likes-count" data-likes="342">❤️ 342 curtidas</span>
                 <span>Toledo - MG</span>
               </div>
             </div>
-          </div>
+          </a>
 
-          <!-- Post 2: Green Neon Wall Team -->
-          <div class="social-post-card">
-            <img src="public/images/gallery/team_community.jpg" alt="Alunos e treinadores na parede verde Studio Maciel" class="social-post-img">
+          <!-- Post 2: Community & Parede Verde -->
+          <a href="https://instagram.com/studiomaciel1" target="_blank" rel="noopener noreferrer" class="social-post-card">
+            <img src="public/images/gallery/insta_community.jpg" alt="Alunos e treinadores na parede verde Studio Maciel" class="social-post-img">
             <div class="social-post-overlay">
-              <p class="social-post-caption">🔥 Treinão de sábado com a presença dos feras! Foco total na superação diária na parede neon do Studio.</p>
+              <div class="social-post-insta-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+              </div>
+              <p class="social-post-caption">🔥 Treinão de sábado com a família Studio Maciel! Energia máxima e superação na nossa parede biofílica neon.</p>
               <div class="social-post-meta">
-                <span class="likes-count" data-likes="289">❤️ 289</span>
+                <span class="likes-count" data-likes="318">❤️ 318 curtidas</span>
                 <span>@studiomaciel1</span>
               </div>
             </div>
-          </div>
+          </a>
 
-          <!-- Post 3: Supertech Spinning Bikes -->
-          <div class="social-post-card">
-            <img src="public/images/gallery/gym_bikes.jpg" alt="Bicicletas Supertech STS 02 para Spinning" class="social-post-img">
+          <!-- Post 3: Supertech STS Spinning -->
+          <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="social-post-card">
+            <img src="public/images/gallery/insta_spinning.jpg" alt="Sala de Spinning Supertech STS Studio Maciel" class="social-post-img">
             <div class="social-post-overlay">
-              <p class="social-post-caption">🚴 Bom dia com muita energia! Bikes Supertech STS 02 prontas para os treinos de alta intensidade e queima calórica.</p>
+              <div class="social-post-insta-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+              </div>
+              <p class="social-post-caption">🚴 Aulas eletrizantes de Spinning Supertech STS 02! Iluminação cênica e alta queima calórica.</p>
               <div class="social-post-meta">
-                <span class="likes-count" data-likes="194">❤️ 194</span>
-                <span>Área Cardio</span>
+                <span class="likes-count" data-likes="275">❤️ 275 curtidas</span>
+                <span>Área Cardio STS</span>
               </div>
             </div>
-          </div>
+          </a>
 
-          <!-- Post 4: Dumbbells Rack & Training -->
-          <div class="social-post-card">
-            <img src="public/images/gallery/gym_dumbbells_rack.jpg" alt="Rack de halteres e sala de musculação" class="social-post-img">
+          <!-- Post 4: Heavy Strength & Musculação -->
+          <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="social-post-card">
+            <img src="public/images/gallery/insta_strength.jpg" alt="Musculação Pesada e Biomecânica de Elite" class="social-post-img">
             <div class="social-post-overlay">
-              <p class="social-post-caption">💪 E você, já treinou hoje? Estrutura de pesos livres e halteres sextavados para sua melhor performance.</p>
+              <div class="social-post-insta-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+              </div>
+              <p class="social-post-caption">💪 Cada repetição conta! Equipamentos biomecânicos de precisão e halteres sextavados para sua melhor performance.</p>
               <div class="social-post-meta">
-                <span class="likes-count" data-likes="215">❤️ 215</span>
-                <span>Musculação Pesada</span>
+                <span class="likes-count" data-likes="364">❤️ 364 curtidas</span>
+                <span>Musculação de Elite</span>
               </div>
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </section>
@@ -695,7 +739,7 @@
           LOCALIZAÇÃO & <span class="text-gold-gradient">CONTATO DIRETO</span>
         </h2>
         <p class="section-subtitle">
-          Estamos prontos para te receber. Agende uma aula experimental sem compromisso e venha sentir a energia do Studio Maciel de perto.
+          Estamos prontos para te receber. Agende uma aula experimental sem compromisso e venha sentir a energia do Studio Maciel em Toledo - MG.
         </p>
       </div>
 
@@ -705,10 +749,11 @@
           <div>
             <span class="badge-tag" style="margin-bottom: 16px;">Atendimento Exclusivo</span>
             <h3 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 8px;">Studio Maciel / Maciel Fit</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">Espaço climatizado, recepção acolhedora e vestiários completos.</p>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Espaço climatizado, recepção acolhedora, vestiários completos e estacionamento.</p>
           </div>
 
           <div class="contact-items-list">
+            <!-- Google Maps Item with direct link -->
             <div class="contact-item-row">
               <div class="contact-icon-box">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -717,8 +762,22 @@
                 </svg>
               </div>
               <div>
-                <h4 class="contact-item-title">Endereço</h4>
-                <p class="contact-item-desc">Toledo, Minas Gerais - MG • Brasil<br>Região Central com estacionamento facilitado</p>
+                <h4 class="contact-item-title">Endereço & Localização</h4>
+                <p class="contact-item-desc">Toledo, Minas Gerais - MG • Brasil<br>Região Central • Fácil Acesso e Estacionamento</p>
+                <a 
+                  href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="maps-direct-link"
+                  style="display: inline-flex; align-items: center; gap: 6px; color: var(--gold-400); font-size: 0.86rem; font-weight: 700; margin-top: 6px; text-decoration: none;"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  <span>Abrir no Google Maps (Traçar Rota) ↗</span>
+                </a>
               </div>
             </div>
 
@@ -740,30 +799,46 @@
             </div>
 
             <div class="contact-item-row">
-              <div class="contact-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              <div class="contact-icon-box" style="background: rgba(37, 211, 102, 0.15); border-color: rgba(37, 211, 102, 0.4);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#25D366">
+                  <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/>
                 </svg>
               </div>
               <div>
                 <h4 class="contact-item-title">WhatsApp & Atendimento Direto</h4>
-                <p class="contact-item-desc">Tire suas dúvidas ou marque sua aula experimental agora mesmo.</p>
+                <p class="contact-item-desc">Tire dúvidas sobre planos ou agende sua aula experimental gratuita.</p>
               </div>
             </div>
           </div>
 
-          <a 
-            href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Gostaria%20de%20agendar%20uma%20aula%20experimental%20e%20conhecer%20os%20planos." 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            class="btn-primary-gold" 
-            style="width: 100%; justify-content: center;"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/>
-            </svg>
-            <span>Falar com o Treinador no WhatsApp</span>
-          </a>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+            <a 
+              href="https://wa.me/5535999999999?text=Ol%C3%A1%2C%20Studio%20Maciel!%20Gostaria%20de%20agendar%20uma%20aula%20experimental%20e%20conhecer%20os%20planos." 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="btn-primary-gold" 
+              style="width: 100%; justify-content: center; gap: 10px;"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/>
+              </svg>
+              <span>Falar no WhatsApp com o Studio</span>
+            </a>
+
+            <a 
+              href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="btn-outline-teal"
+              style="width: 100%; justify-content: center; gap: 8px; text-decoration: none;"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>Ver Localização no Google Maps</span>
+            </a>
+          </div>
         </div>
 
         <!-- Google Maps Embed Panel -->
@@ -771,11 +846,19 @@
           <iframe 
             class="map-iframe"
             title="Localização do Studio Maciel em Toledo MG"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14872.222384666572!2d-46.3769974128418!3d-22.7423235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c979d39e80adcf%3A0xb30fbef06f654b0!2sToledo%20-%20MG!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14872.222384666572!2d-46.382298!3d-22.740150!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c979d39e80adcf%3A0xb30fbef06f654b0!2sToledo%20-%20MG!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr" 
             allowfullscreen="" 
             loading="lazy" 
             referrerpolicy="no-referrer-when-downgrade">
           </iframe>
+          <div class="map-overlay-button-container">
+            <a href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" target="_blank" rel="noopener noreferrer" class="map-floating-pill">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+              <span>Como Chegar ao Studio Maciel ↗</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -798,7 +881,7 @@
   </a>
 
   <!-- ==========================================================================
-       FOOTER
+       FOOTER WITH WHATSAPP, INSTAGRAM & GOOGLE MAPS ICONS
        ========================================================================== -->
   <footer class="site-footer">
     <div class="footer-container">
@@ -813,13 +896,42 @@
           </div>
         </div>
 
-        <div style="display: flex; gap: 16px;">
-          <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" style="color: var(--gold-400); text-decoration: none; font-size: 0.9rem; font-weight: 700;">
-            Instagram @macielfitacademia
+        <div class="footer-social-links" style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+          <!-- Instagram 1 -->
+          <a href="https://instagram.com/macielfitacademia" target="_blank" rel="noopener noreferrer" class="footer-social-item" style="display: inline-flex; align-items: center; gap: 8px; color: var(--gold-400); text-decoration: none; font-size: 0.9rem; font-weight: 700;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+            <span>@macielfitacademia</span>
           </a>
-          <span style="color: var(--border-subtle);">|</span>
-          <a href="https://instagram.com/studiomaciel1" target="_blank" rel="noopener noreferrer" style="color: var(--teal-400); text-decoration: none; font-size: 0.9rem; font-weight: 700;">
-            Instagram @studiomaciel1
+
+          <!-- Instagram 2 -->
+          <a href="https://instagram.com/studiomaciel1" target="_blank" rel="noopener noreferrer" class="footer-social-item" style="display: inline-flex; align-items: center; gap: 8px; color: var(--teal-400); text-decoration: none; font-size: 0.9rem; font-weight: 700;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+            <span>@studiomaciel1</span>
+          </a>
+
+          <!-- WhatsApp Icon Link -->
+          <a href="https://wa.me/5535999999999" target="_blank" rel="noopener noreferrer" class="footer-social-item" style="display: inline-flex; align-items: center; gap: 8px; color: #25D366; text-decoration: none; font-size: 0.9rem; font-weight: 700;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/>
+            </svg>
+            <span>WhatsApp</span>
+          </a>
+
+          <!-- Google Maps Link -->
+          <a href="https://maps.app.goo.gl/sBdBniQ62SoZtWnr7" target="_blank" rel="noopener noreferrer" class="footer-social-item" style="display: inline-flex; align-items: center; gap: 8px; color: #ff6b6b; text-decoration: none; font-size: 0.9rem; font-weight: 700;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>Google Maps</span>
           </a>
         </div>
       </div>

@@ -1,6 +1,7 @@
 /**
  * Studio Maciel / Maciel Fit Academia - Main Application Logic
- * Header stickiness, social wall interactions, smooth navigation, WhatsApp linking, video sound toggle.
+ * Header stickiness, social wall interactions, smooth navigation, WhatsApp linking,
+ * floorplan HD render switcher, and anatomical reference artwork modal.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -65,27 +66,72 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4. Social Wall Likes Interactive Micro-animation
+  // 4. Floorplan 3D Maquette & HD Render Switcher
+  const btnViewHd = document.getElementById('btn-view-hd');
+  const btnViewIso = document.getElementById('btn-view-iso');
+  const btnViewTop = document.getElementById('btn-view-top');
+  const btnViewReset = document.getElementById('btn-view-reset');
+  const hdOverlay = document.getElementById('floorplan-hd-overlay');
+  const hintBadge = document.getElementById('floorplan-hint-badge');
+
+  if (btnViewHd && hdOverlay) {
+    btnViewHd.addEventListener('click', () => {
+      hdOverlay.style.display = 'flex';
+      document.querySelectorAll('.floorplan-tool-btn').forEach((b) => b.classList.remove('active'));
+      btnViewHd.classList.add('active');
+      if (hintBadge) hintBadge.style.display = 'none';
+    });
+
+    [btnViewIso, btnViewTop, btnViewReset].forEach((btn) => {
+      if (btn) {
+        btn.addEventListener('click', () => {
+          hdOverlay.style.display = 'none';
+          if (btnViewHd) btnViewHd.classList.remove('active');
+          if (hintBadge) hintBadge.style.display = 'flex';
+        });
+      }
+    });
+  }
+
+  // 5. 3D Muscle Explorer - Anatomical Reference Artwork Modal
+  const btnToggleAnatomy = document.getElementById('btn-toggle-anatomy-ref');
+  const anatomyOverlay = document.getElementById('anatomy-ref-overlay');
+  const btnCloseAnatomy = document.getElementById('close-anatomy-ref');
+
+  if (btnToggleAnatomy && anatomyOverlay) {
+    btnToggleAnatomy.addEventListener('click', () => {
+      const isVisible = anatomyOverlay.style.display === 'flex';
+      anatomyOverlay.style.display = isVisible ? 'none' : 'flex';
+      btnToggleAnatomy.classList.toggle('active', !isVisible);
+    });
+  }
+
+  if (btnCloseAnatomy && anatomyOverlay) {
+    btnCloseAnatomy.addEventListener('click', () => {
+      anatomyOverlay.style.display = 'none';
+      if (btnToggleAnatomy) btnToggleAnatomy.classList.remove('active');
+    });
+  }
+
+  // 6. Social Wall Likes Interactive Micro-animation
   const likeCards = document.querySelectorAll('.social-post-card');
   likeCards.forEach((card) => {
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
       const likesEl = card.querySelector('.likes-count');
-      if (likesEl) {
+      if (likesEl && !card.classList.contains('liked')) {
         let count = parseInt(likesEl.getAttribute('data-likes') || '120');
-        if (!card.classList.contains('liked')) {
-          count += 1;
-          card.classList.add('liked');
-          likesEl.innerHTML = `❤️ ${count}`;
-          likesEl.style.color = '#ff4d6d';
-        }
+        count += 1;
+        card.classList.add('liked');
+        likesEl.innerHTML = `❤️ ${count} curtidas`;
+        likesEl.style.color = '#ff4d6d';
       }
     });
   });
 
-  // 5. WhatsApp Prefilled Plan Links
+  // 7. WhatsApp Prefilled Plan Links
   const planButtons = document.querySelectorAll('.btn-plan-select');
   planButtons.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', () => {
       const planName = btn.getAttribute('data-plan') || 'VIP';
       const phone = '5535999999999';
       const message = encodeURIComponent(`Olá, Studio Maciel! Gostaria de garantir minha vaga no Plano ${planName}. Como posso realizar minha matrícula?`);
@@ -93,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 6. Intro Revealed Callback
+  // 8. Intro Revealed Callback
   window.onIntroRevealed = function() {
     const heroContent = document.querySelector('.hero-content');
     if (heroContent) {

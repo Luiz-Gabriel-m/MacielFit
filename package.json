@@ -1,0 +1,9 @@
+{
+  "name": "maciel-fit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Studio Maciel / Maciel Fit Academia Website",
+  "scripts": {
+    "build": "echo 'Static build ready'"
+  }
+}
